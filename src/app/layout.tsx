@@ -18,7 +18,11 @@ export const metadata: Metadata = {
     "Independent community resource for The Valley, Dubai. Not affiliated with Emaar Properties.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html
       lang="en"

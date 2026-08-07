@@ -1,36 +1,22 @@
 # Valley — your remaining setup
 
-Local foundations are scaffolded. Complete these before launch.
+Project docs live in [`docs/`](./docs/) (moved from `read/`). Local foundations are scaffolded. Complete these before launch.
 
-## 1. Supabase project (blocked — free-tier limit)
+## 1. Supabase project
 
-**Target:** project name `valley`, region **`ap-south-1` (Mumbai)**.
+**Project:** [valley](https://supabase.com/dashboard/project/pyowmcabddaxzsoeoyhx) (`pyowmcabddaxzsoeoyhx`, `ap-south-1`) — connected via MCP.
 
-Creation via API failed with:
+`.env.local` already has URL + anon key. Still paste from **Project Settings → API**:
 
-> Organization members have reached their maximum limits for active free projects (2 project limit). Delete, pause, or upgrade one or more projects to continue.
+- `SUPABASE_SERVICE_ROLE_KEY` (`service_role` — MCP cannot read this)
 
-Your org currently shows:
+Later, generate types:
 
-| Project        | Region       | Status         |
-|----------------|--------------|----------------|
-| financia       | ap-south-1   | ACTIVE_HEALTHY |
-| Alami RMS      | ca-central-1 | INACTIVE       |
-| Bab Marrakech  | ca-central-1 | INACTIVE       |
-| Pokellection   | ca-central-1 | INACTIVE       |
+```bash
+npx supabase gen types typescript --project-id pyowmcabddaxzsoeoyhx > src/types/database.ts
+```
 
-**What to do:**
 
-1. In [Supabase Dashboard](https://supabase.com/dashboard), free a slot (pause/delete an unused project, or upgrade).
-2. Create a new project named **`valley`** in **`ap-south-1`**.
-3. Copy Project Settings → API into `.env.local`:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (anon / publishable)
-   - `SUPABASE_SERVICE_ROLE_KEY` (service_role — keep secret)
-4. Tell the agent the project ref when ready so types can be generated later:
-   `npx supabase gen types typescript --project-id <ref> > src/types/database.ts`
-
-Or ask the agent to create `valley` in Mumbai again once a free slot is available.
 
 ## 2. Fill remaining env vars
 
