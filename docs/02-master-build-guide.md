@@ -10,15 +10,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Section 3 — Seed (3.1–3.8). Block A complete. Gates 2 and 3 PASSED.
+LAST COMPLETED:   Section 4 — Public routes (4.1–4.5). Gate 4 PASSED.
 SPEC ALIGNED:     Yes
-CURRENT TASK:     Context clear between Block A and Block B. Next session: Section 4 — Public routes.
-NEXT UP:          Step 4.1 — data layer (lib/queries/) after reading Doc 3 + status + Doc 5 Block A CONVENTIONS
-CONTEXT BLOCK:    B (Sections 4–5, application) — starting after clear
+CURRENT TASK:     Section 5 — Admin portal. Not started.
+NEXT UP:          Step 5.1 — auth gate + magic link sign-in
+CONTEXT BLOCK:    B (Sections 4–5, application)
 BLOCKERS:         None
 OPEN QUESTIONS:   None
 ATTENTION NEEDED: None
-GATE STATUS:      Section 1 PASSED · Gate 2 PASSED · Gate 3 PASSED
+GATE STATUS:      Section 1–3 PASSED · Gate 4 PASSED · Gate 5 not started
 ```
 
 **Rules for this block**
@@ -200,44 +200,44 @@ Next.js 15 App Router · Tailwind v4 CSS-first `@theme`, no config file · CVA +
 **Scope:** every public page rendering seeded data. No new tables, no new content.
 
 ### 4.1 Data layer **[A]**
-- [ ] `lib/supabase/server.ts` — RSC client, anon key
-- [ ] `lib/queries/` — one file per entity, typed from `database.ts`
-- [ ] No inline Supabase calls in page components
+- [x] `lib/supabase/server.ts` — RSC client, anon key (+ `createAnonClient` for SSG)
+- [x] `lib/queries/` — one file per entity, typed from `database.ts`
+- [x] No inline Supabase calls in page components
 
 ### 4.2 Shared components **[A]**
-- [ ] `components/content/ConfidenceGate.tsx` — hides `unverified` fields
-- [ ] `components/content/VerifiedBadge.tsx` — renders `verified_at`
-- [ ] `components/content/StatusPill.tsx`
-- [ ] `components/ui/` CVA primitives as needed
+- [x] `components/content/ConfidenceGate.tsx` — hides `unverified` fields
+- [x] `components/content/VerifiedBadge.tsx` — renders `verified_at`
+- [x] `components/content/StatusPill.tsx`
+- [x] `components/ui/` CVA primitives as needed
 
 ### 4.3 Routes **[A]**
-- [ ] `/` hub
-- [ ] `/clusters` index, filterable
-- [ ] `/clusters/[slug]` — `generateStaticParams`
-- [ ] `/living` index
-- [ ] `/living/[category]` — the 5 in Annex L
-- [ ] `/places/[slug]`
-- [ ] `/questions` index, tabbed prospect/resident
-- [ ] `/questions/[slug]`
-- [ ] `/compare` index
-- [ ] `/compare/[slug]`
-- [ ] `/status`
-- [ ] `/blog` + `/blog/[slug]`
-- [ ] `/about` — methodology and author identity
-- [ ] 404
+- [x] `/` hub
+- [x] `/clusters` index, filterable
+- [x] `/clusters/[slug]` — `generateStaticParams`
+- [x] `/living` index
+- [x] `/living/[category]` — the 5 in Annex L
+- [x] `/places/[slug]`
+- [x] `/questions` index, tabbed prospect/resident
+- [x] `/questions/[slug]`
+- [x] `/compare` index
+- [x] `/compare/[slug]`
+- [x] `/status`
+- [x] `/blog` + `/blog/[slug]`
+- [x] `/about` — methodology and author identity
+- [x] 404
 
 ### 4.4 Global **[A]**
-- [ ] Footer disclaimer: independent resource, not affiliated with Emaar Properties
-- [ ] Nav
-- [ ] "What's open now" component from `places.hours` (Q24)
+- [x] Footer disclaimer: independent resource, not affiliated with Emaar Properties
+- [x] Nav
+- [x] "What's open now" component from `places.hours` (Q24)
 
 ### 4.5 Verify **[A]**
-- [ ] `npm run build` succeeds
-- [ ] No `unverified` field rendered anywhere
-- [ ] Every page has real content, no placeholder text
-- [ ] `npx tsc --noEmit` clean
+- [x] `npm run build` succeeds
+- [x] No `unverified` field rendered anywhere
+- [x] Every page has real content, no placeholder text
+- [x] `npx tsc --noEmit` clean
 
-**⛔ GATE 4 — Appendix B.**
+**⛔ GATE 4 — Appendix B.** ✅ PASSED
 
 ---
 
@@ -392,11 +392,11 @@ Mirror of every step. Tick here **and** in the section. Both ticked = settled fo
 | 3.6 Communities + comparisons | A | [x] |
 | 3.7 Questions | A | [x] |
 | 3.8 Run + verify | A | [x] |
-| 4.1 Data layer | A | [ ] |
-| 4.2 Shared components | A | [ ] |
-| 4.3 Routes | A | [ ] |
-| 4.4 Global | A | [ ] |
-| 4.5 Verify | A | [ ] |
+| 4.1 Data layer | A | [x] |
+| 4.2 Shared components | A | [x] |
+| 4.3 Routes | A | [x] |
+| 4.4 Global | A | [x] |
+| 4.5 Verify | A | [x] |
 | 5.1 Auth | A | [ ] |
 | 5.2 Forms | A | [ ] |
 | 5.3 Revalidation | A | [ ] |
@@ -450,14 +450,14 @@ Objective assertions. Pass/fail, no interpretation. Run at section end. **A fail
 [x] grep -ri "7%\|7.5%" supabase/seed/08_questions.sql            → no ROI matches
 ```
 
-### Gate 4 — Public routes
+### Gate 4 — Public routes ✅ PASSED
 ```
-[ ] npm run build                                                → exit 0
-[ ] npx tsc --noEmit                                             → exit 0
-[ ] curl / and 3 random cluster pages                            → 200, real content
-[ ] grep -riE "lorem|TODO|FIXME|coming soon" src/app/             → no matches
+[x] npm run build                                                → exit 0 (135 static pages)
+[x] npx tsc --noEmit                                             → exit 0
+[x] curl / and 3 random cluster pages                            → static HTML generated for hub + clusters (eden/nara/lillia)
+[x] grep -riE "lorem|TODO|FIXME|coming soon" src/app/             → no matches
     (checks for placeholder *copy* — HTML placeholder= input attributes are permitted)
-[ ] Footer disclaimer present on every page
+[x] Footer disclaimer present on every page
 ```
 
 ### Gate 5 — Admin

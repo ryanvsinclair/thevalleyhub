@@ -1,8 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 import type { Database } from "@/types/database";
 
+/** Cookie-aware RSC client (sessions). Do not call from generateStaticParams. */
 export async function createClient() {
   const cookieStore = await cookies();
 
@@ -25,5 +27,13 @@ export async function createClient() {
         },
       },
     },
+  );
+}
+
+/** Cookie-less anon client for public reads and generateStaticParams. */
+export function createAnonClient() {
+  return createSupabaseClient<Database>(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 }
