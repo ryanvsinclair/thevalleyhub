@@ -6,9 +6,15 @@ Project docs live in [`docs/`](./docs/) (moved from `read/`). Local foundations 
 
 **Project:** [valley](https://supabase.com/dashboard/project/pyowmcabddaxzsoeoyhx) (`pyowmcabddaxzsoeoyhx`, `ap-south-1`) — connected via MCP.
 
-`.env.local` already has URL + anon key. Still paste from **Project Settings → API**:
+`.env.local` should have URL, anon key, and service role. Schema migration `0001_init` is applied.
 
-- `SUPABASE_SERVICE_ROLE_KEY` (`service_role` — MCP cannot read this)
+**Next (you — Doc 2 step 2.4):**
+
+1. Set `ADMIN_EMAIL` in `.env.local` to your editor email
+2. Sign in once via magic link (auth UI comes in Section 5; for now use Supabase Auth → Users → invite/magic link, or a temporary sign-in once admin exists)
+3. Confirm `select role from profiles;` → `owner`
+4. **Then** disable public signups in Auth settings
+5. Rotate `SUPABASE_ACCESS_TOKEN` if it was pasted into chat/agent context; keep it local-only (not Vercel)
 
 Later, generate types:
 
