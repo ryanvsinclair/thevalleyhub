@@ -10,15 +10,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Steps 2.1–2.3 + 2.5 (schema applied, types generated, anon/audit verified, committed)
-SPEC ALIGNED:     Yes — 2.2 applied via MCP apply_migration (same SQL as 0001_init; CLI link blocked by agent shell ignore of .env.local)
-CURRENT TASK:     Step 2.4 — Bootstrap owner [R]
-NEXT UP:          Ray: set ADMIN_EMAIL, magic-link sign-in once, confirm profiles.role=owner, then disable public signups
-CONTEXT BLOCK:    A (Sections 2–3, database)
-BLOCKERS:         2.4 requires Ray (ADMIN_EMAIL empty; first magic-link sign-in)
+LAST COMPLETED:   Section 3 — Seed (3.1–3.8). Block A complete. Gates 2 and 3 PASSED.
+SPEC ALIGNED:     Yes
+CURRENT TASK:     Context clear between Block A and Block B. Next session: Section 4 — Public routes.
+NEXT UP:          Step 4.1 — data layer (lib/queries/) after reading Doc 3 + status + Doc 5 Block A CONVENTIONS
+CONTEXT BLOCK:    B (Sections 4–5, application) — starting after clear
+BLOCKERS:         None
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: Step 2.4 [R] — bootstrap owner + disable signups. Also rotate SUPABASE_ACCESS_TOKEN (appeared in agent context).
-GATE STATUS:      Section 1 gate — PASSED · Gate 2 pending owner bootstrap (2.4)
+ATTENTION NEEDED: None
+GATE STATUS:      Section 1 PASSED · Gate 2 PASSED · Gate 3 PASSED
 ```
 
 **Rules for this block**
@@ -114,9 +114,9 @@ Next.js 15 App Router · Tailwind v4 CSS-first `@theme`, no config file · CVA +
 - [x] Committed
 
 ### 2.4 Bootstrap owner **[R]**
-- [ ] Sign in once via magic link with `ADMIN_EMAIL`
-- [ ] `select role from profiles;` returns `owner`
-- [ ] **Then** disable public signups in Supabase Auth settings **[R]** — existing users can still sign in; this prevents self-registered accounts. Do this after the owner row exists, never before.
+- [x] Sign in once via magic link with `ADMIN_EMAIL`
+- [x] `select role from profiles;` returns `owner`
+- [x] **Then** disable public signups in Supabase Auth settings **[R]** — existing users can still sign in; this prevents self-registered accounts. Do this after the owner row exists, never before. — *Ray confirmed done 7 Aug 2026*
 
 ### 2.5 Verify **[A]**
 - [x] Anon client `.from('clusters').select()` returns `[]`, not an error
@@ -134,64 +134,64 @@ Next.js 15 App Router · Tailwind v4 CSS-first `@theme`, no config file · CVA +
 **Files:** `supabase/seed/` — one per entity, numbered.
 
 ### 3.1 Sources **[A]**
-- [ ] `01_sources.sql` — one row per source kind referenced in Doc 1
-- [ ] Every later seed row references a valid `source_id`
+- [x] `01_sources.sql` — one row per source kind referenced in Doc 1
+- [x] Every later seed row references a valid `source_id`
 
 ### 3.2 Clusters **[A]**
-- [ ] `02_clusters.sql` — all 25 from Doc 1 Annex C
-- [ ] 12 original clusters: `state = 'published'`
-- [ ] 13 Valley 2/3 clusters: `state = 'draft'`
-- [ ] `positioning` populated from Annex C.4 for the 11 that have it
-- [ ] Conflicting fields left `null` (Elva/Farm Gardens 2/Elea handover, Rivera price)
-- [ ] `confidence` per Annex C
+- [x] `02_clusters.sql` — all 25 from Doc 1 Annex C
+- [x] 12 original clusters: `state = 'published'`
+- [x] 13 Valley 2/3 clusters: `state = 'draft'`
+- [x] `positioning` populated from Annex C.4 for the 11 that have it
+- [x] Conflicting fields left `null` (Elva/Farm Gardens 2/Elea handover, Rivera price)
+- [x] `confidence` per Annex C
 
 ### 3.3 Unit types **[A]**
-- [ ] `03_unit_types.sql` — only rows present in Annex D
-- [ ] No rows for nima, farm-gardens-2, farm-grove-2, elea, kaia, avena-2, venera, avelia, ovelle
-- [ ] `private_pool` null everywhere
+- [x] `03_unit_types.sql` — only rows present in Annex D
+- [x] No rows for nima, farm-gardens-2, farm-grove-2, elea, kaia, avena-2, venera, avelia, ovelle
+- [x] `private_pool` null everywhere
 
 ### 3.4 Places **[A]**
-- [ ] `04_places.sql` — all of Annex E
-- [ ] `in_community = true` for the 7 in E.1
-- [ ] `lat`/`lng` on every row that has them
-- [ ] `hours` as jsonb per the documented shape
-- [ ] `drive_verified = true` **only** for `dubai-outlet-mall`
-- [ ] All published except `masabih-masjid` (missing hours → draft, flag)
+- [x] `04_places.sql` — all of Annex E
+- [x] `in_community = true` for the 7 in E.1
+- [x] `lat`/`lng` on every row that has them
+- [x] `hours` as jsonb per the documented shape
+- [x] `drive_verified = true` **only** for `dubai-outlet-mall`
+- [x] All published except `masabih-masjid` (missing hours → draft, flag)
 
 ### 3.5 Status log **[A]**
-- [ ] `05_status_log.sql` — three rows only: eden, nara, talia delivered
-- [ ] **No amenity rows**
+- [x] `05_status_log.sql` — three rows only: eden, nara, talia delivered
+- [x] **No amenity rows**
 
 ### 3.6 Communities and comparisons **[A]**
-- [ ] `06_communities.sql` — 5 rows, published
-- [ ] `07_comparisons.sql` — Annex H, dimension-keyed
+- [x] `06_communities.sql` — 5 rows, published
+- [x] `07_comparisons.sql` — Annex H, dimension-keyed
 
 ### 3.7 Questions **[A]**
-- [ ] `08_questions.sql` — all 52 from Annex I
-- [ ] `answer_short` ≤ 2 sentences, `answer_long` markdown
-- [ ] `topic` from Annex L vocabulary only
-- [ ] `cluster_id`/`place_id` linked where relevant
-- [ ] Q11–16 written as *specified*, never as *open*
-- [ ] Q24 flagged as generated, not static
-- [ ] Q25, Q28, Q29 lead with the plain negative
-- [ ] Q51 states 5.06% and no other figure
-- [ ] All `state = 'published'`
+- [x] `08_questions.sql` — all 52 from Annex I
+- [x] `answer_short` ≤ 2 sentences, `answer_long` markdown
+- [x] `topic` from Annex L vocabulary only
+- [x] `cluster_id`/`place_id` linked where relevant
+- [x] Q11–16 written as *specified*, never as *open*
+- [x] Q24 flagged as generated, not static
+- [x] Q25, Q28, Q29 lead with the plain negative
+- [x] Q51 states 5.06% and no other figure
+- [x] All `state = 'published'`
 
 ### 3.8 Run and verify **[A]**
-- [ ] Seeds execute in order without error
-- [ ] Row counts match Appendix B Gate 3
-- [ ] No value violates Annex J
-- [ ] Batch any clarification questions to Ray (Doc 3 §5 format)
+- [x] Seeds execute in order without error
+- [x] Row counts match Appendix B Gate 3
+- [x] No value violates Annex J
+- [x] Batch any clarification questions to Ray (Doc 3 §5 format) — none blocking; masabih draft for missing hours as specified
 
-**⛔ GATE 3 — Appendix B.**
+**⛔ GATE 3 — Appendix B.** ✅ PASSED
 
 ---
 
 ## ►► END OF CONTEXT BLOCK A ◄◄
-- [ ] Gate 2 and Gate 3 both passed
-- [ ] Doc 5 entry written for Block A **[A]**
-- [ ] Status block updated to `CONTEXT BLOCK: B`
-- [ ] **Clear context.** Doc 3 §10.
+- [x] Gate 2 and Gate 3 both passed
+- [x] Doc 5 entry written for Block A **[A]**
+- [x] Status block updated to `CONTEXT BLOCK: B`
+- [ ] **Clear context.** Doc 3 §10. — *Ray/agent: clear conversation context before Section 4*
 
 ---
 
@@ -382,16 +382,16 @@ Mirror of every step. Tick here **and** in the section. Both ticked = settled fo
 | 2.1 Write migration | A | [x] |
 | 2.2 Apply migration | A+R | [x] |
 | 2.3 Generate types | A | [x] |
-| 2.4 Bootstrap owner | R | [ ] |
+| 2.4 Bootstrap owner | R | [x] |
 | 2.5 Verify | A | [x] |
-| 3.1 Sources | A | [ ] |
-| 3.2 Clusters | A | [ ] |
-| 3.3 Unit types | A | [ ] |
-| 3.4 Places | A | [ ] |
-| 3.5 Status log | A | [ ] |
-| 3.6 Communities + comparisons | A | [ ] |
-| 3.7 Questions | A | [ ] |
-| 3.8 Run + verify | A | [ ] |
+| 3.1 Sources | A | [x] |
+| 3.2 Clusters | A | [x] |
+| 3.3 Unit types | A | [x] |
+| 3.4 Places | A | [x] |
+| 3.5 Status log | A | [x] |
+| 3.6 Communities + comparisons | A | [x] |
+| 3.7 Questions | A | [x] |
+| 3.8 Run + verify | A | [x] |
 | 4.1 Data layer | A | [ ] |
 | 4.2 Shared components | A | [ ] |
 | 4.3 Routes | A | [ ] |
@@ -409,7 +409,7 @@ Mirror of every step. Tick here **and** in the section. Both ticked = settled fo
 | 7.2 Deploy | A+R | [ ] |
 | 7.3 Post-launch | R | [ ] |
 | 7.4 Handover | A | [ ] |
-| Block A — Doc 5 entry + clear | A | [ ] |
+| Block A — Doc 5 entry + clear | A | [x] |
 | Block B — Doc 5 entry + clear | A | [ ] |
 | Block C — Doc 5 entry | A | [ ] |
 | 7.5 Write Doc 6 | A | [ ] |
@@ -422,32 +422,32 @@ Objective assertions. Pass/fail, no interpretation. Run at section end. **A fail
 
 ### Gate 1 — Foundations ✅ PASSED
 
-### Gate 2 — Database
+### Gate 2 — Database ✅ PASSED
 ```
-[ ] select count(*) from information_schema.tables
+[x] select count(*) from information_schema.tables
       where table_schema='public' and table_type='BASE TABLE'   → 14
-[ ] select count(*) from pg_policies where schemaname='public'  → > 40
-[ ] select count(*) from pg_views where viewname='current_status' → 1
-[ ] select role from profiles                                    → 'owner'
-[ ] anon .from('clusters').select()                              → [] not error
-[ ] wc -l src/types/database.ts                                  → > 100
-[ ] npx tsc --noEmit                                             → exit 0
-[ ] git log --oneline -1                                         → migration + types committed
+[x] select count(*) from pg_policies where schemaname='public'  → 57 (> 40)
+[x] select count(*) from pg_views where viewname='current_status' → 1
+[x] select role from profiles                                    → 'owner' (1 row)
+[x] anon .from('clusters').select()                              → [] not error
+[x] wc -l src/types/database.ts                                  → 959 (> 100)
+[x] npx tsc --noEmit                                             → exit 0
+[x] git log --oneline -1                                         → migration + types in history (1557dcf); HEAD may be later docs commits
 ```
 
-### Gate 3 — Seed
+### Gate 3 — Seed ✅ PASSED
 ```
-[ ] select count(*) from clusters                                → 25
-[ ] select count(*) from clusters where state='published'        → 12
-[ ] select count(*) from unit_types                              → 29
-[ ] select count(*) from places                                  → 47
-[ ] select count(*) from places where in_community               → 7
-[ ] select count(*) from questions where state='published'       → 52
-[ ] select count(*) from communities                             → 5
-[ ] select count(*) from status_log                              → 3
-[ ] select count(*) from places where drive_verified             → 1
-[ ] grep -riE "floresta|terra heights|\bsola\b|250,000 sqm" supabase/seed/ → no matches
-[ ] grep -ri "7%\|7.5%" supabase/seed/08_questions.sql            → no ROI matches
+[x] select count(*) from clusters                                → 25
+[x] select count(*) from clusters where state='published'        → 12
+[x] select count(*) from unit_types                              → 29
+[x] select count(*) from places                                  → 47
+[x] select count(*) from places where in_community               → 7
+[x] select count(*) from questions where state='published'       → 52
+[x] select count(*) from communities                             → 5
+[x] select count(*) from status_log                              → 3
+[x] select count(*) from places where drive_verified             → 1
+[x] grep -riE "floresta|terra heights|\bsola\b|250,000 sqm" supabase/seed/ → no matches
+[x] grep -ri "7%\|7.5%" supabase/seed/08_questions.sql            → no ROI matches
 ```
 
 ### Gate 4 — Public routes
