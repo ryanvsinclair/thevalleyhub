@@ -22,7 +22,19 @@ Later, generate types:
 npx supabase gen types typescript --project-id pyowmcabddaxzsoeoyhx > src/types/database.ts
 ```
 
+### Naming map (URL / UI ≠ Postgres)
 
+Canonical names live in the DB and in `src/types/database.ts`. Public routes sometimes use friendlier labels — **always query the table name**, never invent synonyms.
+
+| URL / UI | Postgres | Notes |
+|----------|----------|--------|
+| `/blog`, “blog post” | `posts` | No `blog_posts` table |
+| `/compare` | `communities` + `comparisons` | Community pages + dimension rows |
+| `/living/[category]` | `places` | Category groups in `src/lib/queries/places.ts` |
+| `/status` | `status_log` / view `current_status` | Log is append-only; view is latest |
+| `/clusters`, `/places`, `/questions` | same table names | 1:1 |
+
+Revalidate webhooks must target real tables (`posts`, not `blog_posts`) and public paths (`/blog`, `/clusters`, …).
 
 ## 2. Fill remaining env vars
 
