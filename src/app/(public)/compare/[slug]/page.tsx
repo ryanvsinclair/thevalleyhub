@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { JsonLd } from "@/components/seo/JsonLd";
 import {
   getPublishedCommunityBySlug,
   listComparisonsForCommunity,
   listPublishedCommunitySlugs,
 } from "@/lib/queries/communities";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -20,10 +23,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const community = await getPublishedCommunityBySlug(slug);
   if (!community) return { title: "Compare" };
-  return {
+  return buildPageMetadata({
     title: `${community.name} vs The Valley`,
-    description: community.summary ?? undefined,
-  };
+    description: community.summary,
+    path: `/compare/${community.slug}`,
+  });
 }
 
 export default async function CompareDetailPage({ params }: Props) {
@@ -35,6 +39,13 @@ export default async function CompareDetailPage({ params }: Props) {
 
   return (
     <article>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Compare", path: "/compare" },
+          { name: community.name, path: `/compare/${community.slug}` },
+        ])}
+      />
       <header className="border-b border-neutral-200 pb-8">
         <h1 className="font-serif text-3xl tracking-tight text-neutral-900">
           {community.name}

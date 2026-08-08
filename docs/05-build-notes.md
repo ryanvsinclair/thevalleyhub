@@ -147,3 +147,58 @@ State what it is, which roadmap feature it serves, and how to use it.
 ## OPEN ITEMS CARRIED FORWARD
 - None blocking. Optional: rotate `SUPABASE_ACCESS_TOKEN` if the value that entered agent context is still active.
 - Context clear required before Block B (Doc 3 §10).
+
+---
+
+# BLOCK B — Sections 4–5
+**Completed:** 2026-08-08
+**Gates passed:** Gate 4 ✅ · Gate 5 ✅
+
+## DECISIONS MADE
+- **`createAnonClient()` for all public `lib/queries/*` reads** — because `generateStaticParams` / SSG has no request/`cookies()` context. Same anon key and RLS as an unauthenticated visitor. Rejected: cookie `createClient()` everywhere (breaks build); rejected: forcing all routes dynamic. Proposal #01 APPROVED 2026-08-08.
+- **Cookie `createClient()` (RSC) vs `createActionClient()` (Server Actions)** — both anon-key `@supabase/ssr`; Action client must be able to write cookies (no swallowed `setAll` errors). Admin layout uses RSC client + `getUser()`; mutations use Action client so `auth.uid()` / audit work.
+- **Admin allowlist = `ADMIN_EMAIL` env** — magic link + layout + actions all check it. `shouldCreateUser: false` on OTP (owner already bootstrapped). Rejected: open signup or role-only checks without email allowlist.
+- **Admin writes only via `createActionClient()`** — never `createAdminClient()` for content. Service role remains roadmap-only (`admin.ts` + `server-only`).
+- **§5.3 Supabase webhook deferred to §7.2** — needs a live public URL; Ray reminder added at launch. On-save `revalidatePath` in admin actions covers editor-driven publishes for V1 until then.
+
+## CONVENTIONS ESTABLISHED
+- **Supabase clients by layer:**
+  - `createAnonClient()` — public `lib/queries/*` only (SSG-safe).
+  - `createClient()` — request-scoped RSC session (admin layout gate).
+  - `createActionClient()` — Server Actions / cookie writes / session mutations.
+  - `createAdminClient()` — service role, never content writes.
+- **Public data:** pages call `lib/queries/*` only; no inline Supabase in public pages.
+- **Admin data:** dashboard/lists may use cookie `createClient()`; all inserts/updates/deletes go through `src/lib/admin/actions.ts` + zod in `src/lib/schema.ts`.
+- **Auth routes:** `/login`, `/auth/callback`; unauthenticated `/admin/*` → `/login`.
+- **Optional form fields:** treat missing/`""` as `null` in zod preprocessors (`emptyToNull`) — FormData omits unused fields.
+- **ConfidenceGate** still owns unverified spec hiding on public pages; admin can edit raw values.
+
+## DEVIATIONS FROM DOC 2
+- Step 4.1: `createAnonClient` — Proposal #01 APPROVED.
+- Step 5.3 webhook: not configured yet; deferred to §7.2 / Block C end by Ray (reminders in Doc 2). Agent-built `/api/revalidate` + on-save revalidation are in place.
+- Installed Next is **16.3.0** while locked decisions / Doc 3 §7 still say Next.js 15 — behaviour (async params) followed; version string not amended in this block.
+- Empty `ADMIN_EMAIL=` in parent shell env blocks `.env.local` (Next does not override existing env). Start dev with `env -u ADMIN_EMAIL` or unset it.
+
+## GOTCHAS
+- `cookies()` / cookie client inside `generateStaticParams` fails the build — use `createAnonClient`.
+- Parent env `ADMIN_EMAIL=` (empty) shadows `.env.local` — looks “not configured.”
+- Magic-link `emailRedirectTo` uses `NEXT_PUBLIC_SITE_URL`; if another app owns that port, the link hits the wrong project.
+- RLS returns `[]` / `null`, not errors, for drafts via anon.
+- Gate 5 create-question UI was missing initially (list/edit only); `/admin/questions/new` + delete added to satisfy the gate literally.
+- `createAdminClient` must never be imported from client components; Gate 5 greps `SERVICE_ROLE` in `*.ts` and `*.tsx` — only `admin.ts` permitted.
+
+## EXTENSION POINTS
+- `createAdminClient` ready for non-session system tasks (none in V1).
+- `/api/revalidate` accepts `path` or `paths[]` for webhook or external tools.
+- Admin nav/entity editors cover Doc 2 §5.2 surface; media upload uses session storage policies.
+- Public query layer reusable for Section 6 metadata/JSON-LD without new fetch patterns.
+
+## VERIFIED STATE
+- Gate 4: `npm run build` exit 0; public SSG routes; footer disclaimer; no placeholder copy greps.
+- Gate 5: build exit 0; `SERVICE_ROLE` only in `admin.ts`; `import "server-only"` first line; test question create via `/admin` → `audit_log.actor_id` non-null; test row deleted (insert + delete both audited with actor).
+- RLS: anon cannot read draft clusters; published readable.
+
+## OPEN ITEMS CARRIED FORWARD
+- **§5.3 Supabase revalidate webhook [R]** — do at §7.2 after deploy (`SETUP.md` §6; Doc 2 §7.2 + Block C reminders).
+- Next.js 15 vs 16 doc mismatch — Ray to pin docs or package later.
+- Optional: remove empty `ADMIN_EMAIL` from shell/Cursor env so plain `npm run dev` works.

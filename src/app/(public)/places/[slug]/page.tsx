@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { VerifiedBadge } from "@/components/content/VerifiedBadge";
+import { JsonLd } from "@/components/seo/JsonLd";
 import {
   getPublishedPlaceBySlug,
   listPublishedPlaceSlugs,
   type Place,
 } from "@/lib/queries/places";
+import { breadcrumbJsonLd, placeJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -62,10 +65,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const place = await getPublishedPlaceBySlug(slug);
   if (!place) return { title: "Place" };
-  return {
+  return buildPageMetadata({
     title: place.meta_title ?? place.name,
-    description: place.meta_description ?? place.summary ?? undefined,
-  };
+    description: place.meta_description ?? place.summary,
+    path: `/places/${place.slug}`,
+  });
 }
 
 export default async function PlaceDetailPage({ params }: Props) {
@@ -75,6 +79,16 @@ export default async function PlaceDetailPage({ params }: Props) {
 
   return (
     <article>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Living", path: "/living" },
+            { name: place.name, path: `/places/${place.slug}` },
+          ]),
+          placeJsonLd(place),
+        ]}
+      />
       <header className="border-b border-neutral-200 pb-8">
         <h1 className="font-serif text-3xl tracking-tight text-neutral-900">
           {place.name}

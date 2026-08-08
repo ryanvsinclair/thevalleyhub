@@ -4,14 +4,20 @@ import { notFound } from "next/navigation";
 
 import { MarkdownBody } from "@/components/content/MarkdownBody";
 import { VerifiedBadge } from "@/components/content/VerifiedBadge";
+import { JsonLd } from "@/components/seo/JsonLd";
 import {
   getPublishedQuestionBySlug,
   listPublishedQuestionSlugs,
 } from "@/lib/queries/questions";
+import { breadcrumbJsonLd, faqPageJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+const GENERATED_ANSWER =
+  "This answer is computed from published place hours (Dubai time), not a fixed write-up. See What's open now on the home page for the live list derived from those hours.";
 
 export async function generateStaticParams() {
   const slugs = await listPublishedQuestionSlugs();
@@ -22,10 +28,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const question = await getPublishedQuestionBySlug(slug);
   if (!question) return { title: "Question" };
-  return {
+  return buildPageMetadata({
     title: question.meta_title ?? question.question,
-    description: question.meta_description ?? question.answer_short ?? undefined,
-  };
+    description: question.meta_description ?? question.answer_short,
+    path: `/questions/${question.slug}`,
+  });
 }
 
 export default async function QuestionDetailPage({ params }: Props) {
@@ -33,8 +40,23 @@ export default async function QuestionDetailPage({ params }: Props) {
   const question = await getPublishedQuestionBySlug(slug);
   if (!question) notFound();
 
+  const faqAnswer = question.is_generated
+    ? GENERATED_ANSWER
+    : (question.answer_short ??
+      "No short answer is published for this question.");
+
   return (
     <article>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Questions", path: "/questions" },
+            { name: question.question, path: `/questions/${question.slug}` },
+          ]),
+          faqPageJsonLd(question.question, faqAnswer),
+        ]}
+      />
       <header className="border-b border-neutral-200 pb-8">
         <p className="text-xs tracking-wide text-neutral-500 uppercase">
           {question.topic}

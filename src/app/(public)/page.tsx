@@ -1,9 +1,25 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 
 import { WhatsOpenNow } from "@/components/content/WhatsOpenNow";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { listPublishedClusters } from "@/lib/queries/clusters";
 import { listInCommunityPlaces } from "@/lib/queries/places";
 import { listDeliveredClusterStatus } from "@/lib/queries/status";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
+
+const homeMeta = buildPageMetadata({
+  title: "Valley",
+  description:
+    "Independent answers for The Valley, Dubai — what is built, what is specified, and what nobody else will say plainly.",
+  path: "/",
+});
+
+export const metadata: Metadata = {
+  ...homeMeta,
+  title: { absolute: "Valley" },
+};
 
 export default async function HomePage() {
   const [clusters, delivered, inCommunity] = await Promise.all([
@@ -14,6 +30,7 @@ export default async function HomePage() {
 
   return (
     <div>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Home", path: "/" }])} />
       <section className="min-h-[70vh] border-b border-neutral-200 pb-16">
         <p className="font-serif text-5xl tracking-tight text-neutral-900 sm:text-6xl md:text-7xl">
           Valley

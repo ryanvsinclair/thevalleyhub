@@ -4,11 +4,14 @@ import { notFound } from "next/navigation";
 import { ConfidenceGate } from "@/components/content/ConfidenceGate";
 import { MarkdownBody } from "@/components/content/MarkdownBody";
 import { VerifiedBadge } from "@/components/content/VerifiedBadge";
+import { JsonLd } from "@/components/seo/JsonLd";
 import {
   getPublishedClusterBySlug,
   listPublishedClusterSlugs,
   listUnitTypesForCluster,
 } from "@/lib/queries/clusters";
+import { breadcrumbJsonLd, residenceJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -23,10 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const cluster = await getPublishedClusterBySlug(slug);
   if (!cluster) return { title: "Cluster" };
-  return {
+  return buildPageMetadata({
     title: cluster.meta_title ?? cluster.name,
-    description: cluster.meta_description ?? cluster.summary ?? undefined,
-  };
+    description: cluster.meta_description ?? cluster.summary,
+    path: `/clusters/${cluster.slug}`,
+  });
 }
 
 function formatAed(value: number) {
@@ -55,6 +59,16 @@ export default async function ClusterDetailPage({ params }: Props) {
 
   return (
     <article>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Clusters", path: "/clusters" },
+            { name: cluster.name, path: `/clusters/${cluster.slug}` },
+          ]),
+          residenceJsonLd(cluster),
+        ]}
+      />
       <header className="border-b border-neutral-200 pb-8">
         <h1 className="font-serif text-3xl tracking-tight text-neutral-900">
           {cluster.name}

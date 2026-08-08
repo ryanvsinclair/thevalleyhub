@@ -59,7 +59,19 @@ Or create an empty private repo on GitHub and `git remote add origin <url> && gi
 2. Set env vars from `.env.example` for Preview + Production.
 3. Deploy; attach your domain.
 
-## 6. Google Search Console
+## 6. Supabase → revalidate webhook **[R]** (Doc 2 §5.3)
+
+After deploy, point a Database Webhook (or Edge Function) at:
+
+`POST https://<your-domain>/api/revalidate`
+
+Header: `x-revalidate-secret: <REVALIDATE_SECRET>`
+
+JSON body: `{ "path": "/clusters" }` or `{ "paths": ["/clusters", "/questions"] }`
+
+Admin Server Actions already call `revalidatePath` on save; the webhook covers external/DB-side changes.
+
+## 7. Google Search Console
 
 Set up **at launch**, not before.
 

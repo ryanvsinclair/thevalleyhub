@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { MarkdownBody } from "@/components/content/MarkdownBody";
+import { JsonLd } from "@/components/seo/JsonLd";
 import {
   getPublishedPostBySlug,
   listPublishedPostSlugs,
 } from "@/lib/queries/posts";
+import { articleJsonLd, breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -20,10 +23,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPublishedPostBySlug(slug);
   if (!post) return { title: "Blog" };
-  return {
+  return buildPageMetadata({
     title: post.meta_title ?? post.title,
-    description: post.meta_description ?? post.excerpt ?? undefined,
-  };
+    description: post.meta_description ?? post.excerpt,
+    path: `/blog/${post.slug}`,
+    type: "article",
+  });
 }
 
 export default async function BlogPostPage({ params }: Props) {
@@ -33,6 +38,16 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <article>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blog" },
+            { name: post.title, path: `/blog/${post.slug}` },
+          ]),
+          articleJsonLd(post),
+        ]}
+      />
       <header className="border-b border-neutral-200 pb-8">
         <h1 className="font-serif text-3xl tracking-tight text-neutral-900">
           {post.title}

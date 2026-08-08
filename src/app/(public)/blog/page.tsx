@@ -1,17 +1,29 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/seo/JsonLd";
 import { listPublishedPosts } from "@/lib/queries/posts";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Blog",
-};
+  description:
+    "Notes and updates about The Valley when there is something worth publishing.",
+  path: "/blog",
+});
 
 export default async function BlogIndexPage() {
   const posts = await listPublishedPosts();
 
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Blog", path: "/blog" },
+        ])}
+      />
       <h1 className="font-serif text-3xl tracking-tight text-neutral-900">
         Blog
       </h1>

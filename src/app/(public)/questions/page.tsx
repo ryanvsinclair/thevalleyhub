@@ -1,11 +1,17 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/seo/JsonLd";
 import { listPublishedQuestions } from "@/lib/queries/questions";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Questions",
-};
+  description:
+    "Straight answers for people looking at The Valley and people who live here.",
+  path: "/questions",
+});
 
 type Props = {
   searchParams: Promise<{ audience?: string }>;
@@ -25,6 +31,12 @@ export default async function QuestionsPage({ searchParams }: Props) {
 
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Questions", path: "/questions" },
+        ])}
+      />
       <h1 className="font-serif text-3xl tracking-tight text-neutral-900">
         Questions
       </h1>

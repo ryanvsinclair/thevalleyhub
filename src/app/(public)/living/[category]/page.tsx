@@ -3,12 +3,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { VerifiedBadge } from "@/components/content/VerifiedBadge";
+import { JsonLd } from "@/components/seo/JsonLd";
 import {
   isLivingCategory,
   LIVING_CATEGORIES,
   listPlacesByLivingCategory,
   type LivingCategory,
 } from "@/lib/queries/places";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 type Props = {
   params: Promise<{ category: string }>;
@@ -22,6 +25,15 @@ const CATEGORY_LABELS: Record<LivingCategory, string> = {
   "getting-around": "Getting around",
 };
 
+const CATEGORY_DESCRIPTIONS: Record<LivingCategory, string> = {
+  schools: "Schools and nurseries serving The Valley.",
+  healthcare: "Hospitals, clinics, pharmacies, dental, optical, and vet care.",
+  groceries: "Grocery options in and near the community.",
+  services: "Salon, spa, gym, and mosque.",
+  "getting-around":
+    "Fuel and malls with published drive context where verified.",
+};
+
 export function generateStaticParams() {
   return LIVING_CATEGORIES.map((category) => ({ category }));
 }
@@ -29,7 +41,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
   if (!isLivingCategory(category)) return { title: "Living" };
-  return { title: CATEGORY_LABELS[category] };
+  return buildPageMetadata({
+    title: CATEGORY_LABELS[category],
+    description: CATEGORY_DESCRIPTIONS[category],
+    path: `/living/${category}`,
+  });
 }
 
 export default async function LivingCategoryPage({ params }: Props) {
@@ -37,18 +53,26 @@ export default async function LivingCategoryPage({ params }: Props) {
   if (!isLivingCategory(category)) notFound();
 
   const places = await listPlacesByLivingCategory(category);
+  const label = CATEGORY_LABELS[category];
 
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Living", path: "/living" },
+          { name: label, path: `/living/${category}` },
+        ])}
+      />
       <p className="text-sm text-neutral-500">
         <Link href="/living" className="hover:text-neutral-800">
           Living
         </Link>
         <span className="mx-2">/</span>
-        <span>{CATEGORY_LABELS[category]}</span>
+        <span>{label}</span>
       </p>
       <h1 className="mt-2 font-serif text-3xl tracking-tight text-neutral-900">
-        {CATEGORY_LABELS[category]}
+        {label}
       </h1>
 
       {places.length === 0 ? (

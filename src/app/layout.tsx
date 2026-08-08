@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Source_Sans_3 } from "next/font/google";
+
+import { getSiteUrl } from "@/lib/seo/site";
+
 import "./globals.css";
 
 const sourceSans = Source_Sans_3({
@@ -12,13 +15,32 @@ const fraunces = Fraunces({
   subsets: ["latin"],
 });
 
+const siteUrl = getSiteUrl();
+const defaultDescription =
+  "Independent community resource for The Valley, Dubai. Not affiliated with Emaar Properties.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Valley",
     template: "%s · Valley",
   },
-  description:
-    "Independent community resource for The Valley, Dubai. Not affiliated with Emaar Properties.",
+  description: defaultDescription,
+  alternates: {
+    canonical: siteUrl,
+  },
+  openGraph: {
+    title: "Valley",
+    description: defaultDescription,
+    url: siteUrl,
+    siteName: "Valley",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Valley",
+    description: defaultDescription,
+  },
 };
 
 export default function RootLayout({

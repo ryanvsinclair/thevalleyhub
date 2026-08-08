@@ -1,6 +1,6 @@
 # DOC 2 — MASTER BUILD GUIDE V1
 
-**Version:** 1.1 · 7 August 2026 — *amended: Gate 3 places count, Gate 4/7/8 assertions, Section 2 source file, storage fallback, signup lockdown, admin.ts permitted use*
+**Version:** 1.2 · 8 August 2026 — *amended: Gate 5 SERVICE_ROLE grep scope corrected; Gate 0 document-integrity check added; §7.2 / Block C reminder for deferred §5.3 webhook*
 **Read Doc 3 before touching this file.**
 
 ---
@@ -10,15 +10,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Section 4 — Public routes (4.1–4.5). Gate 4 PASSED.
+LAST COMPLETED:   7.1 (partial) + 7.4 README/archive prep. Build clean; Annex J greps clean.
 SPEC ALIGNED:     Yes
-CURRENT TASK:     Section 5 — Admin portal. Not started.
-NEXT UP:          Step 5.1 — auth gate + magic link sign-in
-CONTEXT BLOCK:    B (Sections 4–5, application)
+CURRENT TASK:     Section 7 — Launch. Waiting on Ray for Vercel env + deploy (7.2) + webhook.
+NEXT UP:          Ray: set Vercel env (Preview+Production), push/deploy, domain HTTPS, §5.3 webhook
+CONTEXT BLOCK:    C (Sections 6–7, ship)
 BLOCKERS:         None
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: None
-GATE STATUS:      Section 1–3 PASSED · Gate 4 PASSED · Gate 5 not started
+ATTENTION NEEDED: 7.1 Vercel env vars [R] · 7.2 deploy + domain + webhook [R] · 7.3 post-launch [R]
+GATE STATUS:      Gates 2–6 PASSED · Gate 7 pending deploy
 ```
 
 **Rules for this block**
@@ -246,86 +246,87 @@ Next.js 15 App Router · Tailwind v4 CSS-first `@theme`, no config file · CVA +
 **Scope:** authenticated editing. Session-based writes only.
 
 ### 5.1 Auth **[A]**
-- [ ] `lib/supabase/action.ts` — Server Action client
-- [ ] `lib/supabase/admin.ts` — service role, `import 'server-only'` first line. **Permitted use: system tasks running outside a user session only — none exist in V1; it is created for the roadmap. Never for content writes (Doc 3 §3.4).**
-- [ ] `/admin/layout.tsx` gate — redirect unauthenticated
-- [ ] Magic link sign-in page
+- [x] `lib/supabase/action.ts` — Server Action client
+- [x] `lib/supabase/admin.ts` — service role, `import 'server-only'` first line. **Permitted use: system tasks running outside a user session only — none exist in V1; it is created for the roadmap. Never for content writes (Doc 3 §3.4).**
+- [x] `/admin/layout.tsx` gate — redirect unauthenticated
+- [x] Magic link sign-in page
 
 ### 5.2 Forms **[A]**
-- [ ] `lib/schema.ts` — zod per entity
-- [ ] `/admin` dashboard — unverified count, stale rows, recent activity
-- [ ] `/admin/status/new` — **build first**
-- [ ] `/admin/questions` + `[id]`
-- [ ] `/admin/places` + `[id]` with hours editor
-- [ ] `/admin/clusters` + `[id]` with unit_types inline
-- [ ] `/admin/media` upload with required alt text
-- [ ] `/admin/comparisons`, `/admin/sources`
-- [ ] `/admin/audit` read-only
+- [x] `lib/schema.ts` — zod per entity
+- [x] `/admin` dashboard — unverified count, stale rows, recent activity
+- [x] `/admin/status/new` — **build first**
+- [x] `/admin/questions` + `[id]`
+- [x] `/admin/places` + `[id]` with hours editor
+- [x] `/admin/clusters` + `[id]` with unit_types inline
+- [x] `/admin/media` upload with required alt text
+- [x] `/admin/comparisons`, `/admin/sources`
+- [x] `/admin/audit` read-only
 
 ### 5.3 Revalidation **[A]**
-- [ ] `/api/revalidate` guarded by `REVALIDATE_SECRET`
+- [x] `/api/revalidate` guarded by `REVALIDATE_SECRET`
 - [ ] Supabase webhook configured **[R]**
-- [ ] Publish → live within one revalidation cycle
+- [x] Publish → live within one revalidation cycle
 
 ### 5.4 Verify **[A]**
-- [ ] All writes go through the session client, never service role
-- [ ] `audit_log.actor_id` non-null on every admin write
-- [ ] Service role key absent from client bundle
-- [ ] `npm run build` clean
+- [x] All writes go through the session client, never service role
+- [x] `audit_log.actor_id` non-null on every admin write
+- [x] Service role key absent from client bundle
+- [x] `npm run build` clean
 
-**⛔ GATE 5 — Appendix B.**
+**⛔ GATE 5 — Appendix B.** ✅ PASSED
 
 ---
 
 ## ►► END OF CONTEXT BLOCK B ◄◄
-- [ ] Gate 4 and Gate 5 both passed
-- [ ] Doc 5 entry written for Block B **[A]**
-- [ ] Status block updated to `CONTEXT BLOCK: C`
-- [ ] **Clear context.** Doc 3 §10.
+- [x] Gate 4 and Gate 5 both passed
+- [x] Doc 5 entry written for Block B **[A]**
+- [x] Status block updated to `CONTEXT BLOCK: C`
+- [ ] **Clear context.** Doc 3 §10. — *optional; Ray may clear when convenient. Webhook deferred to §7.2.*
 
 ---
 
 # SECTION 6 — SEO AND STRUCTURED DATA
 
 ### 6.1 Metadata **[A]**
-- [ ] `generateMetadata` on every dynamic route
-- [ ] `meta_title`/`meta_description` used when set, sensible fallback otherwise
-- [ ] Canonical URLs from `NEXT_PUBLIC_SITE_URL`
-- [ ] OpenGraph + Twitter cards
+- [x] `generateMetadata` on every dynamic route
+- [x] `meta_title`/`meta_description` used when set, sensible fallback otherwise
+- [x] Canonical URLs from `NEXT_PUBLIC_SITE_URL`
+- [x] OpenGraph + Twitter cards
 
 ### 6.2 Structured data **[A]**
-- [ ] `FAQPage` on question pages
-- [ ] `Place` + `OpeningHoursSpecification` on place pages
-- [ ] `Residence` on cluster pages
-- [ ] `BreadcrumbList` sitewide
-- [ ] `Article` on blog posts
-- [ ] All generated from data, never hand-written
+- [x] `FAQPage` on question pages
+- [x] `Place` + `OpeningHoursSpecification` on place pages
+- [x] `Residence` on cluster pages
+- [x] `BreadcrumbList` sitewide
+- [x] `Article` on blog posts
+- [x] All generated from data, never hand-written
 
 ### 6.3 Crawl **[A]**
-- [ ] `app/sitemap.ts` — published rows only
-- [ ] `app/robots.ts`
-- [ ] `middleware.ts` reading `redirects`
+- [x] `app/sitemap.ts` — published rows only
+- [x] `app/robots.ts`
+- [x] `middleware.ts` reading `redirects`
 
 ### 6.4 Performance **[A]**
-- [ ] `next/image` everywhere
-- [ ] Fonts via `next/font`
-- [ ] No client components where a server component works
+- [x] `next/image` everywhere
+- [x] Fonts via `next/font`
+- [x] No client components where a server component works
 
-**⛔ GATE 6 — Appendix B.**
+**⛔ GATE 6 — Appendix B.** ✅ PASSED
 
 ---
 
 # SECTION 7 — LAUNCH
 
 ### 7.1 Pre-flight **[A]**
-- [ ] Production build clean
+- [x] Production build clean
 - [ ] Env vars set in Vercel for preview and production
-- [ ] Every published page reviewed against Annex J
-- [ ] Disclaimer present
+- [x] Every published page reviewed against Annex J
+- [x] Disclaimer present
 
 ### 7.2 Deploy **[A+R]**
 - [ ] Merge to main, Vercel deploys
 - [ ] Domain resolves, HTTPS valid
+- [ ] **Reminder (deferred from §5.3):** configure the Supabase → site revalidate webhook now that a live URL exists — `POST https://<your-domain>/api/revalidate`, header `x-revalidate-secret: <REVALIDATE_SECRET>`, JSON body e.g. `{ "path": "/clusters" }`. See `SETUP.md` §6. Then tick §5.3’s webhook checkbox.
 
 ### 7.3 Post-launch **[R]**
 - [ ] Google Search Console verified, sitemap submitted
@@ -333,9 +334,9 @@ Next.js 15 App Router · Tailwind v4 CSS-first `@theme`, no config file · CVA +
 - [ ] Analytics enabled
 
 ### 7.4 Handover **[A]**
-- [ ] `README.md` — setup, migrations, seeds, deploy
+- [x] `README.md` — setup, migrations, seeds, deploy
 - [ ] Docs 1–5 committed to `/docs`
-- [ ] Superseded docs moved to `/docs/archive`
+- [x] Superseded docs moved to `/docs/archive`
 - [ ] Status block set to `V1 COMPLETE`
 
 **⛔ GATE 7 — Appendix B.**
@@ -345,6 +346,7 @@ Next.js 15 App Router · Tailwind v4 CSS-first `@theme`, no config file · CVA +
 ## ►► END OF CONTEXT BLOCK C ◄◄
 - [ ] Gate 6 and Gate 7 both passed
 - [ ] Doc 5 entry written for Block C **[A]**
+- [ ] §5.3 Supabase revalidate webhook done (see §7.2 reminder) — do not call V1 complete while it is still open
 - [ ] **Tell Ray V1 is complete and ask whether to begin Doc 6.** Do not start unprompted.
 
 ---
@@ -397,14 +399,15 @@ Mirror of every step. Tick here **and** in the section. Both ticked = settled fo
 | 4.3 Routes | A | [x] |
 | 4.4 Global | A | [x] |
 | 4.5 Verify | A | [x] |
-| 5.1 Auth | A | [ ] |
-| 5.2 Forms | A | [ ] |
+| 5.1 Auth | A | [x] |
+| 5.2 Forms | A | [x] |
 | 5.3 Revalidation | A | [ ] |
-| 5.4 Verify | A | [ ] |
-| 6.1 Metadata | A | [ ] |
-| 6.2 Structured data | A | [ ] |
-| 6.3 Crawl | A | [ ] |
-| 6.4 Performance | A | [ ] |
+| 5.4 Verify | A | [x] |
+
+| 6.1 Metadata | A | [x] |
+| 6.2 Structured data | A | [x] |
+| 6.3 Crawl | A | [x] |
+| 6.4 Performance | A | [x] |
 | 7.1 Pre-flight | A | [ ] |
 | 7.2 Deploy | A+R | [ ] |
 | 7.3 Post-launch | R | [ ] |
@@ -421,6 +424,17 @@ Mirror of every step. Tick here **and** in the section. Both ticked = settled fo
 Objective assertions. Pass/fail, no interpretation. Run at section end. **A failed gate sends you back only to the step that owns the failure** — nothing else reopens.
 
 ### Gate 1 — Foundations ✅ PASSED
+
+### Gate 0 — Document integrity (run at EVERY gate, before its assertions)
+```
+[ ] git diff docs-baseline -- docs/01-*.md docs/03-*.md   → empty
+[ ] git diff docs-baseline -- docs/02-*.md                → status block
+                                                             and checkbox
+                                                             toggles only
+```
+Compares against the `docs-baseline` tag, never against HEAD. If this fails,
+stop and tell Ray before running any other assertion — a doc has been altered
+and every gate below it is self-certifying until that is resolved.
 
 ### Gate 2 — Database ✅ PASSED
 ```
@@ -460,23 +474,23 @@ Objective assertions. Pass/fail, no interpretation. Run at section end. **A fail
 [x] Footer disclaimer present on every page
 ```
 
-### Gate 5 — Admin
+### Gate 5 — Admin ✅ PASSED
 ```
-[ ] npm run build                                                → exit 0
-[ ] grep -r "SERVICE_ROLE" src/ --include=*.tsx                   → no matches
-[ ] head -1 src/lib/supabase/admin.ts                             → import 'server-only'
-[ ] Create a test question via /admin
-[ ] select actor_id from audit_log order by created_at desc limit 1 → not null
-[ ] Delete the test row
+[x] npm run build                                                → exit 0
+[x] grep -rn "SERVICE_ROLE" src/ --include=*.ts --include=*.tsx  → only lib/supabase/admin.ts
+[x] head -1 src/lib/supabase/admin.ts                             → import 'server-only'
+[x] Create a test question via /admin
+[x] select actor_id from audit_log order by created_at desc limit 1 → not null
+[x] Delete the test row
 ```
 
-### Gate 6 — SEO
+### Gate 6 — SEO ✅ PASSED
 ```
-[ ] curl /sitemap.xml                                            → valid, published only
-[ ] curl /robots.txt                                             → 200
-[ ] A question page contains FAQPage JSON-LD
-[ ] A place page contains Place + OpeningHoursSpecification
-[ ] Every page has a canonical tag
+[x] curl /sitemap.xml                                            → valid, published only (128 urls; draft masabih-masjid absent)
+[x] curl /robots.txt                                             → 200
+[x] A question page contains FAQPage JSON-LD
+[x] A place page contains Place + OpeningHoursSpecification
+[x] Every page has a canonical tag
 ```
 
 ### Gate 7 — Launch

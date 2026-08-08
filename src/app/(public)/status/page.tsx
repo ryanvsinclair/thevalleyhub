@@ -2,12 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { StatusPill } from "@/components/content/StatusPill";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { listPublishedClusters } from "@/lib/queries/clusters";
 import { listDeliveredClusterStatus } from "@/lib/queries/status";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Status",
-};
+  description:
+    "Cluster delivery confirmed in the status log. Masterplan amenity operational status is unknown until confirmed.",
+  path: "/status",
+});
 
 export default async function StatusPage() {
   const [clusters, delivered] = await Promise.all([
@@ -31,6 +37,12 @@ export default async function StatusPage() {
 
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Status", path: "/status" },
+        ])}
+      />
       <h1 className="font-serif text-3xl tracking-tight text-neutral-900">
         Status
       </h1>

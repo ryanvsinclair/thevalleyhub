@@ -106,4 +106,43 @@ Low. PostGIS is available on Supabase. The column is additive and unused by V1 �
 
 # LIVE PROPOSALS
 
-*None. First real entry is #01.*
+## #01 — Cookie-less `createAnonClient` for public reads / SSG
+
+**Status:** APPROVED
+**Raised:** 2026-08-07
+**Category:** B — Better execution
+**Affects step:** 4.1
+**Blocking:** Yes
+
+### What Doc 2 currently specifies
+Step 4.1: `lib/supabase/server.ts` — RSC client, anon key. Public data access via `lib/queries/` typed from `database.ts`. Doc 2 does not distinguish a cookie-aware vs cookie-less server client; the natural reading is one RSC `createClient()` that uses `cookies()` for all server reads, including those called from `generateStaticParams`.
+
+### What I propose instead
+Keep two exports in `lib/supabase/server.ts`:
+
+1. **`createClient()`** — cookie-aware `@supabase/ssr` client (anon key). For request-scoped RSC work that needs session context (auth gates, admin UI). Must not be called from `generateStaticParams`.
+2. **`createAnonClient()`** — cookie-less `@supabase/supabase-js` client (anon key only). For all public `lib/queries/*` reads, including paths used by `generateStaticParams` / static generation.
+
+All six public query modules (`clusters`, `places`, `questions`, `communities`, `status`, `posts`) use `createAnonClient()` only. Session writes and Section 5 admin paths continue to use `createActionClient()` / cookie `createClient()` per Doc 3 §3.4 — never this helper.
+
+### Why
+`generateStaticParams` runs at build time with no request context. Calling `cookies()` there fails the Next.js build. A cookie-less anon client is the correct shape for public SSG reads: same anon key, same RLS as an unauthenticated visitor, no session cookies required. Reverting to a single cookie-based client would re-break the production build on every static path that lists slugs.
+
+### Vision test
+Doc 3 §1 / operating rules: ship a correct, buildable public site without inventing content or weakening trust. This is execution hygiene — same public data, same RLS — so SSG and public pages work without fighting the framework.
+
+### Cost if approved
+Already implemented (small addition to `server.ts` + query imports). No new dependencies. Ongoing cost is remembering the client rule (documented in Doc 5 Block B conventions).
+
+### Cost if rejected
+Either (a) the build stays broken on `generateStaticParams` paths, or (b) every static-params / public-query call site needs an ad-hoc workaround (dynamic-only routes, duplicated clients, or suppressing cookies incorrectly). Later agents would re-discover the failure and likely re-apply the same fix without a proposal trail.
+
+### Risk
+**Misuse of the cookie-less client where auth context is required.** `createAnonClient()` has no cookies and no `auth.uid()` — it always acts as the anonymous role. If it were used in an admin route, Server Action, or authenticated `/api` handler, RLS would evaluate as anon: drafts stay hidden (good for leakage), but `can_edit()` / authenticated writes would fail or silently no-op, and any logic that assumes “current user” would be wrong. Mitigations: never import `createAnonClient` outside `lib/queries/` public reads; Section 5 writes use the session client only; service role stays in `admin.ts` and is not this client.
+
+---
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-08
+**Notes:** Keep `createAnonClient` for public reads / SSG. Cookie-less anon client is the correct shape; reversing would re-break the build. Carry out as proposed.
+
+---

@@ -1,12 +1,25 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
+
+export const metadata: Metadata = buildPageMetadata({
   title: "About",
-};
+  description:
+    "Valley is an independent community resource for The Valley, Dubai. Not affiliated with Emaar Properties.",
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (
     <article className="max-w-2xl">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+        ])}
+      />
       <h1 className="font-serif text-3xl tracking-tight text-neutral-900">
         About
       </h1>

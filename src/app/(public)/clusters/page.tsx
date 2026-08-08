@@ -2,11 +2,17 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { ConfidenceGate } from "@/components/content/ConfidenceGate";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { listPublishedClusters } from "@/lib/queries/clusters";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Clusters",
-};
+  description:
+    "Published collections at The Valley. Specs only when confidence allows.",
+  path: "/clusters",
+});
 
 const PRODUCT_TYPES = ["townhouse", "twin_villa", "villa"] as const;
 
@@ -37,6 +43,12 @@ export default async function ClustersPage({ searchParams }: Props) {
 
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Clusters", path: "/clusters" },
+        ])}
+      />
       <h1 className="font-serif text-3xl tracking-tight text-neutral-900">
         Clusters
       </h1>

@@ -1,17 +1,29 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/seo/JsonLd";
 import { listPublishedCommunities } from "@/lib/queries/communities";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Compare",
-};
+  description:
+    "How The Valley stacks up against nearby communities — by dimension, with an honest read.",
+  path: "/compare",
+});
 
 export default async function CompareIndexPage() {
   const communities = await listPublishedCommunities();
 
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Compare", path: "/compare" },
+        ])}
+      />
       <h1 className="font-serif text-3xl tracking-tight text-neutral-900">
         Compare
       </h1>

@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# ============================================================
+# Docs guard — The Valley Record
+#
+# Docs 1-3 are Ray's. The agent may change ONLY:
+#   - lines inside the STATUS BLOCK fence in Doc 2
+#   - checkbox toggles: "- [ ] x"  <->  "- [x] x"  (text identical)
+#   - Appendix A table checkbox cells: | [ ] |  <->  | [x] |
+#
+# Everything else in docs/01-*.md, docs/02-*.md, docs/03-*.md
+# is rejected. Docs 4, 5, 6 are the agent's to write and are
+# not guarded.
+#
+# Bypass with --no-verify is a process violation, not an option.
+# ============================================================
+
+set -uo pipefail
+
+GUARDED_RE='^docs/0[123]-.*\.md$'
+FAIL=0
+
+staged=$(git diff --cached --name-only --diff-filter=ACMR | grep -E "$GUARDED_RE" || true)
+[ -z "$staged" ] && exit 0
+
+for f in $staged; do
+  # New or deleted guarded doc = always a violation.
+  if ! git cat-file -e "HEAD:$f" 2>/dev/null; then
+    echo "BLOCKED: $f is a new guarded document. Ray adds these."
+    FAIL=1
+    continue
+  fi
+
+  # Walk the unified diff, ignoring hunk headers and context.
+  while IFS= read -r line; do
+    case "$line" in
+      ---*|+++*) continue ;;
+      @@*) continue ;;
+    esac
+
+    prefix=${line:0:1}
+    [ "$prefix" != "+" ] && [ "$prefix" != "-" ] && continue
+    body=${line:1}
+
+    # Strip a leading checkbox marker so a toggle looks identical
+    # on both sides of the diff.
+    norm=$(printf '%s' "$body" \
+      | sed -E 's/^([[:space:]]*[-*][[:space:]]*)\[[ xX]\]/\1[]/' \
+      | sed -E 's/\|[[:space:]]*\[[ xX]\][[:space:]]*\|/|[]|/g')
+
+    printf '%s\n' "$norm" >> "/tmp/docsguard.$$.${prefix}"
+  done < <(git diff --cached -U0 -- "$f")
+
+  added="/tmp/docsguard.$$.+"
+  removed="/tmp/docsguard.$$.-"
+  touch "$added" "$removed"
+
+  # After normalising checkboxes, a legal change leaves added and
+  # removed line sets identical. Anything left over is real prose.
+  leftover=$(diff <(sort "$removed") <(sort "$added") || true)
+
+  if [ -n "$leftover" ]; then
+    # Status block lines in Doc 2 are permitted — allow them through.
+    if [ "$(basename "$f")" = "02-master-build-guide.md" ]; then
+      offending=$(printf '%s\n' "$leftover" \
+        | grep -E '^[<>]' \
+        | grep -vE '^[<>] (LAST COMPLETED|SPEC ALIGNED|CURRENT TASK|NEXT UP|CONTEXT BLOCK|BLOCKERS|OPEN QUESTIONS|ATTENTION NEEDED|GATE STATUS):' \
+        || true)
+    else
+      offending="$leftover"
+    fi
+
+    if [ -n "$offending" ]; then
+      echo ""
+      echo "BLOCKED: $f — prose outside the allowlist changed."
+      echo "  Permitted: status block fields (Doc 2), checkbox toggles."
+      echo "  Everything else in Docs 1-3 is Ray's. Raise a proposal."
+      echo "$offending" | head -40
+      FAIL=1
+    fi
+  fi
+
+  rm -f "$added" "$removed"
+done
+
+if [ "$FAIL" -ne 0 ]; then
+  echo ""
+  echo "Commit rejected. Do not use --no-verify."
+  echo "If a document is wrong: Doc 3 §4 proposal, or ask Ray to edit."
+  exit 1
+fi
+
+exit 0

@@ -1,11 +1,17 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/seo/JsonLd";
 import { LIVING_CATEGORIES, type LivingCategory } from "@/lib/queries/places";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Living",
-};
+  description:
+    "Places around daily life at The Valley — schools, care, food, services, and getting around.",
+  path: "/living",
+});
 
 const CATEGORY_LABELS: Record<LivingCategory, string> = {
   schools: "Schools",
@@ -26,6 +32,12 @@ const CATEGORY_BLURBS: Record<LivingCategory, string> = {
 export default function LivingIndexPage() {
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Living", path: "/living" },
+        ])}
+      />
       <h1 className="font-serif text-3xl tracking-tight text-neutral-900">
         Living
       </h1>

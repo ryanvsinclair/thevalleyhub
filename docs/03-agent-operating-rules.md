@@ -1,6 +1,6 @@
 # DOC 3 — AGENT OPERATING RULES
 
-**Version:** 1.1 · 7 August 2026 — *amended: §5 example figures corrected, storage-schema row added to §7*
+**Version:** 1.2 · 7 August 2026 — *amended: §4 build-pressure trigger and independent-work definition; §9 extended to document edits; document ownership stated*
 **Read this file at the start of every session, before Doc 2's status block.**
 
 ---
@@ -87,6 +87,8 @@ Implement only the section marked current in the status block. Do not build ahea
 
 **Trigger:** at any point you conclude a different approach would be better than what Doc 2 specifies, or that something additional should be built.
 
+**The trigger you will miss:** a step that will not build or a gate that will not pass. In that moment finishing feels like progress and stopping feels like failing the step — so the fix gets applied and the pause never happens. It is the reverse. A blocked step correctly raised is a completed obligation. `npm run build` failing on something Doc 2 does not describe is a §4 trigger, not a bug to clear.
+
 Follow exactly. Do not skip to step 5.
 
 ### Step 1 — Stop
@@ -123,6 +125,8 @@ Append to `04-proposals.md` in the documented format. One entry, numbered.
 
 ### Step 6 — Tell Ray, then wait
 State the proposal number, the category, and the reasoning in one short message. **Do not implement.** Do not proceed to dependent work. If independent work remains in the current step, continue with that and note it in the status block.
+
+**"Independent" means it does not sit on top of the pending change.** If the proposed change would be underneath what you would build next — a client, a query layer, a schema object, a shared component — there is no independent work. Wait.
 
 ---
 
@@ -250,6 +254,18 @@ It sometimes is. Two errors were found and corrected during the drafting of thes
 **Do not silently correct.** Raise it as a proposal (§4) or a clarification (§5). A silent fix means the codebase and the spec diverge and neither Ray nor anyone else knows which is authoritative.
 
 Saying "this appears wrong, here is why" is always the correct move. Fixing it quietly never is.
+
+### This runs in both directions
+
+Changing the **document** to match the code is also a silent correction, and a worse one. Correcting code leaves the spec intact as a record of intent; rewriting the spec destroys that record and makes every later gate self-certifying — the work is checked against a description the agent wrote to fit it.
+
+**Docs 1, 2 and 3 are Ray's.** The agent's only permitted writes to them are:
+- Doc 2's status block fields
+- toggling `[ ]` to `[x]` where the surrounding text is otherwise unchanged
+
+Everything else — prose, step descriptions, gate assertions, tables, headings, rules — is Ray's alone, including obvious errors and stale wording. Docs 4, 5 and 6 are the agent's to write under their own rules.
+
+This is enforced by a pre-commit hook. If it rejects a commit, the hook is right. Never use `--no-verify`; never make a document writable to get around it.
 
 ---
 
