@@ -10,14 +10,14 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   External review fact-checked against live DB · Doc 6 §2/§3.6 corrected · Doc 4 #02 raised.
+LAST COMPLETED:   Doc 4 #02 APPROVED and recorded · unguarded-window retro-check closed (F1 only).
 SPEC ALIGNED:     Yes
 CURRENT TASK:     None — product iteration by Ray. Doc 3 §11 in force (update Doc 6 with every code/DB change).
-NEXT UP:          Ray decides Doc 4 #02; then SETUP.md §7 launch checklist when ready
+NEXT UP:          Ray decides #03, then #02 written into Appendix B; SETUP.md §7 launch checklist when ready
 CONTEXT BLOCK:    C complete
 BLOCKERS:         None
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: (1) Doc 4 #02 PENDING — Gate 5 audit_log assertion wording, category B, non-blocking. (2) Docs guard hook NOT installed — scripts/pre-commit is not wired to git; Doc 3 §9 assumes it is. (3) Launch checklist parked in SETUP.md §7 [R] (domain, Auth URL, Search Console, Bing, analytics)
+ATTENTION NEEDED: (1) Doc 4 #03 PENDING — docs guard blocks ALL authors incl. Ray; blocks #02 and any owner doc edit once the hook is installed. (2) #02 APPROVED, not yet written into Appendix B Gate 5 — awaiting #03 or Ray's own edit. (3) Docs guard still NOT installed — run `git config core.hooksPath scripts` (SETUP.md). (4) Launch checklist parked in SETUP.md §7 [R] (domain, Auth URL, Search Console, Bing, analytics)
 GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · LAUNCH CHECKLIST OPEN
 ```
 

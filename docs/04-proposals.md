@@ -149,7 +149,7 @@ Either (a) the build stays broken on `generateStaticParams` paths, or (b) every 
 
 ## #02 — Scope the Gate 5 `audit_log` assertion to the write it is testing
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-08
 **Category:** B — Better execution
 **Affects step:** Appendix B, Gate 5 (mirrors §5.4)
@@ -203,6 +203,64 @@ The line stays un-reproducible and every future reviewer re-raises it as a suspe
 ### Risk
 
 Very low, and it is documentation-only. The one real consideration is that this edits a gate assertion after that gate passed — the thing Doc 3 §9 warns about. Which is why it is here rather than applied: the underlying claim ("admin writes record a non-null actor") is unchanged and independently true, and only the query that tests it is being made durable.
+
+---
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-08
+**Notes:** `record_id` confirmed as a real column on `audit_log`; scoping the query to the row under test is the right fix and does not re-litigate the 7 Aug pass. Carry out as proposed. Retroactive commit-by-commit walk of Docs 1–3 across the unguarded window (`c9647d6`, `3dd5006`, `2ee5ea9`) found F1 as the only prose divergence and no edit-then-revert — that thread is closed.
+
+**Implementation note:** the edit lands in Doc 2 Appendix B, which Doc 3 §9 reserves to Ray and `scripts/pre-commit` rejects for any author. Applied by Ray, or by the agent under an explicit in-conversation instruction (Doc 3 §2, row 6). See #03.
+
+---
+
+## #03 — Give the docs guard an owner bypass before installing it
+
+**Status:** PENDING
+**Raised:** 2026-08-08
+**Category:** B — Better execution
+**Affects step:** Doc 3 §9 enforcement · `scripts/pre-commit` · SETUP.md "Docs guard"
+**Blocking:** Yes, for #02 — and for any future edit Ray makes to his own documents.
+
+### What Doc 2 currently specifies
+
+Not Doc 2 — Doc 3 §9: *"This is enforced by a pre-commit hook. If it rejects a commit, the hook is right. Never use `--no-verify`; never make a document writable to get around it."* `scripts/pre-commit` implements it.
+
+### What I propose instead
+
+Add an explicit owner bypass at the top of `scripts/pre-commit`, so the guard can be satisfied without disabling every hook in the repo:
+
+```bash
+if [ "${DOCS_GUARD:-}" = "off" ]; then
+  echo "docs guard: bypassed (DOCS_GUARD=off) — owner edit"
+  exit 0
+fi
+```
+
+Ray then edits his documents with `DOCS_GUARD=off git commit -m "..."`. The agent never sets it, and `--no-verify` remains forbidden exactly as §9 says.
+
+### Why
+
+The guard filters on file path only. Reading the script end to end, there is no author, committer or identity check anywhere in it — I grepped for `author`, `committer`, `GIT_AUTHOR`, `whoami` and `USER` and got no matches. It rejects the commit, not the committer.
+
+Right now that costs nothing, because the hook is not installed. The moment `core.hooksPath` is set, **Ray can no longer edit Doc 1, 2 or 3 either.** §9 tells him the hook is right and forbids `--no-verify`, so the documented state of the repo becomes one where the owner cannot change his own specification through any sanctioned route. #02 is the immediate casualty: it is approved, it must be written into Doc 2 Appendix B, and installing the hook first makes that commit impossible for both of us.
+
+This is the same class of problem as F1, inverted. F1 happened because enforcement was absent. This would happen because enforcement is indiscriminate.
+
+### Vision test
+
+Doc 3 §9's purpose is that the spec stays a record of intent rather than something an agent rewrites to fit its work. An owner bypass preserves that purpose exactly — the asymmetry between Ray and the agent *is* the rule — while removing a lockout that serves nobody.
+
+### Cost if approved
+
+Five lines in `scripts/pre-commit`, one line in SETUP.md's "Docs guard" section, and a §9 wording change that is Ray's to make. No dependencies.
+
+### Cost if rejected
+
+Either the hook stays uninstalled and Doc 1–3 stay unprotected, or it gets installed and every owner edit needs `--no-verify`, which normalises the one bypass §9 most wants to keep unavailable to the agent.
+
+### Risk
+
+Honest limitation: an env var is a speed bump, not a wall. An agent that wanted to bypass the guard could set `DOCS_GUARD=off` itself. This does not make the guard tamper-proof and should not be described as if it does — the actual enforcement is the rule in §9 plus review, and the hook is a reminder that catches accidents. What the bypass buys is that the reminder no longer misfires on the one person entitled to edit. If you want it harder to reach, the alternative is checking `git config user.email` against a known owner address, which is stronger in practice but still trivially forgeable and adds a config dependency for a fresh clone.
 
 ---
 **RAY'S DECISION:**
