@@ -202,3 +202,50 @@ State what it is, which roadmap feature it serves, and how to use it.
 - **§5.3 Supabase revalidate webhook [R]** — do at §7.2 after deploy (`SETUP.md` §6; Doc 2 §7.2 + Block C reminders).
 - Next.js 15 vs 16 doc mismatch — Ray to pin docs or package later.
 - Optional: remove empty `ADMIN_EMAIL` from shell/Cursor env so plain `npm run dev` works.
+
+---
+
+# BLOCK C — Sections 6–7
+**Completed:** 2026-08-08
+**Gates passed:** Gate 6 ✅ · Gate 7 ✅ (temp production URL; custom domain parked)
+
+## DECISIONS MADE
+- **SEO on App Router metadata + JSON-LD components** — `src/lib/seo/*` + per-route `generateMetadata`; FAQ/Place/Residence/Article/BreadcrumbList. Rejected: stuffing JSON-LD only in layout.
+- **Redirects via `src/middleware.ts` reading `redirects` with `createAnonClient()`** — Edge-safe, RLS anon select. Next 16 deprecates middleware→proxy; kept filename per Doc 2 until Ray amends.
+- **Production deploy on `thevalleyhub.vercel.app`** — GitHub `thevalleyhub` → Vercel. First deploys had `framework: null` / platform NOT_FOUND; fixed by `vercel.json` `"framework":"nextjs"` + git push. Rejected: relying on dashboard redeploy alone (did not create a new build).
+- **§5.3 revalidate via `pg_net` + `notify_site_revalidate()` triggers** — Dashboard Database Webhook payload shape does not match `/api/revalidate` (`path`/`paths`). Triggers on `clusters`, `places`, `questions`, `comparisons`, `posts`, `status_log`. Secret lives in function body (V1); rotate with Vercel env together.
+- **Launch domain + Search Console deferred** — Ray: product work continues; custom domain / GSC / Bing / analytics parked in `SETUP.md` §7 until Ray confirms ready to launch. Status: `V1 COMPLETE — LAUNCH CHECKLIST OPEN`.
+
+## CONVENTIONS ESTABLISHED
+- **Naming map (URL ≠ table):** `/blog` → `posts` (never `blog_posts`); `/compare` → `communities`+`comparisons`; `/living/*` → `places` category groups; `/status` → `status_log` / `current_status`. Documented in `SETUP.md`.
+- **Public SEO:** metadata helpers + `JsonLd` only; sitemap published-only; robots allow public, disallow `/admin`.
+- **Revalidate:** admin actions call `revalidatePath`; DB-side changes hit `POST /api/revalidate` with `x-revalidate-secret`.
+- **Vercel:** keep `vercel.json` framework `nextjs`; Production env must match `.env.local` exactly (no trailing spaces in secrets).
+
+## DEVIATIONS FROM DOC 2
+- Next.js **16.3.0** vs docs saying 15 — unchanged from Block B.
+- Gate 7 custom domain + §7.3 post-launch not done at V1 complete — Ray deferred to `SETUP.md` §7 launch checklist.
+- Doc 2 prose/structure not rewritten for the park (Doc 3 §9); only status + checkbox toggles + SETUP/Doc 5.
+
+## GOTCHAS
+- Vercel `framework: null` → platform `404 NOT_FOUND` on `*.vercel.app` apex even when build READY; `live: false` can linger in API.
+- `REVALIDATE_SECRET` typos (appended `curl`, trailing space, truncated hex) cause 401 while “curl works” with the mangled value — probe with `net.http_post` variants.
+- SSO protection on all `.vercel.app` except custom domains — unique deployment URLs may require Vercel login.
+- Empty shell `ADMIN_EMAIL=` still shadows `.env.local` for local dev.
+
+## EXTENSION POINTS
+- Custom domain cutover: Auth URLs, `NEXT_PUBLIC_SITE_URL`, `notify_site_revalidate` URL, then SETUP §7 SEO tools.
+- Doc 6 (7.5) when Ray instructs — template at `docs/06-system-of-record.md`.
+- Optional admin editor for `posts` (table + public `/blog` exist; 0 rows).
+
+## VERIFIED STATE
+- Gate 6: metadata, JSON-LD, sitemap/robots, redirects middleware; local `/sitemap.xml` + `/robots.txt` 200.
+- Production: `https://thevalleyhub.vercel.app/` 200; `/sitemap.xml` 200; Auth smoke + admin OK per Ray.
+- Webhook: cluster update → `net._http_response` status 200 with clean secret.
+- Naming audit: live DB ↔ `database.ts` ↔ `.from()` — 14 tables + `current_status`; no `blog_posts`.
+
+## OPEN ITEMS CARRIED FORWARD
+- **SETUP.md §7 launch checklist [R]** — custom domain, Auth/`SITE_URL`/trigger URL updates, Search Console, Bing, analytics — only when Ray confirms ready to launch.
+- Doc 6 / Gate 8 — only on Ray's instruction.
+- Next.js 15 vs 16 doc pin — still open.
+- Optional: `posts` admin UI; `docs-baseline` tag for Gate 0.

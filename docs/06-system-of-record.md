@@ -1,153 +1,452 @@
 # DOC 6 — SYSTEM OF RECORD
 
-**Status:** ⛔ NOT YET WRITTEN — template only
-**Written at:** Doc 2 step 7.5, on Ray's instruction, after Gate 7 passes
+**Status:** LIVE — written 2026-08-08 after Gate 7 (temp production URL)  
+**Verified against:** live Supabase project `pyowmcabddaxzsoeoyhx` + repo at that date  
 **Maintained:** permanently, under Doc 3 §11
 
 ---
 
 ## ⚠️ READ THIS FIRST
 
-This document does not describe what was *planned*. It describes what **exists**.
-
-Every claim in it is verified against the live codebase and the live database at the time of writing. Where the migration file and the actual database disagree, the database wins and the discrepancy is recorded.
-
-### The permanent rule
+This document describes what **exists**. Where the migration file and the live database disagree, the database wins.
 
 > **Any change to code or database updates this document in the same working session.**
 
-A stale system-of-record is worse than none. Someone building the map in eight months will read this and trust it. If it describes a column renamed six months ago, they build on a false foundation and the breakage surfaces somewhere unrelated.
-
-If you are changing something and have not updated this file, **the change is not finished.**
-
-### How to write it
-- Audit the live system directly. Do not write from memory or from Doc 2.
-- Trace every "why" to a Doc 5 entry. If no entry explains it, mark it `UNKNOWN — reason not recorded`.
-- **Never guess at reasoning.** `UNKNOWN` is honest and useful. A plausible invented rationale is neither.
-
 ---
-
-# TEMPLATE
 
 ## 1. PURPOSE AND VISION
 
-- What the site is and who it serves
-- The vision, verbatim from Doc 3 §1
-- What V1 deliberately does and does not do
-- The roadmap, and which parts V1 was shaped to accommodate
+**What it is:** Independent community information hub for The Valley (Emaar), Dubai — for residents and prospective residents. Not affiliated with Emaar Properties.
+
+**Vision (Doc 3 §1, verbatim):**
+
+> This site is being built to become the definitive independent information hub for The Valley by Emaar in Dubai — the place both residents and prospective residents go for answers nobody else publishes. Its competitive advantage is not breadth but accuracy: every fact carries a source, a confidence level and a verification date, and the site publishes honest negatives ("there is no school in the community", "you cannot live here without a car") where commercial sites deflect. It does not compete with property portals on listings or with Emaar on brand. It competes on being right, and on knowing things that can only be learned by physically walking the community.
+>
+> Over time it grows from a content site into a community platform: an offline-capable map for navigating between clusters and nearby services, resident forums, a community marketplace, live updates on handovers and amenity openings, an events and activities calendar, property listings within The Valley, and an ongoing blog. Every one of those features attaches to the same data spine — clusters, places, questions, status records — which is why the schema matters more than any individual page. The site should feel like it was built by someone who lives there, because the information in it could only have come from someone who does.
+
+**V1 does:** content pages, questions, cluster/place directories, status tracker, comparisons, blog routes, admin portal, SEO, on-demand revalidation.
+
+**V1 does not:** offline map, forums, marketplace, events, property listings, resident verification, multi-editor accounts, comments, newsletter, payments (Doc 2 Appendix C).
+
+**Roadmap accommodation:** schema and `lib/queries/` shaped so map/forums/listings can attach later without rewriting the spine (Doc 5 Blocks A–C extension points).
+
+---
 
 ## 2. STACK AND CONFIGURATION
 
-- Framework, versions, rendering strategy
-- Every dependency and why it is present
-- Every environment variable, what it does, where it is consumed
-- Deployment: build, deploy, revalidation
-- **Anything a fresh clone needs that is not obvious**
+| Item | Actual |
+|---|---|
+| Package name | `valley` `0.1.0` |
+| Framework | **Next.js 16.3.0** (App Router). Docs still say Next 15 — Doc 5 Block B/C. |
+| UI | React 19.2.8 / React DOM 19.2.8 |
+| Styling | Tailwind CSS v4 (`@tailwindcss/postcss`) |
+| Data | Supabase Postgres + `@supabase/ssr` / `@supabase/supabase-js` |
+| Validation | Zod 4 |
+| Markdown | `react-markdown` + `remark-gfm` |
+| Components | CVA + `clsx` + `tailwind-merge` |
+| Deploy | Vercel project `thevalleyhub`; `vercel.json` locks `"framework": "nextjs"` |
+| Production URL (current) | `https://thevalleyhub.vercel.app` |
+| GitHub | `ryanvsinclair/thevalleyhub` |
+
+### Dependencies (why)
+
+| Package | Why |
+|---|---|
+| `next`, `react`, `react-dom` | App framework |
+| `@supabase/ssr`, `@supabase/supabase-js` | Auth cookies + DB client |
+| `zod` | Admin form schemas (`src/lib/schema.ts`) |
+| `server-only` | Guard `createAdminClient` |
+| `class-variance-authority`, `clsx`, `tailwind-merge` | Button/CVA pattern |
+| `react-markdown`, `remark-gfm` | Long-form answers / posts |
+| `supabase` (dev) | CLI / types tooling |
+| `tailwindcss`, `@tailwindcss/postcss`, `typescript`, `eslint*` | Build/tooling |
+
+### Environment variables
+
+| Variable | Role | Consumed |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | Canonical site origin; magic-link redirect base | SEO helpers, login actions, sitemap/robots |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase API URL | All Supabase clients |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon key (RLS applies) | Anon / session / action clients |
+| `SUPABASE_SERVICE_ROLE_KEY` | Bypasses RLS; server-only | `src/lib/supabase/admin.ts` only — **never content writes** |
+| `REVALIDATE_SECRET` | Guards `POST /api/revalidate` | Route handler + DB trigger headers |
+| `ADMIN_EMAIL` | Single allowlisted editor | `src/lib/auth/admin.ts`, login, admin layout/actions |
+| `SUPABASE_ACCESS_TOKEN` | Optional CLI token | Local only; never Vercel |
+
+### Deploy / revalidation
+
+- Build: `npm run build` → Next output on Vercel.
+- Admin saves call `revalidatePath` in Server Actions.
+- DB changes on key tables fire `notify_site_revalidate()` → `POST /api/revalidate` with `x-revalidate-secret` (Doc 5 Block C).
+
+### Fresh clone needs
+
+1. `cp .env.example .env.local` and fill keys (see SETUP.md).
+2. `npm install` · `npm run dev` (use `env -u ADMIN_EMAIL` if empty shell var shadows).
+3. Linked Supabase project + seeds already applied remotely for production content.
+
+---
 
 ## 3. DATABASE — AUTHORITATIVE
 
-The core of this document. Written from the live database.
+**Live audit 2026-08-08:** 14 base tables, 1 view (`current_status`), 57 RLS policies in `public`, 3 enums.
 
-**3.1 Overview** — table count, relationship map, the design principle behind the shape
+### 3.1 Overview
 
-**3.2 Tables** — for each: purpose, every column with type and meaning, constraints, defaults, what populates it, what reads it
+**Design principle:** one content spine (clusters, places, questions, status, communities/comparisons, posts, media) with provenance (`sources`, `confidence`, `verified_at`) and soft publish (`state`, `deleted_at`). Append-only `status_log` + `audit_log`. (Doc 5 Block A; Doc 3 vision.)
 
-**3.3 Enums and vocabularies** — every enum, every controlled vocabulary, where enforced
+**Relationship sketch:**
 
-**3.4 Views and functions** — what each does, why it exists, security context
+```
+sources ←── clusters ──→ unit_types
+   ↑         ↓
+   │      questions ←→ places
+   │         ↓
+   └── status_log
+communities ──→ comparisons
+clusters ──→ posts (optional)
+media ←→ media_links (polymorphic subject)
+auth.users ──→ profiles
+```
 
-**3.5 Triggers** — what fires, when, what it does
+**Row counts (live):** clusters 25 · unit_types 29 · places 47 · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 0 · media_links 0 · profiles 1 · redirects 0 · audit_log ~203.
 
-**3.6 Security** — RLS state per table, every policy in plain language, grants, what anon can and cannot reach, service role usage
+### 3.2 Tables
 
-**3.7 Indexes** — what exists and which query it serves
+Column lists verified against `information_schema` / generated `src/types/database.ts` (match).
 
-**3.8 Data provenance** — where seeded content came from, the confidence model, what is deliberately null
+#### `profiles`
+- **Purpose:** App role for auth users.
+- **Columns:** `id` (uuid PK = `auth.users.id`), `email` (citext), `display_name`, `role` (`app_role`, default `viewer`), `created_at`.
+- **Populated by:** `handle_new_user` on signup / owner bootstrap (Doc 2 §2.4).
+- **Read by:** admin gate indirectly via auth; RLS `own_profile`.
+
+#### `sources`
+- **Purpose:** Provenance for content rows.
+- **Columns:** `id`, `label`, `url`, `kind` (check: developer|government|operator|portal|site_visit|broker|resident), `retrieved_at`, `notes`, `created_at`.
+- **Seed:** 7 rows, fixed UUIDs `a1000000-…000N` (Doc 5 Block A).
+- **Read:** admin + public (pub policy).
+
+#### `clusters`
+- **Purpose:** Valley communities / product lines.
+- **Key columns:** `slug` (unique, `^[a-z0-9-]+$`), `name`, `phase`, `product_type` (townhouse|twin_villa|villa), unit/facade/handover/price fields, `summary`/`positioning`/`body`/`notes`, SEO meta, `sort_order`, `confidence`, `source_id`, `verified_at`, `state`, `deleted_at`, timestamps.
+- **Populated:** seed `02_clusters.sql` + admin.
+- **Read:** `lib/queries/clusters.ts`, admin editors.
+
+#### `unit_types`
+- **Purpose:** Bedroom/layout specs per cluster (Annex D only in seed).
+- **Key columns:** `cluster_id`, `bedrooms`, size fields (`bua_*`, `plot_*`), layout flags, `confidence`, `source_id`, …
+- **No** `state` — visibility follows parent cluster publish + ConfidenceGate on specs.
+
+#### `places`
+- **Purpose:** Nearby / in-community services.
+- **Key columns:** `slug`, `name`, `category`, `subcategory`, `in_community`, geo (`lat`/`lng`), `hours` (jsonb), `drive_minutes`, `drive_verified`, publish + confidence fields.
+- **Read:** `lib/queries/places.ts`; `/living/*` maps categories → place categories.
+
+#### `status_log`
+- **Purpose:** Append-only operational status observations.
+- **Key columns:** `subject_type`, `subject_id`, `amenity_key`, `status`, `observed_on`, `note`, `confidence`, `source_id`.
+- **No** `updated_at` — new rows, not edits-in-place (Doc 5 Block A).
+
+#### `questions`
+- **Purpose:** FAQ / answer pages.
+- **Key columns:** `slug`, `question`, `answer_short`/`answer_long`, `audience`, `topic`, optional `cluster_id`/`place_id`, `ask_count`, `is_generated` (Q24 computed from hours — Doc 5 A), publish fields.
+
+#### `communities` / `comparisons`
+- **Purpose:** Competitor communities + dimension rows (Annex H).
+- **comparisons.dimension:** price|commute|schools|amenities|maturity (app zod + Doc 1 Annex L).
+
+#### `posts`
+- **Purpose:** Blog articles.
+- **Columns:** `slug`, `title`, `excerpt`, `body`, `topic`, optional `cluster_id`, SEO, `published_at`, `state`, `deleted_at`, timestamps.
+- **Live rows:** 0. Public `/blog` routes exist; **no admin editor yet** (Doc 5 Block C).
+
+#### `media` / `media_links`
+- **Purpose:** Files in Storage + polymorphic links (`subject_type` includes cluster|place|question|status_log|community|post).
+- **Live rows:** 0. Admin media upload writes `media` + storage bucket `media`.
+
+#### `redirects`
+- **Purpose:** Path redirects for middleware.
+- **Columns:** `from_path` (unique), `to_path`, `status_code` (301|302|308), `reason`, `created_at`.
+- **Live rows:** 0.
+
+#### `audit_log`
+- **Purpose:** Change history from `log_audit` trigger.
+- **Columns:** `id` bigserial, `actor_id` → profiles (null if no `auth.uid()`), `table_name`, `record_id`, `action`, `diff` jsonb, `created_at`.
+- **Read:** `/admin/audit` (authenticated `read_audit` policy).
+
+### 3.3 Enums and vocabularies
+
+**Postgres enums (live):**
+
+| Enum | Labels |
+|---|---|
+| `app_role` | owner, editor, viewer |
+| `confidence_level` | official, corroborated, unverified |
+| `publish_state` | draft, published, archived |
+
+**Controlled vocabularies (Doc 1 Annex L + `src/lib/schema.ts` zod — mostly NOT DB enums):**  
+`questions.topic`, `places.category`, `status_log.amenity_key`, `comparisons.dimension`, living route categories, plus check constraints on `sources.kind`, `product_type`, `audience`, `status`, `media.kind`, redirect codes, etc.
+
+**Why no DB check on every Annex L list:** UNKNOWN beyond “Annex L / app zod enforce; migration uses checks where specified” — Doc 5 does not record a rejected alternative for each vocab.
+
+### 3.4 Views and functions
+
+#### View `current_status`
+- `WITH (security_invoker = on)` — verified live `reloptions`.
+- Latest row per `(subject_type, subject_id, amenity_key)` by `observed_on desc`.
+- **Why security_invoker:** so RLS of underlying `status_log` applies to the caller (Doc 5 Block A implies gate requirement; exact rejected alternative: UNKNOWN — “default security definer view would bypass RLS” is standard Postgres reasoning but not spelled in Doc 5).
+
+#### Functions (app-relevant in `public`)
+| Function | Role |
+|---|---|
+| `app_role_of(uid)` | Role lookup |
+| `is_staff()` / `can_edit()` | RLS helpers for staff write policies |
+| `handle_new_user()` | Profile bootstrap on auth user create |
+| `set_updated_at()` | Touch `updated_at` |
+| `log_audit()` | Audit trigger body |
+| `notify_site_revalidate()` | `pg_net` POST to site `/api/revalidate` (Doc 5 Block C) |
+| `rls_auto_enable()` | **Platform helper on project; not in `0001_init.sql`** (Doc 5 Block A gotcha) — do not drop |
+
+### 3.5 Triggers (live)
+
+| Trigger | Table | Function |
+|---|---|---|
+| `*_audit` | clusters, communities, comparisons, media, media_links, places, posts, questions, redirects, sources, status_log, unit_types | `log_audit` |
+| `*_updated_at` | clusters, communities, comparisons, places, posts, questions, unit_types | `set_updated_at` |
+| `revalidate_on_*` | clusters, places, questions, comparisons, posts, status_log | `notify_site_revalidate` |
+
+Revalidate triggers pass public path args via `TG_ARGV` (e.g. `/`, `/clusters`). Secret is embedded in function body (V1) — rotate with Vercel env together (Doc 5 Block C).
+
+### 3.6 Security
+
+- **RLS enabled** on all 14 public tables (57 policies).
+- **Anon + authenticated public read:** published, non-deleted content patterns on clusters/places/questions/posts/communities; comparisons via published community; unit_types via published cluster; status_log open read; sources/media/media_links/redirects pub select as defined in migration.
+- **Staff write:** `can_edit()` gated INSERT/UPDATE/DELETE on content tables.
+- **profiles:** `own_profile` SELECT for authenticated.
+- **audit_log:** SELECT for authenticated (`read_audit`); inserts via trigger.
+- **Service role:** available in `createAdminClient()`; **no V1 content writes** (Doc 5 Block B).
+- **Storage:** bucket `media` with session policies for staff upload (Gate 2).
+
+### 3.7 Indexes (live)
+
+Includes PKs, unique slug/path keys, plus: `clusters_phase_idx`, `clusters_state_idx`, `places_category_idx`, `places_geo_idx`, `places_state_idx`, `posts_published_idx`, `questions_ask_idx`, `questions_audience_idx`, `questions_cluster_idx`, `questions_place_idx`, `unit_types_cluster_idx`, `status_subject_idx`, `status_amenity_idx`, `media_links_subj_idx`, `audit_record_idx`. Unique-constraint indexes appear without separate `create index` lines in SQL — expected (Doc 5 Block A).
+
+### 3.8 Data provenance
+
+- Seeded from Doc 1 via `supabase/seed/0N_*.sql` in order.
+- Fixed source UUIDs; conflicting Doc 1 fields left null with notes (Doc 5 Block A).
+- `masabih-masjid` remains `draft` (missing hours — Annex K).
+- Confidence may be `unverified` on published rows; UI hides raw specs via ConfidenceGate.
+- SQL/MCP edits → `audit_log.actor_id` null; admin UI writes → non-null actor (Gate 5).
+
+---
 
 ## 4. APPLICATION
 
-**4.1 Routes** — every route, what it queries, how it renders, static or dynamic
+### 4.1 Routes
 
-**4.2 Data layer** — `lib/queries/` structure, the access pattern, why it is isolated
+Route groups `(public)` / `(admin)` do not appear in URLs.
 
-**4.3 Components** — shared components, the CVA pattern, the confidence-gating mechanism
+| URL | File | Data / render |
+|---|---|---|
+| `/` | `(public)/page.tsx` | Anon queries; static-eligible |
+| `/about` | `(public)/about/page.tsx` | Static copy + disclaimer |
+| `/blog` | `(public)/blog/page.tsx` | `posts` |
+| `/blog/[slug]` | `(public)/blog/[slug]/page.tsx` | SSG `generateStaticParams` |
+| `/clusters` | `(public)/clusters/page.tsx` | `clusters` + ConfidenceGate |
+| `/clusters/[slug]` | `(public)/clusters/[slug]/page.tsx` | SSG + unit_types |
+| `/compare` | `(public)/compare/page.tsx` | `communities` |
+| `/compare/[slug]` | `(public)/compare/[slug]/page.tsx` | SSG + comparisons |
+| `/living` | `(public)/living/page.tsx` | Category index |
+| `/living/[category]` | `(public)/living/[category]/page.tsx` | SSG from `LIVING_CATEGORIES` → places |
+| `/places/[slug]` | `(public)/places/[slug]/page.tsx` | SSG |
+| `/questions` | `(public)/questions/page.tsx` | questions list |
+| `/questions/[slug]` | `(public)/questions/[slug]/page.tsx` | SSG + FAQ JSON-LD |
+| `/status` | `(public)/status/page.tsx` | status_log / current_status |
+| `/login` | `login/page.tsx` | Dynamic (cookies) |
+| `/auth/callback` | `auth/callback/route.ts` | Dynamic OTP exchange |
+| `/api/revalidate` | `api/revalidate/route.ts` | Dynamic POST |
+| `/sitemap.xml` | `sitemap.ts` | Published paths |
+| `/robots.txt` | `robots.ts` | Disallow `/admin/`, `/api/`, `/login` |
+| `/admin` … | `(admin)/admin/**` | Dynamic; cookie gate |
+| Middleware | `src/middleware.ts` | `redirects` table lookup |
 
-**4.4 Admin** — auth flow, write path, why session client not service role, audit behaviour
+**Admin URLs:** `/admin`, `/admin/clusters`, `/admin/clusters/[id]`, `/admin/places`, `/admin/places/[id]`, `/admin/questions`, `/admin/questions/new`, `/admin/questions/[id]`, `/admin/comparisons`, `/admin/comparisons/[id]`, `/admin/sources`, `/admin/sources/[id]`, `/admin/media`, `/admin/status/new`, `/admin/audit`.
 
-**4.5 Conventions** — naming, file organisation, error handling, type derivation. Assembled from Doc 5.
+**Naming map (URL ≠ table):** `/blog`→`posts`; `/compare`→`communities`+`comparisons`; `/living/*`→`places`; `/status`→`status_log`/`current_status` (SETUP.md + Doc 5 Block C).
+
+### 4.2 Data layer
+
+- `src/lib/queries/{clusters,places,questions,communities,status,posts}.ts` — **only** public read path for pages.
+- All use `createAnonClient()` — SSG-safe; Proposal #01 APPROVED (Doc 5 Block B).
+- Pages must not invent ad-hoc Supabase selects (Doc 5 Block A convention).
+
+### 4.3 Components
+
+- **ConfidenceGate** — hides children when `confidence === "unverified"` (`src/components/content/ConfidenceGate.tsx`); used on cluster list/detail.
+- Content: `MarkdownBody`, `SiteNav`, `StatusPill`, `VerifiedBadge`, `WhatsOpenNow`.
+- SEO: `JsonLd`.
+- Admin: `AdminForm`, `fields`.
+- UI: CVA `button`.
+
+### 4.4 Admin
+
+1. Magic link `/login` → `ADMIN_EMAIL` allowlist · `shouldCreateUser: false`.
+2. `/auth/callback` exchanges code; non-allowlisted signed out.
+3. `(admin)/admin/layout.tsx` → `getAdminUser()` or redirect `/login`.
+4. Mutations → `src/lib/admin/actions.ts` + zod `src/lib/schema.ts` via `createActionClient()` only.
+5. **Why session not service role:** RLS + `auth.uid()` + non-null `audit_log.actor_id` (Doc 5 Block B).
+
+### 4.5 Conventions (from Doc 5)
+
+- Clients: `createAnonClient` · cookie `createClient` · `createActionClient` · `createAdminClient` (service role, never content).
+- Types: only generated `src/types/database.ts`.
+- Seeds: `supabase/seed/0N_*.sql` numeric order; identity by `slug`.
+- Schema source of truth file: `docs/0001_init.sql` ≡ `supabase/migrations/0001_init.sql`.
+- Optional form empties → `null` via zod preprocessors.
+- SEO: `src/lib/seo/*` + per-route metadata; no JSON-LD-only-in-root-layout.
+
+---
 
 ## 5. CONTENT MODEL
 
-- How a fact moves from Doc 1 to a rendered page
-- The confidence model and what it gates
-- What is published vs draft and why
-- The prohibited-content rules and where they are enforced
+1. Fact authored in **Doc 1** with source + confidence.
+2. Seeded or entered via **admin** into Postgres with `source_id` / `confidence` / `state`.
+3. **Anon RLS** exposes `published` + not deleted.
+4. **Public page** reads via `lib/queries/*`; **ConfidenceGate** hides unverified numeric/spec fields.
+5. Annex J prohibitions enforced at seed/review (Gate 3/7 greps); not a DB constraint.
+
+**Published vs draft:** `state` enum; drafts invisible to anon. `masabih-masjid` draft for missing hours.
+
+---
 
 ## 6. HOW TO EXTEND
 
-Written for someone who was not here.
+### 6.1 Extension points (Doc 5)
 
-**6.1 Extension points** — from Doc 5, with usage
+| Point | Serves |
+|---|---|
+| `places.lat`/`lng` seeded | Map phase |
+| `status_log` append-only | Live updates feed |
+| `media` / `media_links` polymorphic | Photos/floorplans without schema churn |
+| `profiles.role` | Extra editors = insert, not migration |
+| `lib/queries/` isolation | Map/API reuse |
+| `createAdminClient` | Non-session system tasks (unused in V1) |
+| `/api/revalidate` `path`/`paths` | External/DB revalidation |
+| `questions.is_generated` | Computed answers (Q24) |
 
-**6.2 Common tasks** — add a cluster, add a place, add a question, add a route, change the schema safely, add a table
+### 6.2 Common tasks
 
-**6.3 Roadmap features** — for each of map, forums, marketplace, events, listings: what already supports it, what is missing, likely approach, what not to break
+- **Add cluster/place/question:** prefer `/admin` editors; or seed SQL following Doc 1 + Annex L; then revalidate (automatic on admin save / DB trigger).
+- **Add route:** App Router page under `(public)` or `(admin)`; public data only through `lib/queries/`; add sitemap entry if public.
+- **Schema change:** proposal if not in Doc 2; migrate; regenerate `database.ts`; update **this Doc 6** same session (Doc 3 §11).
 
-**6.4 What not to change** — decisions with non-obvious consequences. Each with the reason. This section prevents the most damage.
+### 6.3 Roadmap features
+
+| Feature | Already supports | Missing | Do not break |
+|---|---|---|---|
+| Map | `lat`/`lng`, queries | Map UI, offline | Confidence/provenance columns |
+| Forums | — | Entire feature | RLS model; single-editor auth assumption |
+| Marketplace | — | Entire feature | Same |
+| Events | — | Tables/UI | — |
+| Listings | spine entities | Listing schema | Independent positioning (no Emaar affiliation) |
+| Blog | `posts` + `/blog` | Content + admin editor | Naming (`posts` not `blog_posts`) |
+
+### 6.4 What not to change
+
+- **Anon client for `lib/queries`** — cookie client breaks SSG (Doc 5 B).
+- **Session client for admin writes** — service role skips audit actor (Doc 5 B).
+- **`current_status` security_invoker** — RLS integrity.
+- **Null over invented facts** — site premise (Doc 3 §3.1).
+- **`vercel.json` framework nextjs** — prevents platform NOT_FOUND (Doc 5 C).
+- **Annex L vocabs without proposal** — Doc 1 rule.
+
+---
 
 ## 7. GOTCHAS AND CONSTRAINTS
 
-From Doc 5, consolidated. Every known trap, when it surfaces, how to avoid it.
+Consolidated from Doc 5 A–C:
+
+1. Agent/sandbox often cannot read `.env.local` — use MCP or exported env.
+2. MCP `execute_sql` returns **last** result set only in a multi-statement batch.
+3. `public.rls_auto_enable()` exists outside `0001_init.sql` — do not drop.
+4. Unique indexes (`*_slug_key`) appear without explicit `create index` in migration text.
+5. SQL/MCP inserts → `audit_log.actor_id` null; Gate 5 needs `/admin` writes.
+6. Cluster slug rejects underscores.
+7. Never `alter table storage.*` / `auth.*` — dashboard fallback for storage policies.
+8. `cookies()` in `generateStaticParams` fails build — use `createAnonClient`.
+9. Empty parent `ADMIN_EMAIL=` shadows `.env.local`.
+10. Magic-link `emailRedirectTo` follows `NEXT_PUBLIC_SITE_URL` — wrong port = wrong app.
+11. RLS returns `[]`/`null`, not errors, for forbidden rows.
+12. `SERVICE_ROLE` string must appear only in `admin.ts` (Gate 5 grep).
+13. Vercel `framework: null` → apex `NOT_FOUND` despite READY builds.
+14. `REVALIDATE_SECRET` must match **exactly** (no trailing space / typos); probe with `net.http_post`.
+15. Next 16 deprecates `middleware` file name → `proxy`; still `middleware.ts` per Doc 2.
+16. Never invent `blog_posts` — table is `posts`.
+
+---
 
 ## 8. KNOWN GAPS
 
-- Content gaps carried from Doc 1 Annex K
-- Technical debt taken knowingly, and why
-- What was deferred out of V1
-- What needs Ray's real-world action
+### Content (Doc 1 Annex K)
+Amenity operational status; service charges; Nima specs; Orania handover; several unit counts/plots/facades; indoor gym; floor plans; payment plans; ECM ops; drive times (except Outlet Mall); masjid hours.
+
+### Technical debt (known)
+- Docs say Next 15; package is **16.3.0** (Doc 5 B/C).
+- Revalidate secret stored in DB function body (V1).
+- No admin UI for `posts`.
+- Gate 0 `docs-baseline` tag still missing (optional).
+- Custom domain + Search Console / Bing / analytics parked in **SETUP.md §7**.
+
+### Deferred from V1
+Map, forums, marketplace, events, listings, multi-editor, etc. (Appendix C).
+
+### Needs Ray
+SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional token rotation.
+
+---
 
 ## 9. VERIFICATION STATE
 
-- Which gates passed and when
-- What was objectively verified vs assumed
-- Anything marked `UNKNOWN` and what would resolve it
+| Gate | Result | Notes |
+|---|---|---|
+| 2 | ✅ | 14 tables, 57 policies, owner profile, types generated |
+| 3 | ✅ | Seed counts + Annex J greps |
+| 4 | ✅ | Public SSG build |
+| 5 | ✅ | Admin session writes + audit actor |
+| 6 | ✅ | Metadata, JSON-LD, sitemap/robots, redirects |
+| 7 | ✅ (temp URL) | `thevalleyhub.vercel.app` 200; custom domain open in SETUP §7 |
+| 8 | ✅ this document | Written from live audit 2026-08-08 |
+
+**Objectively verified this writing:** table/view counts, policy count, enums, triggers, indexes, `security_invoker` on `current_status`, row counts, route inventory, package versions, env var names from `.env.example`.
+
+**Assumed / Ray-reported:** Auth smoke + admin login OK on production; not re-executed in this Doc 6 session.
+
+**UNKNOWN:**
+- Full plain-language text of every RLS `USING` expression (summarized from policy names + migration intent; not re-printed SQL here).
+- Why each Annex L vocab is zod-only vs check constraint (not in Doc 5).
+
+---
 
 ## 10. CHANGELOG
 
-Append-only. Every material change from V1 onward.
-
-```
-### YYYY-MM-DD — <what changed>
-**Why:** <reason>
-**Affects:** <sections of this document updated>
-**Breaking:** yes/no — <what a future build must know>
-```
-
-First entry is the V1 baseline:
-```
-### <date> — V1 baseline
-**Why:** Initial release. State at Gate 7.
-**Affects:** All sections.
+### 2026-08-08 — V1 baseline
+**Why:** Initial release state at Gate 7 (temporary production domain) + Doc 6 first write (Gate 8).  
+**Affects:** All sections.  
 **Breaking:** n/a — baseline.
-```
 
 ---
 
 ## COMPLETENESS CHECK
 
-Before committing, confirm:
-
-- [ ] Every table in the live database appears in §3
-- [ ] Every route in `src/app` appears in §4
-- [ ] Every dependency in `package.json` appears in §2
-- [ ] Every environment variable appears in §2
-- [ ] Every gotcha from Doc 5 appears in §7
-- [ ] Every extension point from Doc 5 appears in §6.1
-- [ ] No template placeholder text remains
-- [ ] Nothing is guessed — unknowns are marked `UNKNOWN`
-- [ ] Changelog seeded with the V1 baseline
-- [ ] Ray told it is complete and ready for review
-
----
-
-*This template is replaced entirely when Doc 6 is written. Delete these instructions at that point.*
+- [x] Every live base table in §3
+- [x] Every `src/app` route in §4
+- [x] Every `package.json` dependency in §2
+- [x] Every `.env.example` variable in §2
+- [x] Doc 5 gotchas in §7
+- [x] Doc 5 extension points in §6.1
+- [x] No template placeholder sections remain
+- [x] Unknowns marked `UNKNOWN`
+- [x] Changelog V1 baseline seeded
+- [x] Ray told complete and ready for review

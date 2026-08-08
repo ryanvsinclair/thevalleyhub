@@ -83,9 +83,19 @@ JSON body: `{ "path": "/clusters" }` or `{ "paths": ["/clusters", "/questions"] 
 
 Admin Server Actions already call `revalidatePath` on save; the webhook covers external/DB-side changes.
 
-## 7. Google Search Console
+## 7. Launch checklist **[R]** — do when you confirm the site is ready
 
-Set up **at launch**, not before.
+Parked until Ray says the product is ready for public launch. V1 build/deploy on the temp URL is otherwise complete.
+
+- [ ] Custom domain attached; HTTPS valid (replace `thevalleyhub.vercel.app`)
+- [ ] Update Supabase Auth Site URL + redirect to the custom domain
+- [ ] Update `NEXT_PUBLIC_SITE_URL` on Vercel (Preview + Production) → redeploy
+- [ ] Update revalidate trigger URL in Postgres (`notify_site_revalidate`) to the custom domain
+- [ ] Google Search Console verified; sitemap submitted
+- [ ] Bing Webmaster Tools
+- [ ] Analytics enabled
+
+Then tell the agent to tick Doc 2 §7.2 domain / §7.3 / Gate 7 leftovers and set status accordingly.
 
 ## Local verify
 

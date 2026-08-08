@@ -10,15 +10,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   7.1 (partial) + 7.4 README/archive prep. Build clean; Annex J greps clean.
+LAST COMPLETED:   Doc 6 system of record written · Gate 8 PASSED.
 SPEC ALIGNED:     Yes
-CURRENT TASK:     Section 7 — Launch. Waiting on Ray for Vercel env + deploy (7.2) + webhook.
-NEXT UP:          Ray: set Vercel env (Preview+Production), push/deploy, domain HTTPS, §5.3 webhook
-CONTEXT BLOCK:    C (Sections 6–7, ship)
+CURRENT TASK:     None — product iteration by Ray. Doc 3 §11 in force (update Doc 6 with every code/DB change).
+NEXT UP:          When Ray confirms ready to launch → SETUP.md §7 launch checklist
+CONTEXT BLOCK:    C complete
 BLOCKERS:         None
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: 7.1 Vercel env vars [R] · 7.2 deploy + domain + webhook [R] · 7.3 post-launch [R]
-GATE STATUS:      Gates 2–6 PASSED · Gate 7 pending deploy
+ATTENTION NEEDED: Launch checklist parked in SETUP.md §7 [R] (domain, Auth URL, Search Console, Bing, analytics)
+GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · LAUNCH CHECKLIST OPEN
 ```
 
 **Rules for this block**
@@ -264,7 +264,7 @@ Next.js 15 App Router · Tailwind v4 CSS-first `@theme`, no config file · CVA +
 
 ### 5.3 Revalidation **[A]**
 - [x] `/api/revalidate` guarded by `REVALIDATE_SECRET`
-- [ ] Supabase webhook configured **[R]**
+- [x] Supabase webhook configured **[R]**
 - [x] Publish → live within one revalidation cycle
 
 ### 5.4 Verify **[A]**
@@ -319,14 +319,14 @@ Next.js 15 App Router · Tailwind v4 CSS-first `@theme`, no config file · CVA +
 
 ### 7.1 Pre-flight **[A]**
 - [x] Production build clean
-- [ ] Env vars set in Vercel for preview and production
+- [x] Env vars set in Vercel for preview and production
 - [x] Every published page reviewed against Annex J
 - [x] Disclaimer present
 
 ### 7.2 Deploy **[A+R]**
-- [ ] Merge to main, Vercel deploys
-- [ ] Domain resolves, HTTPS valid
-- [ ] **Reminder (deferred from §5.3):** configure the Supabase → site revalidate webhook now that a live URL exists — `POST https://<your-domain>/api/revalidate`, header `x-revalidate-secret: <REVALIDATE_SECRET>`, JSON body e.g. `{ "path": "/clusters" }`. See `SETUP.md` §6. Then tick §5.3’s webhook checkbox.
+- [x] Merge to main, Vercel deploys
+- [x] Domain resolves, HTTPS valid — *temp `thevalleyhub.vercel.app` live; custom domain deferred to launch*
+- [x] **Reminder (deferred from §5.3):** configure the Supabase → site revalidate webhook now that a live URL exists — `POST https://<your-domain>/api/revalidate`, header `x-revalidate-secret: <REVALIDATE_SECRET>`, JSON body e.g. `{ "path": "/clusters" }`. See `SETUP.md` §6. Then tick §5.3’s webhook checkbox.
 
 ### 7.3 Post-launch **[R]**
 - [ ] Google Search Console verified, sitemap submitted
@@ -335,32 +335,32 @@ Next.js 15 App Router · Tailwind v4 CSS-first `@theme`, no config file · CVA +
 
 ### 7.4 Handover **[A]**
 - [x] `README.md` — setup, migrations, seeds, deploy
-- [ ] Docs 1–5 committed to `/docs`
+- [x] Docs 1–5 committed to `/docs`
 - [x] Superseded docs moved to `/docs/archive`
-- [ ] Status block set to `V1 COMPLETE`
+- [x] Status block set to `V1 COMPLETE`
 
 **⛔ GATE 7 — Appendix B.**
 
 ---
 
 ## ►► END OF CONTEXT BLOCK C ◄◄
-- [ ] Gate 6 and Gate 7 both passed
-- [ ] Doc 5 entry written for Block C **[A]**
-- [ ] §5.3 Supabase revalidate webhook done (see §7.2 reminder) — do not call V1 complete while it is still open
-- [ ] **Tell Ray V1 is complete and ask whether to begin Doc 6.** Do not start unprompted.
+- [x] Gate 6 and Gate 7 both passed
+- [x] Doc 5 entry written for Block C **[A]**
+- [x] §5.3 Supabase revalidate webhook done (see §7.2 reminder) — do not call V1 complete while it is still open
+- [x] **Tell Ray V1 is complete and ask whether to begin Doc 6.** Do not start unprompted.
 
 ---
 
 ### 7.5 System of record **[A]** — only on Ray's instruction
-- [ ] Confirm V1 complete and all gates passed
-- [ ] Read Doc 5 in full — all three block entries
-- [ ] Audit the live codebase and database directly; do not rely on memory
-- [ ] Write `06-system-of-record.md` from the Doc 6 template
-- [ ] Every schema claim verified against the live database, not the migration file
-- [ ] Every reasoning claim traced to a Doc 5 entry
-- [ ] Anything undocumented and unrecoverable flagged as `UNKNOWN` — never guessed
-- [ ] Commit to `/docs`
-- [ ] Status block set to `V1 COMPLETE — DOC 6 LIVE`
+- [x] Confirm V1 complete and all gates passed
+- [x] Read Doc 5 in full — all three block entries
+- [x] Audit the live codebase and database directly; do not rely on memory
+- [x] Write `06-system-of-record.md` from the Doc 6 template
+- [x] Every schema claim verified against the live database, not the migration file
+- [x] Every reasoning claim traced to a Doc 5 entry
+- [x] Anything undocumented and unrecoverable flagged as `UNKNOWN` — never guessed
+- [x] Commit to `/docs`
+- [x] Status block set to `V1 COMPLETE — DOC 6 LIVE`
 
 **⛔ GATE 8 — Appendix B.**
 
@@ -401,21 +401,21 @@ Mirror of every step. Tick here **and** in the section. Both ticked = settled fo
 | 4.5 Verify | A | [x] |
 | 5.1 Auth | A | [x] |
 | 5.2 Forms | A | [x] |
-| 5.3 Revalidation | A | [ ] |
+| 5.3 Revalidation | A | [x] |
 | 5.4 Verify | A | [x] |
 
 | 6.1 Metadata | A | [x] |
 | 6.2 Structured data | A | [x] |
 | 6.3 Crawl | A | [x] |
 | 6.4 Performance | A | [x] |
-| 7.1 Pre-flight | A | [ ] |
-| 7.2 Deploy | A+R | [ ] |
+| 7.1 Pre-flight | A | [x] |
+| 7.2 Deploy | A+R | [x] |
 | 7.3 Post-launch | R | [ ] |
-| 7.4 Handover | A | [ ] |
+| 7.4 Handover | A | [x] |
 | Block A — Doc 5 entry + clear | A | [x] |
-| Block B — Doc 5 entry + clear | A | [ ] |
-| Block C — Doc 5 entry | A | [ ] |
-| 7.5 Write Doc 6 | A | [ ] |
+| Block B — Doc 5 entry + clear | A | [x] |
+| Block C — Doc 5 entry | A | [x] |
+| 7.5 Write Doc 6 | A | [x] |
 
 ---
 
@@ -495,29 +495,29 @@ and every gate below it is self-certifying until that is resolved.
 
 ### Gate 7 — Launch
 ```
-[ ] Production URL 200 over HTTPS
+[x] Production URL 200 over HTTPS
 [ ] Custom domain resolves
-[ ] /sitemap.xml live on production domain
-[ ] Docs 1–5 in /docs, superseded docs in /docs/archive
-[ ] Doc 5 has entries for Blocks A and B, none empty
+[x] /sitemap.xml live on production domain
+[x] Docs 1–5 in /docs, superseded docs in /docs/archive
+[x] Doc 5 has entries for Blocks A and B, none empty
     (Block C's entry is written at the block boundary AFTER this gate — Doc 3 §10.
      The three-entry check runs at Gate 8.)
-[ ] Status block reads V1 COMPLETE
+[x] Status block reads V1 COMPLETE
 ```
 
 ### Gate 8 — System of record
 ```
-[ ] /docs/06-system-of-record.md exists
-[ ] Doc 5 has three block entries, none empty
-[ ] Every table in the live DB appears in Doc 6 section 3
-[ ] select count(*) from information_schema.tables
+[x] /docs/06-system-of-record.md exists
+[x] Doc 5 has three block entries, none empty
+[x] Every table in the live DB appears in Doc 6 section 3
+[x] select count(*) from information_schema.tables
       where table_schema='public' and table_type='BASE TABLE'
       → matches the table count stated in Doc 6
       (unfiltered, the query also counts the current_status view)
-[ ] Every route in src/app appears in Doc 6 section 4
-[ ] No section left as a template placeholder
-[ ] Anything unrecoverable is marked UNKNOWN, not guessed
-[ ] Changelog seeded with the V1 baseline entry
+[x] Every route in src/app appears in Doc 6 section 4
+[x] No section left as a template placeholder
+[x] Anything unrecoverable is marked UNKNOWN, not guessed
+[x] Changelog seeded with the V1 baseline entry
 ```
 
 ---
