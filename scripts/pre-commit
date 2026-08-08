@@ -11,10 +11,19 @@
 # is rejected. Docs 4, 5, 6 are the agent's to write and are
 # not guarded.
 #
-# Bypass with --no-verify is a process violation, not an option.
+# Ray edits his own documents with DOCS_GUARD=off. The agent never
+# sets it, and --no-verify remains a process violation, not an option.
+# The env var is a speed bump, not a wall — anyone with shell access
+# can set it. Enforcement is Doc 3 §9 plus review; this hook catches
+# accidents.
 # ============================================================
 
 set -uo pipefail
+
+if [ "${DOCS_GUARD:-}" = "off" ]; then
+  echo "docs guard: bypassed (DOCS_GUARD=off) — owner edit"
+  exit 0
+fi
 
 GUARDED_RE='^docs/0[123]-.*\.md$'
 FAIL=0

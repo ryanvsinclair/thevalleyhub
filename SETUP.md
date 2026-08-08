@@ -113,6 +113,16 @@ git config core.hooksPath
 
 This was found unset on 2026-08-08, which is how an edit to Doc 2's version line reached `c9647d6`. It is not a one-time fix for the project, it is a one-time fix **per clone** — anyone who clones this repo starts unprotected until they run the command above.
 
+### Editing your own documents
+
+The guard filters on file path and cannot tell you apart from the agent, so it blocks your edits too. Commit those with the owner bypass:
+
+```bash
+DOCS_GUARD=off git commit -m "..."
+```
+
+Use `DOCS_GUARD=off`, never `--no-verify` — the bypass is scoped to this one hook and leaves the rest running, and Doc 3 §9 forbids `--no-verify` outright. The agent does not set this variable. Note it is a convention, not a security control: it stops accidents, not anyone determined with shell access (Doc 4 #03).
+
 ## Local verify
 
 ```bash

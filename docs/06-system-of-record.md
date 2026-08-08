@@ -84,7 +84,7 @@ This document describes what **exists**. Where the migration file and the live d
 1. `cp .env.example .env.local` and fill keys (see SETUP.md).
 2. `npm install` · `npm run dev` (use `env -u ADMIN_EMAIL` if empty shell var shadows).
 3. Linked Supabase project + seeds already applied remotely for production content.
-4. Install the docs guard: `git config core.hooksPath scripts` (SETUP.md "Docs guard"). Doc 3 §9 states this hook enforces Doc 1–3 ownership, but git never clones hooks, so it is inert in a fresh working copy until wired up. Found unset on 2026-08-08 — which is how an edit to Doc 2's version line reached `c9647d6`. Required **per clone**, not once per project.
+4. Install the docs guard: `git config core.hooksPath scripts` (SETUP.md "Docs guard"). Doc 3 §9 states this hook enforces Doc 1–3 ownership, but git never clones hooks, so it is inert in a fresh working copy until wired up. Found unset on 2026-08-08 — which is how an edit to Doc 2's version line reached `c9647d6`. Required **per clone**, not once per project. The guard filters on file path with no author check, so it blocks Ray too; owner edits use `DOCS_GUARD=off git commit` (Doc 4 #03). The agent never sets that variable and `--no-verify` stays forbidden.
 
 ---
 
@@ -431,6 +431,11 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 ---
 
 ## 10. CHANGELOG
+
+### 2026-08-08 — Docs guard given an owner bypass (Doc 4 #03)
+**Why:** `scripts/pre-commit` filters on file path with no author check, so installing it would have locked Ray out of editing his own Docs 1–3 while Doc 3 §9 forbids `--no-verify`. Blocked approved proposal #02, which has to be written into Doc 2 Appendix B.  
+**Affects:** `scripts/pre-commit` (5-line `DOCS_GUARD=off` early exit), SETUP.md "Docs guard", §2 fresh clone needs.  
+**Breaking:** No. Guard behaviour is unchanged when the variable is unset — verified both paths: blocks a prose edit without it, exits 0 with it.
 
 ### 2026-08-08 — Service-role privileges and docs-guard state corrected
 **Why:** An external review read `permission denied` on `audit_log` and `clusters` via the service-role key and asked whether it was intentional. A live privilege audit showed `service_role` has no DML on any public relation, and §3.6's previous wording ("available in `createAdminClient()`") implied it was usable. Separately, the hook Doc 3 §9 relies on was found uninstalled.  

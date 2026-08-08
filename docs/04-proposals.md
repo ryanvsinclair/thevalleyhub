@@ -215,7 +215,7 @@ Very low, and it is documentation-only. The one real consideration is that this 
 
 ## #03 — Give the docs guard an owner bypass before installing it
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-08
 **Category:** B — Better execution
 **Affects step:** Doc 3 §9 enforcement · `scripts/pre-commit` · SETUP.md "Docs guard"
@@ -263,8 +263,10 @@ Either the hook stays uninstalled and Doc 1–3 stay unprotected, or it gets ins
 Honest limitation: an env var is a speed bump, not a wall. An agent that wanted to bypass the guard could set `DOCS_GUARD=off` itself. This does not make the guard tamper-proof and should not be described as if it does — the actual enforcement is the rule in §9 plus review, and the hook is a reminder that catches accidents. What the bypass buys is that the reminder no longer misfires on the one person entitled to edit. If you want it harder to reach, the alternative is checking `git config user.email` against a known owner address, which is stronger in practice but still trivially forgeable and adds a config dependency for a fresh clone.
 
 ---
-**RAY'S DECISION:**
-**Date:**
-**Notes:**
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-08
+**Notes:** Env var over the git-email check — both are forgeable by anyone with shell access, and the email check adds a fresh-clone dependency for no real security gain. Enforcement was always `--no-verify` staying forbidden plus review, not a technical wall.
+
+**Sequencing set by Ray:** land #03 and install the hook together first (`scripts/pre-commit` is not under `docs/0[123]-*.md`, so that commit is unblocked either way). Then `DOCS_GUARD=off` exactly once, for the commit writing #02 into Appendix B. Everything after goes through the guard normally.
 
 ---
