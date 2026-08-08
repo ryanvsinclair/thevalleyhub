@@ -111,6 +111,15 @@ Verify it took — this must print `scripts`, and a deliberate edit to any prose
 git config core.hooksPath
 ```
 
+If commits are *not* being rejected, check the executable bit — git skips a non-executable hook silently, with no warning:
+
+```bash
+ls -l scripts/pre-commit    # must show -rwx, not -rw-
+chmod +x scripts/pre-commit
+```
+
+The mode is committed as `100755`, so a fresh clone gets it already executable. This only bites if the bit is lost locally.
+
 This was found unset on 2026-08-08, which is how an edit to Doc 2's version line reached `c9647d6`. It is not a one-time fix for the project, it is a one-time fix **per clone** — anyone who clones this repo starts unprotected until they run the command above.
 
 ### Editing your own documents
