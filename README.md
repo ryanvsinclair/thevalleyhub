@@ -52,6 +52,7 @@ npx supabase gen types typescript --project-id <ref> > src/types/database.ts
 | 4 Proposals | `docs/04-proposals.md` |
 | 5 Build notes | `docs/05-build-notes.md` |
 | 6 System of record | after V1, on instruction |
+| 7 Data staging | `docs/07-data-staging.md` |
 
 ## Deploy
 

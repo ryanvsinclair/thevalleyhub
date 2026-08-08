@@ -270,3 +270,102 @@ Honest limitation: an env var is a speed bump, not a wall. An agent that wanted 
 **Sequencing set by Ray:** land #03 and install the hook together first (`scripts/pre-commit` is not under `docs/0[123]-*.md`, so that commit is unblocked either way). Then `DOCS_GUARD=off` exactly once, for the commit writing #02 into Appendix B. Everything after goes through the guard normally.
 
 ---
+
+## #04 — Add Doc 7 (Data Staging) as the only route new facts take into Doc 1
+
+**Status:** APPROVED
+**Raised:** 2026-08-08
+**Category:** B — Better execution
+**Affects step:** Doc 3 §2 (source hierarchy) · §9 (document ownership) · README Docs table · new `docs/07-data-staging.md`
+**Blocking:** Yes — for staging the Farm Gardens PDF export currently in hand
+
+### What Doc 3 currently specifies
+
+§9: Docs 1, 2 and 3 are Ray's; the agent's only permitted writes to them are Doc 2's status block and checkbox toggles. `scripts/pre-commit` enforces this — any other prose diff to `docs/0[123]-*.md` is rejected unless `DOCS_GUARD=off`, which the hook's own comment says the agent never sets. Docs 4, 5, 6 are "the agent's to write under their own rules." §2 row 6 says Ray, in conversation, overrides the hierarchy "but must be written into the relevant doc" — but for Doc 1 specifically, there is currently no doc the agent can write that leads there; the only real route is Ray hand-editing Doc 1 or personally running the bypass commit.
+
+### What I propose instead
+
+A new unguarded document, **`docs/07-data-staging.md`** (not matched by the guard's `^docs/0[123]-.*\.md$` pattern, so it needs no bypass to write). One dated, numbered batch entry per intake — a source document, a factsheet, a PDF export, a site visit — each listing:
+
+- **Source**: files/links, retrieval date, `source_id`, `kind`
+- **Confidence**: per Doc 3's normal scale — staging does not relax this, only the approval ceremony
+- **Proposed Doc 1 diff**: the exact field-by-field change, concretely, in the form it would take in Doc 1 (table row, annex line, prose)
+- **Status**: `staged` / `promoted` / `rejected`
+- **Promoted**: date + who ran the commit, once it lands in Doc 1
+
+Doc 1 continues to accept prose changes only from Ray or under `DOCS_GUARD=off`, exactly as §9 already requires — nothing about the guard changes. What changes is that the content going in should always trace back to an already-committed Doc 7 batch, so there is a written record of what was proposed and why before it becomes a fact. This is a documentation convention, not a hook change: the guard does not verify a Doc 1 diff against Doc 7's content (a content-matching check would be brittle against reformatting and isn't worth the complexity for what's effectively a review discipline, the same way "never invent a fact" isn't code-enforced either).
+
+### Why
+
+Right now, getting a verified fact from an external source (an Emaar brochure, a factsheet, a site visit) into Doc 1 has no agent-writable staging point — the agent either asks Ray to draft the prose himself, or produces it ad hoc in chat with no durable record of the source material, the proposed mapping, or what was rejected versus accepted. Doc 4 already solves this problem for process/schema changes (durable, numbered, decision-tracked); Doc 1 fact intake had no equivalent. Today's task — reconciling six Farm Gardens PDFs against the live `farm-gardens` cluster row — is the concrete case: several real values (price, payment plan, corrected BUA/plot figures) need to land in Doc 1, and there was no file to put them in before this proposal.
+
+### Vision test
+
+Doc 3 §1: "every fact carries a source, a confidence level and a verification date." Doc 7 makes that traceable at the point of intake, not just in the final Doc 1 row — the batch entry preserves which PDF said what, before it gets compressed into a table cell.
+
+### Cost if approved
+
+One new file, one README table row. No schema change, no hook change, no migration. Ongoing cost is one staging entry per intake batch instead of drafting Doc 1 prose directly in chat.
+
+### Cost if rejected
+
+Every future data intake (PDFs, factsheets, site visits) either waits on Ray to draft Doc 1 prose personally, or gets proposed ad hoc in conversation with no durable trail of source vs. proposed value — indistinguishable later from an uncited claim.
+
+### Risk
+
+Low. The staging doc is descriptive, not authoritative — Doc 1 remains rank 3 in the hierarchy and Doc 7 is not itself a source anyone should cite. The one real risk is drift if a Doc 1 promotion is made without a corresponding staged entry; since that's not hook-enforced, it relies on the same review discipline the rest of Doc 3 already relies on.
+
+---
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-08
+**Notes:** Staging doc gets Doc 1 write access unblocked for the agent without touching the guard. Promotion enforcement stays discipline/review-based, not hook-automated — consistent with how the rest of Doc 3 works. Name confirmed: `docs/07-data-staging.md`. Source/confidence rigor stays mandatory on every staged entry; only the propose→approve→implement ceremony is what's being skipped for pure data.
+
+---
+
+## #05 — Add `clusters.amenities` and `unit_types.unit_count` columns
+
+**Status:** APPROVED
+**Raised:** 2026-08-08
+**Category:** B — Better execution
+**Affects step:** `docs/0001_init.sql` / `supabase/migrations/0001_init.sql` schema · `src/types/database.ts` regen · Doc 1 Annex C
+**Blocking:** Yes — for two facts in Doc 7 Batch 001 (Farm Gardens amenity list and 79/67 unit split)
+
+### What Doc 2 currently specifies
+
+`clusters` has no field for a structured amenity list — only free-text `positioning`, `summary`, `body`, `notes`. `unit_types` has no per-row unit count — `clusters.unit_count` holds the cluster total, but nothing records how that total splits across bedroom counts.
+
+### What I propose instead
+
+Two additive, nullable columns:
+
+- `clusters.amenities text[]` — same pattern as the existing `clusters.facade_styles text[]`. A flat list of on-site amenity names (e.g. `{'Grand Lawn','Petting Zoo & Animal Farm','Hydroponics Greenhouse', ...}`), not a richer structure with descriptions — matches how `facade_styles` already stores comparable enumerable lists.
+- `unit_types.unit_count int` — the count of units of that specific bedroom type within the cluster (e.g. Farm Gardens 4-bed = 79, 5-bed = 67), independent of and summing to `clusters.unit_count`.
+
+Both are nullable, additive, and require no backfill — existing rows simply stay null until populated, same posture as every other optional column in these tables.
+
+### Why
+
+Doc 7 Batch 001 (Farm Gardens PDF export) has real, sourced values for both — the brochure/cluster-map amenity list and the 79×4-bed / 67×5-bed split from the factsheet — with nowhere in the schema to put them. Without these columns the facts either get force-fit into free-text `positioning` (which Ray has asked to leave unchanged) or `notes` (loses structure, can't be queried or rendered as a list on cluster pages), or simply stay unrecorded despite being verified and sourced.
+
+### Vision test
+
+Doc 3 §1: "every fact carries a source, a confidence level." An amenity list and a unit-type split are exactly the kind of concrete, verifiable facts the site exists to publish accurately — currently there's no structured place for either.
+
+### Cost if approved
+
+Two columns in `docs/0001_init.sql`, mirrored to `supabase/migrations/0001_init.sql`, a `database.ts` regen, and one small seed/Doc 1 update per cluster that has the data. No new tables, no new dependency, no change to existing rows.
+
+### Cost if rejected
+
+Farm Gardens' amenity list and unit split stay unrecorded or get force-fit into a free-text field where they can't be queried, rendered as a structured list, or compared across clusters the way `facade_styles` already is.
+
+### Risk
+
+Low — both columns are additive and nullable, same shape as `facade_styles`. Main risk is scope creep if `amenities` becomes a place for content that should really live in the `places` table (shared, addressable amenities like Golden Beach); this proposal is scoped to cluster-internal, non-addressable amenities only (petting zoo, hydroponics greenhouse, desert majlis, etc.), not a replacement for `places`.
+
+---
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-08
+**Notes:** Both columns approved as proposed — plain `text[]` for amenities (no richer structure), `unit_count` on `unit_types` independent of `clusters.unit_count`. Migration execution against the live schema (docs/0001_init.sql, supabase/migrations, database.ts regen, `supabase db push`) is a separate step requiring its own go-ahead before touching the live database — not yet authorized to run.
+
+---
