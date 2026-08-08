@@ -146,3 +146,67 @@ Either (a) the build stays broken on `generateStaticParams` paths, or (b) every 
 **Notes:** Keep `createAnonClient` for public reads / SSG. Cookie-less anon client is the correct shape; reversing would re-break the build. Carry out as proposed.
 
 ---
+
+## #02 — Scope the Gate 5 `audit_log` assertion to the write it is testing
+
+**Status:** PENDING
+**Raised:** 2026-08-08
+**Category:** B — Better execution
+**Affects step:** Appendix B, Gate 5 (mirrors §5.4)
+**Blocking:** No — Gate 5 passed on 2026-08-07 and the pass is still evidenced.
+
+### What Doc 2 currently specifies
+
+Appendix B, Gate 5:
+
+```
+[x] Create a test question via /admin
+[x] select actor_id from audit_log order by created_at desc limit 1 → not null
+[x] Delete the test row
+```
+
+### What I propose instead
+
+Scope the query to the row the preceding step just created:
+
+```
+[ ] Create a test question via /admin — note the new question id
+[ ] select actor_id from audit_log where record_id = '<that id>' order by created_at desc limit 1 → not null
+[ ] Delete the test row
+```
+
+### Why
+
+`order by created_at desc limit 1` reads whatever landed in `audit_log` most recently, not the admin write the gate is about. That was the same row on 7 August; it is not today.
+
+Evidence from the live database:
+
+- `audit_log` id 196 (`questions` / `insert`) and id 197 (`questions` / `delete`), 2026-08-07 22:37 and 22:38, both carry `actor_id = 32e61677-dad6-4050-994c-f65eff3d2552`. That is the gate's create-then-delete pair, and it is the only pair in the table with an actor at all. **The tick is correct.**
+- Six later rows (ids 199–204, `clusters` / `update` on `eden`, 2026-08-08 09:25–09:44) have `actor_id` null. Their `diff` shows `before` and `after` identical except `updated_at` — no-op touches made outside `/admin`, consistent with revalidation-webhook testing from the SQL editor. Per §2.5 and Doc 6 §3.8, null is correct for those.
+
+So the assertion as written now returns null, on a gate that genuinely passed. An external reviewer re-running it would read that as a false tick. The proposed form stays true whenever it is re-run, because it names the row under test.
+
+This also removes an incentive the current wording creates: the cheapest way to make the line reproduce again is to perform a fresh admin write purely to sit on top of the log, which is theatre rather than verification.
+
+### Vision test
+
+Doc 3 §1: the site "competes on being right", and Doc 3 §9 exists so gates cannot become self-certifying. A gate assertion whose truth depends on unrelated later activity cannot audit anything. This restores the check to what it was meant to prove.
+
+### Cost if approved
+
+Three lines in Appendix B and, if you want them to match, the corresponding §5.4 line. No code, no schema, no re-run of Gate 5 — the existing pass stands on rows 196/197.
+
+### Cost if rejected
+
+The line stays un-reproducible and every future reviewer re-raises it as a suspected false tick, exactly as happened in the 2026-08-08 review. Each round costs a live database audit to clear.
+
+### Risk
+
+Very low, and it is documentation-only. The one real consideration is that this edits a gate assertion after that gate passed — the thing Doc 3 §9 warns about. Which is why it is here rather than applied: the underlying claim ("admin writes record a non-null actor") is unchanged and independently true, and only the query that tests it is being made durable.
+
+---
+**RAY'S DECISION:**
+**Date:**
+**Notes:**
+
+---

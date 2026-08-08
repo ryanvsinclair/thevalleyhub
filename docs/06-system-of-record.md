@@ -84,6 +84,7 @@ This document describes what **exists**. Where the migration file and the live d
 1. `cp .env.example .env.local` and fill keys (see SETUP.md).
 2. `npm install` · `npm run dev` (use `env -u ADMIN_EMAIL` if empty shell var shadows).
 3. Linked Supabase project + seeds already applied remotely for production content.
+4. Install the docs guard: `git config core.hooksPath scripts` (SETUP.md "Docs guard"). Doc 3 §9 states this hook enforces Doc 1–3 ownership, but git never clones hooks, so it is inert in a fresh working copy until wired up. Found unset on 2026-08-08 — which is how an edit to Doc 2's version line reached `c9647d6`. Required **per clone**, not once per project.
 
 ---
 
@@ -225,7 +226,7 @@ Revalidate triggers pass public path args via `TG_ARGV` (e.g. `/`, `/clusters`).
 - **Staff write:** `can_edit()` gated INSERT/UPDATE/DELETE on content tables.
 - **profiles:** `own_profile` SELECT for authenticated.
 - **audit_log:** SELECT for authenticated (`read_audit`); inserts via trigger.
-- **Service role:** available in `createAdminClient()`; **no V1 content writes** (Doc 5 Block B).
+- **Service role:** `createAdminClient()` exists in `src/lib/supabase/admin.ts` but is **imported by nothing** — no V1 code path uses it (Doc 5 Block B). It also has **no table privileges anywhere**: the `grant`s in `0001_init.sql` name only `anon` and `authenticated`, and auto-expose is off, so `service_role` holds just `REFERENCES`/`TRIGGER`/`TRUNCATE` on all 15 public relations. Any read or write through the service-role key fails with `42501 permission denied`, `audit_log` and `clusters` included. **Consequence:** the data cannot be audited through the service key — use the Supabase SQL editor or a direct `postgres` connection. Anyone wiring `createAdminClient()` into a code path must add explicit grants first. Verified live 2026-08-08.
 - **Storage:** bucket `media` with session policies for staff upload (Gate 2).
 
 ### 3.7 Indexes (live)
@@ -430,6 +431,11 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 ---
 
 ## 10. CHANGELOG
+
+### 2026-08-08 — Service-role privileges and docs-guard state corrected
+**Why:** An external review read `permission denied` on `audit_log` and `clusters` via the service-role key and asked whether it was intentional. A live privilege audit showed `service_role` has no DML on any public relation, and §3.6's previous wording ("available in `createAdminClient()`") implied it was usable. Separately, the hook Doc 3 §9 relies on was found uninstalled.  
+**Affects:** §2 fresh clone needs, §3.6 security.  
+**Breaking:** No — documentation only; no schema, grant or code change was made.
 
 ### 2026-08-08 — V1 baseline
 **Why:** Initial release state at Gate 7 (temporary production domain) + Doc 6 first write (Gate 8).  

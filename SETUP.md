@@ -97,6 +97,22 @@ Parked until Ray says the product is ready for public launch. V1 build/deploy on
 
 Then tell the agent to tick Doc 2 §7.2 domain / §7.3 / Gate 7 leftovers and set status accordingly.
 
+## Docs guard — one-time, and again after every fresh clone
+
+`scripts/pre-commit` enforces Doc 3 §9: Docs 1–3 are yours, and an agent may only change Doc 2's status-block fields and checkbox toggles. Git never clones hooks, so the script sits inert in a new working copy until it is wired up:
+
+```bash
+git config core.hooksPath scripts
+```
+
+Verify it took — this must print `scripts`, and a deliberate edit to any prose line in `docs/01`–`docs/03` must be rejected on commit:
+
+```bash
+git config core.hooksPath
+```
+
+This was found unset on 2026-08-08, which is how an edit to Doc 2's version line reached `c9647d6`. It is not a one-time fix for the project, it is a one-time fix **per clone** — anyone who clones this repo starts unprotected until they run the command above.
+
 ## Local verify
 
 ```bash

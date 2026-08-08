@@ -10,14 +10,14 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Doc 6 system of record written · Gate 8 PASSED.
+LAST COMPLETED:   External review fact-checked against live DB · Doc 6 §2/§3.6 corrected · Doc 4 #02 raised.
 SPEC ALIGNED:     Yes
 CURRENT TASK:     None — product iteration by Ray. Doc 3 §11 in force (update Doc 6 with every code/DB change).
-NEXT UP:          When Ray confirms ready to launch → SETUP.md §7 launch checklist
+NEXT UP:          Ray decides Doc 4 #02; then SETUP.md §7 launch checklist when ready
 CONTEXT BLOCK:    C complete
 BLOCKERS:         None
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: Launch checklist parked in SETUP.md §7 [R] (domain, Auth URL, Search Console, Bing, analytics)
+ATTENTION NEEDED: (1) Doc 4 #02 PENDING — Gate 5 audit_log assertion wording, category B, non-blocking. (2) Docs guard hook NOT installed — scripts/pre-commit is not wired to git; Doc 3 §9 assumes it is. (3) Launch checklist parked in SETUP.md §7 [R] (domain, Auth URL, Search Console, Bing, analytics)
 GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · LAUNCH CHECKLIST OPEN
 ```
 
