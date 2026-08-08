@@ -10,14 +10,14 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Doc 4 #02 APPROVED and recorded · unguarded-window retro-check closed (F1 only).
+LAST COMPLETED:   #03 shipped (docs-guard owner bypass) · #02 written into Appendix B Gate 5. Both closed.
 SPEC ALIGNED:     Yes
 CURRENT TASK:     None — product iteration by Ray. Doc 3 §11 in force (update Doc 6 with every code/DB change).
-NEXT UP:          Ray decides #03, then #02 written into Appendix B; SETUP.md §7 launch checklist when ready
+NEXT UP:          SETUP.md §7 launch checklist when Ray confirms ready
 CONTEXT BLOCK:    C complete
 BLOCKERS:         None
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: (1) Doc 4 #03 PENDING — docs guard blocks ALL authors incl. Ray; blocks #02 and any owner doc edit once the hook is installed. (2) #02 APPROVED, not yet written into Appendix B Gate 5 — awaiting #03 or Ray's own edit. (3) Docs guard still NOT installed — run `git config core.hooksPath scripts` (SETUP.md). (4) Launch checklist parked in SETUP.md §7 [R] (domain, Auth URL, Search Console, Bing, analytics)
+ATTENTION NEEDED: (1) Docs guard still NOT installed — run `git config core.hooksPath scripts` (SETUP.md "Docs guard"); until then Docs 1–3 are unprotected. (2) Launch checklist parked in SETUP.md §7 [R] (domain, Auth URL, Search Console, Bing, analytics)
 GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · LAUNCH CHECKLIST OPEN
 ```
 
@@ -479,8 +479,8 @@ and every gate below it is self-certifying until that is resolved.
 [x] npm run build                                                → exit 0
 [x] grep -rn "SERVICE_ROLE" src/ --include=*.ts --include=*.tsx  → only lib/supabase/admin.ts
 [x] head -1 src/lib/supabase/admin.ts                             → import 'server-only'
-[x] Create a test question via /admin
-[x] select actor_id from audit_log order by created_at desc limit 1 → not null
+[x] Create a test question via /admin — note the new question id
+[x] select actor_id from audit_log where record_id = '<that id>' order by created_at desc limit 1 → not null
 [x] Delete the test row
 ```
 
