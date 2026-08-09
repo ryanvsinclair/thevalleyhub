@@ -446,3 +446,108 @@ Low, additive throughout. The one correctness risk (not a breaking one) is the `
 **Notes:** Approved as proposed, including `google_place_id` and `profiles.unit_id`. Confirmed: cluster-specific amenities in `places` are one row per cluster instance (Farm Gardens' pool ≠ Eden's pool), never a shared row. Migration execution against the live schema is a separate step — not yet authorized to run.
 
 ---
+
+## #07 — Add `facade_style_descriptions` table
+
+**Status:** APPROVED
+**Raised:** 2026-08-09
+**Category:** A — Future-proofing
+**Affects step:** `docs/0001_init.sql` / `supabase/migrations/0001_init.sql` schema · `src/types/database.ts` regen
+**Blocking:** No — schema only, no data promotion bundled in
+
+### What Doc 2 currently specifies
+
+`clusters.facade_styles` is a flat `text[]` of style names per cluster (e.g. Farm Gardens: `['Horizon','Earth']`). There is nowhere to attach the descriptive copy for what each named style actually is — the brochure text ("The Earth villas master indoor-outdoor living...") currently has no field to live in.
+
+### What I propose instead
+
+A new, additive table, scoped per cluster rather than as a Valley-wide catalog — styles aren't shared vocabulary across clusters (Eden's May Bell/Iris/Spruce have nothing to do with Farm Gardens' Horizon/Earth):
+
+```sql
+create table facade_style_descriptions (
+  id           uuid primary key default gen_random_uuid(),
+  cluster_id   uuid not null references clusters(id) on delete cascade,
+  style_name   text not null,
+  description  text,
+  sort_order   int not null default 0,
+  confidence   confidence_level not null default 'unverified',
+  source_id    uuid references sources(id) on delete set null,
+  created_at   timestamptz not null default now(),
+  updated_at   timestamptz not null default now(),
+  unique (cluster_id, style_name)
+);
+```
+
+Full standard treatment: RLS enabled, a `pub_fsd` policy mirroring `pub_unit_types`/`pub_units` (visible only once the parent cluster is published), registered in both trigger arrays, an index on `cluster_id`, and included in both grant statements.
+
+Deliberately a new table rather than restructuring `clusters.facade_styles` into something like `jsonb`. That column is already populated for six clusters (Eden, Nara, Talia, Orania, Elora, Lillia) plus Farm Gardens — changing its type now is a real migration against live data, not an empty-column addition. This proposal doesn't touch it at all.
+
+### Why
+
+Ray's stated plan: the Farm Gardens deep-dive (PDF extraction, schema, staged facts) is the template for every cluster, not a one-off. Every cluster with named facade styles will eventually have its own descriptive copy the same way Farm Gardens does now — building the table while it's genuinely empty (zero rows, zero clusters using it yet) is the cheap moment. Waiting until several more clusters are deep-dived under the current flat-array-only approach means retrofitting descriptions onto data that already exists everywhere, instead of just populating a table as each cluster gets done.
+
+### Vision test
+
+Doc 3 §1: "every fact carries a source, a confidence level." Style descriptions are real, sourced content (developer brochure copy) that currently has no structured home — same accuracy differentiator as everything else added today, just one level of detail deeper than the style name itself.
+
+### Cost if approved
+
+One table, five pieces of standard scaffolding (RLS, policy, two triggers, index, grants) — same shape as every other addition today. No backfill, no change to `clusters.facade_styles`.
+
+### Cost if rejected
+
+Style description copy stays unrecorded across every cluster indefinitely, or gets force-fit into `clusters.body` prose where it can't be attributed to a specific style name once a cluster has more than one.
+
+### Risk
+
+Low — additive, empty table, no interaction with populated data.
+
+---
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-09
+**Notes:** Approved specifically because this repeats per-cluster going forward — building it now while empty avoids retrofitting later. Scoped per-cluster, not a Valley-wide style catalog. `clusters.facade_styles` left untouched.
+
+---
+
+## #08 — Add `unit_type` and `facade_style_description` to `media_links.subject_type`
+
+**Status:** APPROVED
+**Raised:** 2026-08-09
+**Category:** B — Better execution
+**Affects step:** `docs/0001_init.sql` / `supabase/migrations/0001_init.sql` schema · `src/types/database.ts` regen
+**Blocking:** No — schema only
+
+### What Doc 2 currently specifies
+
+`media_links.subject_type` allows `('cluster','place','question','status_log','community','post')`. There is no way to link an image to a `unit_types` row or a `facade_style_descriptions` row.
+
+### What I propose instead
+
+Add `'unit_type'` and `'facade_style_description'` to the check constraint. Floor-plan images link to the `unit_types` row they depict (the shared template — e.g. Farm Gardens' 4-bed row), not to every individual `units` row that happens to be that type. Facade-style exterior renders link to the `facade_style_descriptions` row (e.g. Farm Gardens' Horizon row), not to every unit built in that style. `'unit'` (individual physical units) deliberately not added — Ray confirmed no per-physical-unit photos are planned.
+
+### Why
+
+Ray's requirement: every image should be tied to exactly what it depicts. A floor plan is identical across every unit of that type (confirmed on a second cluster, Avelia, which has multiple distinct unit types sharing the same bedroom count — 5BR Medium vs 5BR Premium — each still needs exactly one linked floor plan, at the `unit_types` level, distinguished by `label`). Linking at the `units` level instead would mean the same image duplicated across 79 rows for Farm Gardens alone, worse on every other cluster.
+
+### Vision test
+
+Doc 3 §1: accuracy and specificity — this makes "the image for what the visitor is looking at" a real, non-redundant data relationship instead of an approximation at the cluster level.
+
+### Cost if approved
+
+Two values added to one check constraint. No new table, no backfill, no interaction with existing `media_links` rows (all currently `subject_type = 'cluster'` or similar, unaffected).
+
+### Cost if rejected
+
+Floor-plan and facade-style images can only link at the cluster level — visitors can't see which specific floor plan or style an image belongs to without guessing, and any UI built to show "this unit's floor plan" has no correct query to make.
+
+### Risk
+
+Very low — a check constraint value addition, fully additive.
+
+---
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-09
+**Notes:** Approved as proposed. `'unit'` intentionally excluded — no per-physical-unit photos planned currently.
+
+---

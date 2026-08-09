@@ -90,6 +90,17 @@
   | Arrival Plaza | community | arrival-plaza |
 
   Wellness Centre's constituent sub-features (gym, adult & kids pool decks, restaurant, male & female spa, plunge pools, treatment rooms) are individually decomposable as child `places` rows (`parent_place_id` → Wellness Centre) if/when you want those separately filterable — not staged as separate rows yet since the brochure describes them as one facility, not itemized the way the 19 amenities above are. Each row: `confidence = corroborated`, `source_id = a1000000-0000-4000-8000-000000000001`, `cluster_id` → farm-gardens, `parent_place_id` null, `google_place_id` null (none of these are public Google listings).
+- **New `facade_style_descriptions` rows, `cluster_id = farm-gardens`:** — *depends on Doc 4 #07, approved 2026-08-09, not yet migrated onto the live schema*
+
+  | style_name | description |
+  |---|---|
+  | Horizon | "The peace and stability of these luxurious four and five-bedroom villas can be felt in the air. As the developed area merges into its natural surroundings, the smooth horizontal lines serve as a seamless transition." |
+  | Earth | "The Earth villas master indoor-outdoor living. Developed with a unique relationship with the external natural environment, these modern four and five-bedroom residences create a feeling of privilege in this exceptional setting of a luscious desert farming community." |
+
+  Both: `confidence = corroborated`, `source_id = a1000000-0000-4000-8000-000000000001`.
+- **New `units` rows, `cluster_id = farm-gardens` (146 rows):** — *depends on Doc 4 #06 (`units` table), not yet migrated onto the live schema*
+
+  Full dataset (plot number, facade style, unit type) staged in `farm-gardens-floorplans/units_style_type.csv`. Per row: `unit_number`/`plot_number` = the printed plot number (read from the PDF text layer, reliable), `unit_type_id` → the farm-gardens 4BR or 5BR `unit_types` row (79 / 67 split, exact match to the factsheet), `facade_style` = Horizon or Earth (classified via mode roof-color against the legend swatches, validated with wide margins — min 69.9 — across all 146, with zero ambiguous cases). `lat`/`lng` left null pending future geocoding. `confidence = unverified` for the whole row — `unit_number`/`plot_number` are reliably read as printed text, but `unit_type_id` and `facade_style` are visually classified from a marketing render, not independently sourced, so the row takes the more conservative tier. Three borderline cases (plots 45, 50, 92) were individually confirmed by Ray against the source map and match the classifier exactly.
 - **`clusters.summary` (farm-gardens):** `"Farm Gardens is the original Valley's standalone villa cluster — 146 four- and five-bedroom homes on 8,000–10,000 sq ft plots, built around a working farm-to-table lifestyle with its own hydroponics greenhouse and community farming plots."`
 - **`clusters.body` (farm-gardens):**
   > Farm Gardens sits at the top of the original Valley masterplan, on the Dubai–Al Ain Road. It's a 146-home, gated standalone-villa community built around a farm-style concept: residents can grow and harvest their own food in community garden plots, supported by full-time onsite farmers, a hydroponics greenhouse, and community farming allotments.
@@ -102,13 +113,17 @@
 
 ### Notes
 
-- Unit-split, floor-plan breakdown, and amenities lines above are staged with real values but **cannot be promoted until Doc 4 #05 and #06's columns/tables actually exist on the live schema** — both approved, migration text is written into `docs/0001_init.sql` / `supabase/migrations/0001_init.sql`, but nothing has been pushed to the live Supabase project yet (no credentials in this session; `supabase db push` is a separate, explicitly-authorized step).
+- Unit-split, floor-plan breakdown, amenities, style descriptions, and the 146-row units dataset above are staged with real values but **cannot be promoted until Doc 4 #05, #06, and #07's columns/tables actually exist on the live schema** — all three approved, migration text is written into `docs/0001_init.sql` / `supabase/migrations/0001_init.sql`, but nothing has been pushed to the live Supabase project yet (no credentials in this session; `supabase db push` is a separate, explicitly-authorized step).
+- The 146-row `units` dataset and its classification methodology (plot number via PDF text layer, facade style via mode roof-color, unit type via weighted yellow-tint score) is the template this same process will follow for every future cluster deep-dive per Ray's stated plan — not guaranteed to transfer identically to another cluster's site-plan PDF without re-validating against that cluster's own rendering.
 - `places.category`/`subcategory` values above are my own taxonomy for filter grouping, same caveat as before — not sourced from Emaar material, worth a review pass before treated as final.
 - Drive-time distances from the factsheet (5 min Rugby Sevens Stadium, 8 min Dubai Outlet Mall, 25 min Burj Khalifa/Downtown, 25 min DXB) intentionally left out of this batch per Ray's instruction.
 - `clusters.positioning` intentionally left unchanged per Ray's instruction.
 - The 6 source PDFs themselves (for visitor-facing download) go through `media` / `media_links` — that's a separate, already-existing pipeline, not a Doc 1 fact and not staged here.
+- 8 extracted images (floor plans, site plan, master plan, Horizon/Earth exteriors) live in `farm-gardens-floorplans/`, not yet uploaded to Supabase storage.
 
 ### Promotion
+
+Everything in this batch is written up as ready-to-run SQL: **`farm-gardens-floorplans/farm-gardens-batch-001-promotion.sql`** — cluster update, unit_types corrections, `facade_style_descriptions`, `places` (19 amenities), all 146 `units` rows, and `media`/`media_links` for the 8 images (section 7 requires the images uploaded to the `media` storage bucket first — paths and instructions are in that file). Requires Doc 4 #05/#06/#07/#08 pushed live first, and the media section specifically needs `psql` (uses `\gset` to chain `returning id` into the following insert) rather than a plain SQL string executor.
 
 **Promoted:** [ ]
 **Date:**
