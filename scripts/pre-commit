@@ -2,13 +2,17 @@
 # ============================================================
 # Docs guard — The Valley Record
 #
-# Docs 1-3 are Ray's. The agent may change ONLY:
+# Docs 1-3 are Ray's, and so is docs/clusters/<slug>/reference.md
+# (Doc 4 #09) — same weight as Doc 1, just relocated per-cluster.
+# The agent may change ONLY:
 #   - lines inside the STATUS BLOCK fence in Doc 2
 #   - checkbox toggles: "- [ ] x"  <->  "- [x] x"  (text identical)
 #   - Appendix A table checkbox cells: | [ ] |  <->  | [x] |
 #
-# Everything else in docs/01-*.md, docs/02-*.md, docs/03-*.md
-# is rejected. Docs 4, 5, 6 are the agent's to write and are
+# Everything else in docs/01-*.md, docs/02-*.md, docs/03-*.md, and
+# any docs/clusters/*/reference.md is rejected outright (new or
+# deleted guarded files always fail — see below). Docs 4, 5, 6, and
+# docs/clusters/*/staging.md are the agent's to write and are
 # not guarded.
 #
 # Ray edits his own documents with DOCS_GUARD=off. The agent never
@@ -25,7 +29,7 @@ if [ "${DOCS_GUARD:-}" = "off" ]; then
   exit 0
 fi
 
-GUARDED_RE='^docs/0[123]-.*\.md$'
+GUARDED_RE='^(docs/0[123]-.*\.md|docs/clusters/[^/]+/reference\.md)$'
 FAIL=0
 
 staged=$(git diff --cached --name-only --diff-filter=ACMR | grep -E "$GUARDED_RE" || true)
