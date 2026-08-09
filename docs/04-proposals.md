@@ -551,3 +551,52 @@ Very low — a check constraint value addition, fully additive.
 **Notes:** Approved as proposed. `'unit'` intentionally excluded — no per-physical-unit photos planned currently.
 
 ---
+
+## #09 — Extend the docs guard to cover `docs/clusters/*/reference.md`
+
+**Status:** PENDING
+**Raised:** 2026-08-09
+**Category:** B — Better execution
+**Affects step:** `scripts/pre-commit` (`GUARDED_RE`), Doc 3 §9 enforcement
+**Blocking:** Yes — for committing any of the 7 new `docs/clusters/*/reference.md` files (Eden, Nara, Talia, Orania, Elora, Lillia, Farm Gardens)
+
+### What Doc 2/Doc 3 currently specifies
+
+`scripts/pre-commit` guards `GUARDED_RE='^docs/0[123]-.*\.md$'` — only `docs/01-*.md`, `docs/02-*.md`, `docs/03-*.md` at the top level of `docs/`. Doc 3 §9: "Docs 1, 2 and 3 are Ray's... Docs 4, 5 and 6 are the agent's to write under their own rules," with Doc 7 later added as agent-writable too (#04).
+
+### What I propose instead
+
+Per Ray's decision to migrate Doc 1's Annex C/D into per-cluster files (`docs/clusters/<slug>/reference.md` for facts, `docs/clusters/<slug>/staging.md` for pending facts), the guard needs to protect `reference.md` the same way it protects Doc 1 today — it carries the same weight, just relocated. `staging.md` stays unguarded, mirroring Doc 7.
+
+```bash
+GUARDED_RE='^(docs/0[123]-.*\.md|docs/clusters/[^/]+/reference\.md)$'
+```
+
+No other logic changes — the existing "new or deleted guarded doc is always a violation" rule already does the right thing here: it means the 7 `reference.md` files I've drafted this session need Ray to actually commit them (or explicit `DOCS_GUARD=off`), exactly like every other Doc 1 content change this session has required.
+
+### Why
+
+Without this, `docs/clusters/*/reference.md` would be silently unprotected — I could commit changes to per-cluster facts with no bypass required, defeating the entire point of the guard the moment cluster content moves out of Doc 1's literal filename.
+
+### Vision test
+
+Doc 3 §9's purpose — the spec stays a record of intent the agent doesn't silently rewrite — applies identically regardless of which file cluster facts happen to live in. This preserves that guarantee through the restructure instead of accidentally dropping it.
+
+### Cost if approved
+
+One line changed in `scripts/pre-commit`. No behavior change for any existing guarded or unguarded file — `docs/0[123]-*.md` matches exactly as before, `staging.md` files were never matched and still aren't.
+
+### Cost if rejected
+
+Every future `reference.md` edit — for any of the 7 migrated clusters, or any of the 15+ still to come — ships without the protection Doc 1 has always had, and nobody would notice until it's already happened.
+
+### Risk
+
+Low — same category and same author-tested pattern as proposal #03, which added the `DOCS_GUARD=off` bypass to this same script.
+
+---
+**RAY'S DECISION:**
+**Date:**
+**Notes:**
+
+---

@@ -52,7 +52,9 @@ npx supabase gen types typescript --project-id <ref> > src/types/database.ts
 | 4 Proposals | `docs/04-proposals.md` |
 | 5 Build notes | `docs/05-build-notes.md` |
 | 6 System of record | after V1, on instruction |
-| 7 Data staging | `docs/07-data-staging.md` |
+| 7 Data staging | `docs/07-data-staging.md` (format template; live staging is per-cluster, see below) |
+
+**Per-cluster docs:** `docs/clusters/<slug>/reference.md` (facts — Ray's, guarded once Doc 4's pending guard-script proposal is applied) and `docs/clusters/<slug>/staging.md` (facts pending promotion — agent-writable, follows Doc 7's format). Doc 1's Annex C/D is being slimmed to a Valley-wide overview table pointing into these as each cluster migrates.
 
 ## Deploy
 
