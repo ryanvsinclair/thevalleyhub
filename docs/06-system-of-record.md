@@ -113,7 +113,7 @@ media ←→ media_links (polymorphic subject, incl. unit_type / facade_style_de
 auth.users ──→ profiles (optional unit_id → units)
 ```
 
-**Row counts (live):** clusters 25 · unit_types 29 · units 0 · facade_style_descriptions 0 · places 47 · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 0 · media_links 0 · profiles 1 · redirects 0 · audit_log ~203. Batch 001 promotion not yet run.
+**Row counts (live):** clusters 25 · unit_types 29 · units 146 · facade_style_descriptions 2 · places 66 (47 Valley-wide + 19 Farm Gardens draft amenities) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 8 · media_links 8 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens Batch 001 promoted 2026-08-09.
 
 ### 3.2 Tables
 
@@ -145,12 +145,12 @@ Column lists verified against `information_schema` / generated `src/types/databa
 #### `units`
 - **Purpose:** Individual physical units (distinct from `unit_types` floor-plan templates). Foundation for a future interactive map / per-unit drive times (Doc 4 #06).
 - **Key columns:** `cluster_id`, `unit_type_id`, `unit_number`, `plot_number`, `facade_style`, `lat`/`lng`, `confidence`, `source_id`, …
-- **Live rows:** 0 until Batch 001 promotion. Public read when parent cluster is published (`pub_units`).
+- **Live rows:** 146 (Farm Gardens only, Batch 001). Public read when parent cluster is published (`pub_units`).
 
 #### `facade_style_descriptions`
 - **Purpose:** Per-cluster facade style copy (Horizon/Earth ≠ May Bell/Iris — not a Valley-wide catalog). Doc 4 #07.
 - **Key columns:** `cluster_id`, `style_name` (unique per cluster), `description`, `sort_order`, `confidence`, `source_id`.
-- **Live rows:** 0 until Batch 001 promotion.
+- **Live rows:** 2 (Farm Gardens Horizon + Earth).
 
 #### `places`
 - **Purpose:** Nearby / in-community services, and (from Doc 4 #06) cluster-scoped amenities as their own rows.
@@ -178,7 +178,7 @@ Column lists verified against `information_schema` / generated `src/types/databa
 
 #### `media` / `media_links`
 - **Purpose:** Files in Storage + polymorphic links (`subject_type`: cluster|place|question|status_log|community|post|**unit_type**|**facade_style_description** — Doc 4 #08).
-- **Live rows:** 0. Admin media upload writes `media` + storage bucket `media`. Floor-plan/style images link to the shared template, not duplicated per unit.
+- **Live rows:** 8 (Farm Gardens Batch 001). Floor-plan/style images link to the shared template, not duplicated per unit.
 
 #### `redirects`
 - **Purpose:** Path redirects for middleware.
@@ -445,6 +445,12 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 ---
 
 ## 10. CHANGELOG
+
+### 2026-08-09 — Farm Gardens Batch 001 promoted
+**Why:** Complete the data path after migration 0002: upload 8 images to `media`/`farm-gardens/*`, run promotion SQL (cluster fields, unit_types BUA/plot fix, 2 facade descriptions, 19 draft amenity places, 146 units, 8 media links), update `docs/clusters/farm-gardens/{reference,staging}.md`.
+**Affects:** Live Farm Gardens content; Doc 6 row counts; staging marked promoted. Amenity places remain `draft` pending Ray publish review.
+**Breaking:** No for public UI — app still has no queries/UI for units/facades/cluster places; published cluster fields (`price_from_aed`, `summary`, `body`, corrected `unit_types`) will surface wherever existing cluster queries already read those columns.
+**Still open:** `lib/queries/` + UI + admin for new tables; publish decision on 19 amenity places.
 
 ### 2026-08-09 — Migration 0002 applied live
 **Why:** Ray authorized pushing `supabase/migrations/0002_farm_gardens_units_places.sql` after the Farm Gardens pre-merge review. Applied via Supabase MCP `apply_migration` (name `farm_gardens_units_places`, recorded as `20260809155601`). `src/types/database.ts` regenerated from the live project.

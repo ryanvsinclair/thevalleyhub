@@ -50,7 +50,7 @@
 **Source:** 6 official Emaar PDFs (brochure, factsheet, floor plan, payment plan, master plan, cluster map), originally `/Users/ryansinclair/Downloads/FarmGardens1`, retrieved 2026-08-08. Two files in that folder were exact duplicates (master-plan, factsheet) and were not treated as separate sources.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer) — same source already on the `farm-gardens` cluster row
 **Confidence:** corroborated
-**Status:** staged
+**Status:** promoted
 
 ### Proposed reference.md diff
 
@@ -113,18 +113,17 @@
 
 ### Notes
 
-- Unit-split, floor-plan breakdown, amenities, style descriptions, and the 146-row units dataset above are staged with real values but **cannot be promoted until Doc 4 #05, #06, and #07's columns/tables actually exist on the live schema** — all three approved, migration text is written into `docs/0001_init.sql` / `supabase/migrations/0001_init.sql`, but nothing has been pushed to the live Supabase project yet (no credentials in this session; `supabase db push` is a separate, explicitly-authorized step).
-- The 146-row `units` dataset and its classification methodology (plot number via PDF text layer, facade style via mode roof-color, unit type via weighted yellow-tint score) is the template this same process will follow for every future cluster deep-dive per Ray's stated plan — not guaranteed to transfer identically to another cluster's site-plan PDF without re-validating against that cluster's own rendering.
-- `places.category` values now use Doc 1 Annex L's controlled vocabulary (extended with `recreation, nature, family, farming, wellness, gathering` for this batch — see the pending Doc 1 update). `subcategory` values remain my own, uncontrolled labels for finer filtering, not sourced from Emaar material.
-- Drive-time distances from the factsheet (5 min Rugby Sevens Stadium, 8 min Dubai Outlet Mall, 25 min Burj Khalifa/Downtown, 25 min DXB) intentionally left out of this batch per Ray's instruction.
+- Schema dependencies (#05–#08) were applied live as migration `0002` / `20260809155601` before this promotion.
+- Annex L categories for cluster amenities landed via Doc 4 #10 before promotion.
+- Drive-time distances from the factsheet intentionally left out per Ray's instruction.
 - `positioning` intentionally left unchanged per Ray's instruction.
-- The 6 source PDFs themselves (for visitor-facing download) go through `media` / `media_links` — that's a separate, already-existing pipeline, not a `reference.md` fact and not staged here.
-- 8 extracted images (floor plans, site plan, master plan, Horizon/Earth exteriors) live in `farm-gardens-floorplans/`, not yet uploaded to Supabase storage.
+- 19 amenity `places` rows are **`state = draft`** until Ray reviews taxonomy and publishes them.
+- Local PNG copies remain in `farm-gardens-floorplans/`; canonical files are in the `media` storage bucket.
 
 ### Promotion
 
-Everything in this batch is written up as ready-to-run SQL: **`farm-gardens-floorplans/farm-gardens-batch-001-promotion.sql`** — cluster update, unit_types corrections, `facade_style_descriptions`, `places` (19 amenities), all 146 `units` rows, and `media`/`media_links` for the 8 images (section 7 requires the images uploaded to the `media` storage bucket first — paths and instructions are in that file). Requires Doc 4 #05/#06/#07/#08 pushed live first, and the media section specifically needs `psql` (uses `\gset` to chain `returning id` into the following insert) rather than a plain SQL string executor.
+Ran 2026-08-09: uploaded 8 images to `media`/`farm-gardens/*`, applied promotion SQL (cluster + unit_types + facade_style_descriptions + 19 places + 146 units + media/media_links). Sanity checks: 146 units, 79/67 beds, 72/74 Horizon/Earth, 5-bed `bua_max=5657` / `plot_max=10004`, price `5100000`.
 
-**Promoted:** [ ]
-**Date:**
-**By:**
+**Promoted:** [x]
+**Date:** 2026-08-09
+**By:** Cursor agent (authorized by Ray — “do the rest”) · `reference.md` updated in the same session under `DOCS_GUARD=off`

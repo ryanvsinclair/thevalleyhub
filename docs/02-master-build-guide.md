@@ -10,14 +10,14 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   #03 shipped (docs-guard owner bypass) · #02 written into Appendix B Gate 5. Both closed.
+LAST COMPLETED:   Migration 0002 live · Farm Gardens Batch 001 promoted (146 units, media, corrected BUA).
 SPEC ALIGNED:     Yes
 CURRENT TASK:     None — product iteration by Ray. Doc 3 §11 in force (update Doc 6 with every code/DB change).
-NEXT UP:          SETUP.md §7 launch checklist when Ray confirms ready
+NEXT UP:          App layer for new tables (lib/queries, UI, admin) · Ray publish review on 19 draft Farm Gardens amenity places · SETUP.md §7 launch checklist
 CONTEXT BLOCK:    C complete
 BLOCKERS:         None
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: (1) Docs guard still NOT installed — run `git config core.hooksPath scripts` (SETUP.md "Docs guard"); until then Docs 1–3 are unprotected. (2) Launch checklist parked in SETUP.md §7 [R] (domain, Auth URL, Search Console, Bing, analytics)
+ATTENTION NEEDED: (1) 19 Farm Gardens amenity `places` are draft — publish when taxonomy reviewed. (2) No app queries/UI yet for units / facade_style_descriptions / cluster-scoped places. (3) Launch checklist parked in SETUP.md §7 [R] (domain, Auth URL, Search Console, Bing, analytics)
 GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · LAUNCH CHECKLIST OPEN
 ```
 
