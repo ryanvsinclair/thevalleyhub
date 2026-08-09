@@ -90,9 +90,9 @@ This document describes what **exists**. Where the migration file and the live d
 
 ## 3. DATABASE — AUTHORITATIVE
 
-**Live audit 2026-08-08:** 14 base tables, 1 view (`current_status`), 57 RLS policies in `public`, 3 enums.
+**Live audit 2026-08-09:** 16 base tables, 1 view (`current_status`), 67 RLS policies in `public`, 3 enums. Migration `0002_farm_gardens_units_places` applied (recorded as `20260809155601`).
 
-**Pending, not yet live (2026-08-09):** `supabase/migrations/0002_farm_gardens_units_places.sql` — designed, not applied. Adds `units`, `facade_style_descriptions` tables; `unit_types.unit_count`/`suite_area`/`garage_area`/`balcony_area`/`roof_terrace_area`; `places.cluster_id`/`parent_place_id`/`google_place_id` + an RLS policy change on `pub_places`; `media_links.subject_type` gains `'unit_type'`/`'facade_style_description'`; `profiles.unit_id`. Per this doc's own rule ("where migration file and live database disagree, the database wins"), none of this is reflected in the table list below until it's actually pushed and re-audited. See the Changelog entry below for the full reasoning.
+**Earlier baseline (2026-08-08):** 14 base tables / 57 policies — superseded by the audit above.
 
 ### 3.1 Overview
 
@@ -101,18 +101,19 @@ This document describes what **exists**. Where the migration file and the live d
 **Relationship sketch:**
 
 ```
-sources ←── clusters ──→ unit_types
-   ↑         ↓
-   │      questions ←→ places
+sources ←── clusters ──→ unit_types ──→ units
+   ↑         ↓              ↓
+   │      questions ←→ places (optional cluster_id / parent_place_id)
    │         ↓
    └── status_log
+clusters ──→ facade_style_descriptions
 communities ──→ comparisons
 clusters ──→ posts (optional)
-media ←→ media_links (polymorphic subject)
-auth.users ──→ profiles
+media ←→ media_links (polymorphic subject, incl. unit_type / facade_style_description)
+auth.users ──→ profiles (optional unit_id → units)
 ```
 
-**Row counts (live):** clusters 25 · unit_types 29 · places 47 · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 0 · media_links 0 · profiles 1 · redirects 0 · audit_log ~203.
+**Row counts (live):** clusters 25 · unit_types 29 · units 0 · facade_style_descriptions 0 · places 47 · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 0 · media_links 0 · profiles 1 · redirects 0 · audit_log ~203. Batch 001 promotion not yet run.
 
 ### 3.2 Tables
 
@@ -120,7 +121,7 @@ Column lists verified against `information_schema` / generated `src/types/databa
 
 #### `profiles`
 - **Purpose:** App role for auth users.
-- **Columns:** `id` (uuid PK = `auth.users.id`), `email` (citext), `display_name`, `role` (`app_role`, default `viewer`), `created_at`.
+- **Columns:** `id` (uuid PK = `auth.users.id`), `email` (citext), `display_name`, `role` (`app_role`, default `viewer`), `unit_id` (nullable FK → `units`, Doc 4 #06), `created_at`.
 - **Populated by:** `handle_new_user` on signup / owner bootstrap (Doc 2 §2.4).
 - **Read by:** admin gate indirectly via auth; RLS `own_profile`.
 
@@ -137,14 +138,25 @@ Column lists verified against `information_schema` / generated `src/types/databa
 - **Read:** `lib/queries/clusters.ts`, admin editors.
 
 #### `unit_types`
-- **Purpose:** Bedroom/layout specs per cluster (Annex D only in seed).
-- **Key columns:** `cluster_id`, `bedrooms`, size fields (`bua_*`, `plot_*`), layout flags, `confidence`, `source_id`, …
+- **Purpose:** Bedroom/layout specs per cluster (Annex D / per-cluster `reference.md`).
+- **Key columns:** `cluster_id`, `bedrooms`, size fields (`bua_*`, `plot_*`), floor-plan breakdown (`suite_area`, `garage_area`, `balcony_area`, `roof_terrace_area` — Doc 4 #06), `unit_count` (units of this bedroom type within the cluster — Doc 4 #05), layout flags, `confidence`, `source_id`, …
 - **No** `state` — visibility follows parent cluster publish + ConfidenceGate on specs.
 
+#### `units`
+- **Purpose:** Individual physical units (distinct from `unit_types` floor-plan templates). Foundation for a future interactive map / per-unit drive times (Doc 4 #06).
+- **Key columns:** `cluster_id`, `unit_type_id`, `unit_number`, `plot_number`, `facade_style`, `lat`/`lng`, `confidence`, `source_id`, …
+- **Live rows:** 0 until Batch 001 promotion. Public read when parent cluster is published (`pub_units`).
+
+#### `facade_style_descriptions`
+- **Purpose:** Per-cluster facade style copy (Horizon/Earth ≠ May Bell/Iris — not a Valley-wide catalog). Doc 4 #07.
+- **Key columns:** `cluster_id`, `style_name` (unique per cluster), `description`, `sort_order`, `confidence`, `source_id`.
+- **Live rows:** 0 until Batch 001 promotion.
+
 #### `places`
-- **Purpose:** Nearby / in-community services.
-- **Key columns:** `slug`, `name`, `category`, `subcategory`, `in_community`, geo (`lat`/`lng`), `hours` (jsonb), `drive_minutes`, `drive_verified`, publish + confidence fields.
-- **Read:** `lib/queries/places.ts`; `/living/*` maps categories → place categories.
+- **Purpose:** Nearby / in-community services, and (from Doc 4 #06) cluster-scoped amenities as their own rows.
+- **Key columns:** `slug`, `name`, `category` (Annex L, extended Doc 4 #10), `subcategory`, `cluster_id` (null = Valley-wide), `parent_place_id` (containment), `google_place_id`, `in_community`, geo (`lat`/`lng`), `hours` (jsonb), `drive_minutes`, `drive_verified`, publish + confidence fields.
+- **RLS:** `pub_places` requires published + non-deleted, and if `cluster_id` is set the parent cluster must also be published.
+- **Read:** `lib/queries/places.ts`; `/living/*` maps categories → place categories (cluster-internal categories do not map into living routes).
 
 #### `status_log`
 - **Purpose:** Append-only operational status observations.
@@ -165,8 +177,8 @@ Column lists verified against `information_schema` / generated `src/types/databa
 - **Live rows:** 0. Public `/blog` routes exist; **no admin editor yet** (Doc 5 Block C).
 
 #### `media` / `media_links`
-- **Purpose:** Files in Storage + polymorphic links (`subject_type` includes cluster|place|question|status_log|community|post).
-- **Live rows:** 0. Admin media upload writes `media` + storage bucket `media`.
+- **Purpose:** Files in Storage + polymorphic links (`subject_type`: cluster|place|question|status_log|community|post|**unit_type**|**facade_style_description** — Doc 4 #08).
+- **Live rows:** 0. Admin media upload writes `media` + storage bucket `media`. Floor-plan/style images link to the shared template, not duplicated per unit.
 
 #### `redirects`
 - **Purpose:** Path redirects for middleware.
@@ -434,11 +446,17 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-09 — Migration 0002 applied live
+**Why:** Ray authorized pushing `supabase/migrations/0002_farm_gardens_units_places.sql` after the Farm Gardens pre-merge review. Applied via Supabase MCP `apply_migration` (name `farm_gardens_units_places`, recorded as `20260809155601`). `src/types/database.ts` regenerated from the live project.
+**Affects:** Live schema now 16 base tables / 67 RLS policies; §3 rewritten to match. Batch 001 data still not promoted — `units` and `facade_style_descriptions` are empty; Farm Gardens `unit_types` still carry the pre-fix BUA error until the promotion SQL runs.
+**Breaking:** No for the public site — `src/` still queries the old surface; new columns/tables are additive and unused by app code. Admin/media paths that insert into `media_links` may now use the extended `subject_type` check.
+**Still open:** image upload, Batch 001 promotion SQL, `lib/queries/` + UI + admin for the new tables.
+
 ### 2026-08-09 — Farm Gardens deep-dive: schema designed (#05–#08, #10), docs restructured per-cluster (#09)
 **Why:** PDF extraction of Farm Gardens' official Emaar collateral found real errors and gaps in the live `farm-gardens` cluster/`unit_types` rows (`bua_max` had the plot figure instead of BUA; no price, payment plan, or amenities recorded). Fixing it exposed schema gaps — no home for floor-plan sub-areas, no way to scope `places` to one cluster, no per-unit tracking, no facade-style descriptions — each addressed by its own Doc 4 proposal (#05–#08). Separately, Doc 1's single-file cluster register and Doc 7's single-file staging log were identified as unworkable across the 15+ clusters still to come over the build-out, leading to the `docs/clusters/<slug>/{reference,staging}.md` restructure (#09 extends the docs guard to match).
-**Affects:** `supabase/migrations/0002_farm_gardens_units_places.sql` (**designed, not applied** — see §3 note above); `docs/01-information-reference.md` (Annex C slimmed for 7 migrated clusters, Annex L extended with 6 categories per #10); `docs/03-agent-operating-rules.md` (§2/§9 updated for the per-cluster split); `scripts/pre-commit` (guard extended per #09, applied and tested); new `docs/clusters/` tree (7 clusters migrated: Eden, Nara, Talia, Orania, Elora, Lillia, Farm Gardens); Doc 7 trimmed to a template/pointer.
-**Breaking:** No — schema change is designed but not pushed; no live table, column, or RLS policy has actually changed yet. Doc 1/Doc 3 edits are prose/vocabulary only, no code depends on them. The guard extension was tested (new `reference.md` correctly rejected without `DOCS_GUARD=off`; `staging.md` unaffected) before being applied.
-**Not yet done:** the actual `supabase db push` of migration 0002, the Batch 001 promotion SQL run, `src/types/database.ts` regen, image upload to Supabase storage, and all application code (`lib/queries/`, UI components, `/admin` extensions) — none of today's new data or schema is visible on the live site yet.
+**Affects:** `supabase/migrations/0002_farm_gardens_units_places.sql` (designed here; applied in the changelog entry above); `docs/01-information-reference.md` (Annex C slimmed for 7 migrated clusters, Annex L extended with 6 categories per #10); `docs/03-agent-operating-rules.md` (§2/§9 updated for the per-cluster split); `scripts/pre-commit` (guard extended per #09, applied and tested); new `docs/clusters/` tree (7 clusters migrated: Eden, Nara, Talia, Orania, Elora, Lillia, Farm Gardens); Doc 7 trimmed to a template/pointer.
+**Breaking:** No at design time. See the apply entry above for the live push.
+**Not yet done at design time:** Batch 001 promotion SQL, image upload, application code (`lib/queries/`, UI, `/admin`).
 
 ### 2026-08-08 — Docs guard given an owner bypass (Doc 4 #03)
 **Why:** `scripts/pre-commit` filters on file path with no author check, so installing it would have locked Ray out of editing his own Docs 1–3 while Doc 3 §9 forbids `--no-verify`. Blocked approved proposal #02, which has to be written into Doc 2 Appendix B.  

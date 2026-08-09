@@ -12,6 +12,31 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.15"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       audit_log: {
@@ -246,6 +271,57 @@ export type Database = {
           },
         ]
       }
+      facade_style_descriptions: {
+        Row: {
+          cluster_id: string
+          confidence: Database["public"]["Enums"]["confidence_level"]
+          created_at: string
+          description: string | null
+          id: string
+          sort_order: number
+          source_id: string | null
+          style_name: string
+          updated_at: string
+        }
+        Insert: {
+          cluster_id: string
+          confidence?: Database["public"]["Enums"]["confidence_level"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          sort_order?: number
+          source_id?: string | null
+          style_name: string
+          updated_at?: string
+        }
+        Update: {
+          cluster_id?: string
+          confidence?: Database["public"]["Enums"]["confidence_level"]
+          created_at?: string
+          description?: string | null
+          id?: string
+          sort_order?: number
+          source_id?: string | null
+          style_name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "facade_style_descriptions_cluster_id_fkey"
+            columns: ["cluster_id"]
+            isOneToOne: false
+            referencedRelation: "clusters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "facade_style_descriptions_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       media: {
         Row: {
           alt_text: string | null
@@ -338,11 +414,13 @@ export type Database = {
         Row: {
           address: string | null
           category: string
+          cluster_id: string | null
           confidence: Database["public"]["Enums"]["confidence_level"]
           created_at: string
           deleted_at: string | null
           drive_minutes: number | null
           drive_verified: boolean
+          google_place_id: string | null
           hours: Json | null
           id: string
           in_community: boolean
@@ -353,6 +431,7 @@ export type Database = {
           name: string
           notes: string | null
           operator: string | null
+          parent_place_id: string | null
           phone: string | null
           slug: string
           sort_order: number
@@ -367,11 +446,13 @@ export type Database = {
         Insert: {
           address?: string | null
           category: string
+          cluster_id?: string | null
           confidence?: Database["public"]["Enums"]["confidence_level"]
           created_at?: string
           deleted_at?: string | null
           drive_minutes?: number | null
           drive_verified?: boolean
+          google_place_id?: string | null
           hours?: Json | null
           id?: string
           in_community?: boolean
@@ -382,6 +463,7 @@ export type Database = {
           name: string
           notes?: string | null
           operator?: string | null
+          parent_place_id?: string | null
           phone?: string | null
           slug: string
           sort_order?: number
@@ -396,11 +478,13 @@ export type Database = {
         Update: {
           address?: string | null
           category?: string
+          cluster_id?: string | null
           confidence?: Database["public"]["Enums"]["confidence_level"]
           created_at?: string
           deleted_at?: string | null
           drive_minutes?: number | null
           drive_verified?: boolean
+          google_place_id?: string | null
           hours?: Json | null
           id?: string
           in_community?: boolean
@@ -411,6 +495,7 @@ export type Database = {
           name?: string
           notes?: string | null
           operator?: string | null
+          parent_place_id?: string | null
           phone?: string | null
           slug?: string
           sort_order?: number
@@ -423,6 +508,20 @@ export type Database = {
           website?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "places_cluster_id_fkey"
+            columns: ["cluster_id"]
+            isOneToOne: false
+            referencedRelation: "clusters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "places_parent_place_id_fkey"
+            columns: ["parent_place_id"]
+            isOneToOne: false
+            referencedRelation: "places"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "places_source_id_fkey"
             columns: ["source_id"]
@@ -498,6 +597,7 @@ export type Database = {
           email: string | null
           id: string
           role: Database["public"]["Enums"]["app_role"]
+          unit_id: string | null
         }
         Insert: {
           created_at?: string
@@ -505,6 +605,7 @@ export type Database = {
           email?: string | null
           id: string
           role?: Database["public"]["Enums"]["app_role"]
+          unit_id?: string | null
         }
         Update: {
           created_at?: string
@@ -512,8 +613,17 @@ export type Database = {
           email?: string | null
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          unit_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       questions: {
         Row: {
@@ -715,6 +825,7 @@ export type Database = {
       }
       unit_types: {
         Row: {
+          balcony_area: number | null
           bedrooms: number
           bua_max: number | null
           bua_min: number | null
@@ -722,6 +833,7 @@ export type Database = {
           confidence: Database["public"]["Enums"]["confidence_level"]
           corner_unit: boolean | null
           created_at: string
+          garage_area: number | null
           ground_floor_bedroom: boolean | null
           id: string
           label: string | null
@@ -731,12 +843,16 @@ export type Database = {
           plot_max: number | null
           plot_min: number | null
           private_pool: boolean | null
+          roof_terrace_area: number | null
           sort_order: number
           source_id: string | null
+          suite_area: number | null
+          unit_count: number | null
           updated_at: string
           verified_at: string | null
         }
         Insert: {
+          balcony_area?: number | null
           bedrooms: number
           bua_max?: number | null
           bua_min?: number | null
@@ -744,6 +860,7 @@ export type Database = {
           confidence?: Database["public"]["Enums"]["confidence_level"]
           corner_unit?: boolean | null
           created_at?: string
+          garage_area?: number | null
           ground_floor_bedroom?: boolean | null
           id?: string
           label?: string | null
@@ -753,12 +870,16 @@ export type Database = {
           plot_max?: number | null
           plot_min?: number | null
           private_pool?: boolean | null
+          roof_terrace_area?: number | null
           sort_order?: number
           source_id?: string | null
+          suite_area?: number | null
+          unit_count?: number | null
           updated_at?: string
           verified_at?: string | null
         }
         Update: {
+          balcony_area?: number | null
           bedrooms?: number
           bua_max?: number | null
           bua_min?: number | null
@@ -766,6 +887,7 @@ export type Database = {
           confidence?: Database["public"]["Enums"]["confidence_level"]
           corner_unit?: boolean | null
           created_at?: string
+          garage_area?: number | null
           ground_floor_bedroom?: boolean | null
           id?: string
           label?: string | null
@@ -775,8 +897,11 @@ export type Database = {
           plot_max?: number | null
           plot_min?: number | null
           private_pool?: boolean | null
+          roof_terrace_area?: number | null
           sort_order?: number
           source_id?: string | null
+          suite_area?: number | null
+          unit_count?: number | null
           updated_at?: string
           verified_at?: string | null
         }
@@ -793,6 +918,79 @@ export type Database = {
             columns: ["source_id"]
             isOneToOne: false
             referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      units: {
+        Row: {
+          cluster_id: string
+          confidence: Database["public"]["Enums"]["confidence_level"]
+          created_at: string
+          facade_style: string | null
+          id: string
+          lat: number | null
+          lng: number | null
+          notes: string | null
+          plot_number: number | null
+          sort_order: number
+          source_id: string | null
+          unit_number: string
+          unit_type_id: string
+          updated_at: string
+        }
+        Insert: {
+          cluster_id: string
+          confidence?: Database["public"]["Enums"]["confidence_level"]
+          created_at?: string
+          facade_style?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          notes?: string | null
+          plot_number?: number | null
+          sort_order?: number
+          source_id?: string | null
+          unit_number: string
+          unit_type_id: string
+          updated_at?: string
+        }
+        Update: {
+          cluster_id?: string
+          confidence?: Database["public"]["Enums"]["confidence_level"]
+          created_at?: string
+          facade_style?: string | null
+          id?: string
+          lat?: number | null
+          lng?: number | null
+          notes?: string | null
+          plot_number?: number | null
+          sort_order?: number
+          source_id?: string | null
+          unit_number?: string
+          unit_type_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "units_cluster_id_fkey"
+            columns: ["cluster_id"]
+            isOneToOne: false
+            referencedRelation: "clusters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "units_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "units_unit_type_id_fkey"
+            columns: ["unit_type_id"]
+            isOneToOne: false
+            referencedRelation: "unit_types"
             referencedColumns: ["id"]
           },
         ]
@@ -949,6 +1147,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       app_role: ["owner", "editor", "viewer"],
