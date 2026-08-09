@@ -454,7 +454,7 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 **Why:** Doc 4 #11 APPROVED. Surface post-`0002` cluster depth on the public cluster page and in admin without hardcoding Farm Gardens or reading `units`.
 **Affects:** `src/lib/queries/clusters.ts` (facades, published cluster places, media helpers); `src/app/(public)/clusters/[slug]/page.tsx` (payment plan, unit-type count/areas when present, plans/floor plans/facades/amenities sections); `src/lib/schema.ts` (unit_type breakdown, facade fields, media link fields, Annex L #10 categories on zod); `src/lib/admin/actions.ts` + `/admin/clusters/[id]`, `/admin/places/[id]`, `/admin/media`; Doc 8 checkboxes; README Doc 8 row.
 **Breaking:** No. Draft amenities stay hidden until published. Units/map still deferred (Doc 8 Appendix C).
-**Still open:** Gate D3 admin write smoke (edit a unit_type area in `/admin` once); Ray publish review on 19 Farm Gardens amenity places; place-*create* action not added (set `cluster_id` on existing rows).
+**Still open:** Ray publish review on 19 Farm Gardens amenity places; place-*create* action not added (set `cluster_id` on existing rows). Gate D3 admin smoke confirmed by Ray 2026-08-09.
 
 ### 2026-08-09 — Farm Gardens Batch 001 promoted
 **Why:** Complete the data path after migration 0002: upload 8 images to `media`/`farm-gardens/*`, run promotion SQL (cluster fields, unit_types BUA/plot fix, 2 facade descriptions, 19 draft amenity places, 146 units, 8 media links), update `docs/clusters/farm-gardens/{reference,staging}.md`.

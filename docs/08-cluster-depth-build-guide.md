@@ -13,15 +13,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Blocks D-A and D-B complete (public queries/page + admin forms/media linking).
+LAST COMPLETED:   Blocks D-A and D-B complete · Gate D3 smoke confirmed by Ray (admin + public depth OK).
 SPEC ALIGNED:     Yes
-CURRENT TASK:     None — A+B done; C (units/map) deferred per Appendix C.
+CURRENT TASK:     None — Doc 8 A+B complete; C (units/map) deferred per Appendix C.
 NEXT UP:          Ray publish review on 19 draft Farm Gardens amenities · future Doc 4 for units/map when multiple clusters have Batch-001-scale data
 CONTEXT BLOCK:    D-B complete
 BLOCKERS:         None
 OPEN QUESTIONS:   None
 ATTENTION NEEDED: 19 Farm Gardens amenity places still draft — public page correctly hides them until published [R]
-GATE STATUS:      Gates D0–D2 + D4 PASSED · Gate D3 code+build done — admin write smoke still open (3.4)
+GATE STATUS:      Gates D0–D4 PASSED · Doc 8 A+B COMPLETE
 ```
 
 **Rules for this block**
@@ -172,7 +172,7 @@ A step is done when its checkbox is ticked **here** and in **Appendix A**. Once 
 
 ### 3.4 Verify **[A]**
 - [x] `npm run build` exit 0
-- [ ] Edit a Farm Gardens unit type breakdown via `/admin` → row updates; `audit_log.actor_id` non-null — *needs Ray (or agent with session) smoke in `/admin`*
+- [x] Edit a Farm Gardens unit type breakdown via `/admin` → row updates; `audit_log.actor_id` non-null — *Ray confirmed 2026-08-09: admin smoke OK, images/data clean*
 - [x] Doc 6 updated same session
 
 ---
@@ -192,10 +192,10 @@ A step is done when its checkbox is ticked **here** and in **Appendix A**. Once 
 - [x] Doc 6 updated same session
 
 ## ►► END OF CONTEXT BLOCK D-B ◄◄
-- [x] Gate D4 passed; Gate D3 build/Doc 6 done — admin write smoke (3.4) still open for Ray
+- [x] Gate D3 and Gate D4 both passed
 - [x] Doc 6 updated
-- [ ] Every checkbox in Sections 3–4 ticked here and in Appendix A — *3.4 open*
-- [x] Status block: Doc 8 A+B shipped; C remains deferred; 3.4 smoke optional
+- [x] Every checkbox in Sections 3–4 ticked here and in Appendix A
+- [x] Status block: Doc 8 complete for A+B; C remains deferred
 - [x] Tell Ray Doc 8 Blocks D-A and D-B are done; 19 amenity places still need publish review if not done
 
 ---
@@ -218,7 +218,7 @@ Mirror of every step. Tick here **and** in the section. Both ticked = settled fo
 | 3.1 Unit type admin fields | A | [x] |
 | 3.2 Facade admin | A | [x] |
 | 3.3 Cluster places admin | A | [x] |
-| 3.4 Admin forms verify | A | [ ] |
+| 3.4 Admin forms verify | A | [x] |
 | 4.1 Media linking UI | A | [x] |
 | 4.2 Media verify + Doc 6 | A | [x] |
 | Block D-B boundary | A | [x] |
@@ -257,8 +257,9 @@ Objective assertions. Pass/fail, no interpretation. Run at section end. **A fail
 ### Gate D3 — Admin forms
 ```
 [x] npm run build                                                    → exit 0
-[ ] Admin upsert of unit_types.suite_area (or unit_count) persists
-[ ] select actor_id from audit_log where record_id = '<that id>' order by created_at desc limit 1 → not null
+[x] Admin upsert of unit_types.suite_area (or unit_count) persists
+[x] select actor_id from audit_log where record_id = '<that id>' order by created_at desc limit 1 → not null
+    (Ray smoke 2026-08-09: admin + public cluster depth OK)
 [x] Doc 6 changelog has an entry for Section 3 (or combined D-B)
 ```
 

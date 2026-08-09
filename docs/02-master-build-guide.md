@@ -10,15 +10,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Doc 8 Blocks D-A + D-B shipped (public cluster depth + admin forms/media linking). Doc 4 #11 APPROVED.
+LAST COMPLETED:   Doc 8 A+B complete · Gates D0–D4 passed (Ray smoke confirmed).
 SPEC ALIGNED:     Yes
-CURRENT TASK:     None — Doc 8 A+B complete. Doc 3 §11 in force.
+CURRENT TASK:     None — product iteration by Ray. Doc 3 §11 in force.
 NEXT UP:          Ray publish review on 19 draft Farm Gardens amenity places · SETUP.md §7 launch checklist · units/map only via a future Doc 4 (not #11)
 CONTEXT BLOCK:    C complete · Doc 8 D-A and D-B complete
 BLOCKERS:         None
 OPEN QUESTIONS:   None
 ATTENTION NEEDED: (1) 19 Farm Gardens amenity `places` remain draft — publish when ready [R]. (2) Launch checklist parked in SETUP.md §7 [R]
-GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · Doc 8 D-A/D-B shipped (D3 admin smoke optional)
+GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · Doc 8 A+B COMPLETE (D0–D4)
 ```
 
 **Rules for this block**
