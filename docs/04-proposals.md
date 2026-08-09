@@ -369,3 +369,80 @@ Low — both columns are additive and nullable, same shape as `facade_styles`. M
 **Notes:** Both columns approved as proposed — plain `text[]` for amenities (no richer structure), `unit_count` on `unit_types` independent of `clusters.unit_count`. Migration execution against the live schema (docs/0001_init.sql, supabase/migrations, database.ts regen, `supabase db push`) is a separate step requiring its own go-ahead before touching the live database — not yet authorized to run.
 
 ---
+
+## #06 — Places unification (cluster-scoped amenities), unit floor-plan breakdown, and individual units
+
+**Status:** APPROVED
+**Raised:** 2026-08-09
+**Category:** A — Future-proofing
+**Affects step:** `docs/0001_init.sql` / `supabase/migrations/0001_init.sql` schema · `src/types/database.ts` regen
+**Blocking:** No — schema only, no data promotion bundled in
+
+### What Doc 2 currently specifies
+
+`unit_types` has no per-bedroom-type unit count and no floor-plan sub-area breakdown. `places` is Valley-wide only — no way to scope a place to one cluster or express that one place contains others. There is no table for individual physical units, no way to record which facade style a specific unit has, and no way to link a resident's profile to their own unit.
+
+### What I propose instead
+
+**`unit_types` — 4 new nullable columns** (`unit_count` already covered by approved #05, not repeated here):
+- `suite_area int`, `garage_area int`, `balcony_area int`, `roof_terrace_area int` — the floor-plan breakdown; suite + garage + balcony sums to the existing `bua_min`/`bua_max` total.
+
+**`places` — 3 new nullable columns + one RLS fix:**
+- `cluster_id uuid references clusters(id)` — scopes a place to one cluster; null = Valley-wide (Golden Beach, the Pavilion, Dubai Outlet Mall unchanged)
+- `parent_place_id uuid references places(id)` (self-referencing) — containment: the Pavilion → Monoprix, a cluster's Wellness Centre → its Gym/Spa/Restaurant
+- `google_place_id text` — links to Google's Places API where a public listing exists
+- RLS: `pub_places` policy updated so a place tied to a `cluster_id` also requires that cluster's own `state = 'published'` — closes the gap where a cluster-scoped place could otherwise leak before its parent cluster does (mirrors how `pub_unit_types` already works)
+
+This is also where the earlier `amenities`/`cluster_amenities` catalog+join idea is formally dropped — cluster-specific amenities become `places` rows (`cluster_id` set) instead, each cluster's instance its own row with its own photos (e.g. Farm Gardens' pool and Eden's pool are separate rows, not one shared "Pool" row), sharing only a `category`/`subcategory` value for cross-cluster filtering.
+
+**New table `units`** — individual physical units, distinct from `unit_types` (which stays a floor-plan template):
+
+```sql
+create table units (
+  id             uuid primary key default gen_random_uuid(),
+  cluster_id     uuid not null references clusters(id),
+  unit_type_id   uuid not null references unit_types(id),
+  unit_number    text not null,        -- "403"
+  plot_number    int,                  -- ties to the numbered site plan
+  facade_style   text,                 -- which of the cluster's facade_styles this unit has
+  lat            numeric(9,6),
+  lng            numeric(9,6),
+  notes          text,
+  sort_order     int not null default 0,
+  confidence     confidence_level not null default 'unverified',
+  source_id      uuid references sources(id) on delete set null,
+  created_at     timestamptz not null default now(),
+  updated_at     timestamptz not null default now()
+);
+```
+Plus the full standard treatment every other table gets: RLS enabled, a `pub_units` public-read policy (same open pattern as everything else — coordinates aren't sensitive), registered in both the `updated_at` and audit trigger arrays, and an index on `(cluster_id, unit_type_id)`. `facade_style` isn't database-validated against the parent cluster's `facade_styles` array — kept as free text, consistent with everything else in this schema relying on review discipline rather than a hard constraint.
+
+**`profiles` — 1 new nullable column:**
+- `unit_id uuid references units(id)` — a resident's own unit, protected automatically by the existing `own_profile` RLS policy (`id = auth.uid()`), so only a user can see their own unit link.
+
+### Why
+
+Floor-plan breakdown figures (suite/garage/balcony/roof terrace) have no columns to live in today. Cluster-specific amenities need per-instance photos and containment (a Wellness Centre containing a Gym, Spa, Restaurant) that a shared catalog+join table can't give cleanly — `places` already solves both, since it's already wired to `media_links` for photos. Individual units are the foundation for the planned interactive map and personalized, per-address drive times. `facade_style` per unit records which specific style was actually built where, since the cluster-level `facade_styles` list can't express that.
+
+### Vision test
+
+Doc 3 §1: "an offline-capable map for navigating between clusters and nearby services," and the site's broader goal of being the definitive source for concrete development detail — individual units with coordinates and facade styles is a direct, structural step toward both.
+
+### Cost if approved
+
+Four columns on `unit_types`, three columns + one policy edit on `places`, one new table with the standard five-piece scaffolding (RLS, policy, two triggers, index), one column on `profiles`. All additive, all nullable, no backfill required, no existing row changes shape. `database.ts` regen required after push.
+
+### Cost if rejected
+
+Floor-plan breakdown, cluster-specific amenity photos/containment, individual unit tracking, and the future interactive map all stay unbuildable on the current schema.
+
+### Risk
+
+Low, additive throughout. The one correctness risk (not a breaking one) is the `places` RLS gap if the cluster-state check is left out — flagged and included in this proposal specifically so it doesn't get missed.
+
+---
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-09
+**Notes:** Approved as proposed, including `google_place_id` and `profiles.unit_id`. Confirmed: cluster-specific amenities in `places` are one row per cluster instance (Farm Gardens' pool ≠ Eden's pool), never a shared row. Migration execution against the live schema is a separate step — not yet authorized to run.
+
+---
