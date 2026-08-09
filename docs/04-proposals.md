@@ -554,7 +554,7 @@ Very low — a check constraint value addition, fully additive.
 
 ## #09 — Extend the docs guard to cover `docs/clusters/*/reference.md`
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-09
 **Category:** B — Better execution
 **Affects step:** `scripts/pre-commit` (`GUARDED_RE`), Doc 3 §9 enforcement
@@ -595,8 +595,8 @@ Every future `reference.md` edit — for any of the 7 migrated clusters, or any 
 Low — same category and same author-tested pattern as proposal #03, which added the `DOCS_GUARD=off` bypass to this same script.
 
 ---
-**RAY'S DECISION:**
-**Date:**
-**Notes:**
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-09
+**Notes:** Approved as proposed.
 
 ---
