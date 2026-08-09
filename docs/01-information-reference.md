@@ -15,7 +15,8 @@
 |---|---|
 | Community-level facts | Annex A |
 | Masterplan amenity names and sizes | Annex B |
-| Cluster list, specs, handover | Annex C |
+| Cluster list, specs, handover (overview only) | Annex C |
+| Full detail on a specific cluster | `docs/clusters/<slug>/reference.md` |
 | Unit types, sizes, plots | Annex D |
 | Places: coordinates, hours, phone | Annex E |
 | Development timeline | Annex F |
@@ -88,26 +89,32 @@ All figures from Emaar's own community page. Broker sites circulate stale number
 
 ### C.1 Original Valley clusters (12)
 
+**Migrated to `docs/clusters/<slug>/reference.md`** (2026-08-09) — Eden, Nara, Talia, Orania, Elora, Lillia, Farm Gardens. Overview only below; full detail (facade styles, positioning, unit types, and for Farm Gardens the in-progress Batch 001 corrections) lives in each cluster's reference file.
+
+| slug | name | phase | product_type | unit_count | state | confidence | reference |
+|---|---|---|---|---|---|---|---|
+| `eden` | Eden | 1 | townhouse | 362 | published | corroborated | [`docs/clusters/eden/reference.md`](clusters/eden/reference.md) |
+| `nara` | Nara | 1 | townhouse | 372 | published | corroborated | [`docs/clusters/nara/reference.md`](clusters/nara/reference.md) |
+| `talia` | Talia | 1 | townhouse | 330 | published | corroborated | [`docs/clusters/talia/reference.md`](clusters/talia/reference.md) |
+| `orania` | Orania | 1 | townhouse | 308 | published | corroborated | [`docs/clusters/orania/reference.md`](clusters/orania/reference.md) |
+| `elora` | Elora | 1 | townhouse | 430 | published | corroborated | [`docs/clusters/elora/reference.md`](clusters/elora/reference.md) |
+| `lillia` | Lillia | 1 | townhouse | null | published | unverified | [`docs/clusters/lillia/reference.md`](clusters/lillia/reference.md) |
+| `farm-gardens` | Farm Gardens | 1 | villa | 146 | published | corroborated | [`docs/clusters/farm-gardens/reference.md`](clusters/farm-gardens/reference.md) |
+
+**Not yet migrated** — still full detail here, same as before:
+
 | slug | name | phase | product_type | unit_count | facade_styles | single_row | handover_actual | handover_target | confidence |
 |---|---|---|---|---|---|---|---|---|---|
-| `eden` | Eden | 1 | townhouse | 362 | May Bell, Iris, Spruce | null | 2023-11-01 | — | corroborated |
-| `nara` | Nara | 1 | townhouse | 372 | Aston, Palma, Charm | true | 2024-12-01 | — | corroborated |
-| `talia` | Talia | 1 | townhouse | 330 | Pharo, Cyrus, Elio | null | 2025-03-01 | — | corroborated |
-| `orania` | Orania | 1 | townhouse | 308 | — | true | **null** | 2025-12-31 | corroborated |
-| `elora` | Elora | 1 | townhouse | 430 | Moon, Mysk | true | null | 2026-09-30 | corroborated |
-| `lillia` | Lillia | 1 | townhouse | null | Jade, Pearl | true | null | 2027-03-31 | unverified |
 | `nima` | Nima | 1 | townhouse | null | null | null | null | null | unverified |
 | `elva` | Elva | 1 | townhouse | null | null | null | null | **CONFLICT** | unverified |
 | `rivana` | Rivana | 1 | twin_villa | null | null | null | null | null | unverified |
 | `alana` | Alana | 1 | twin_villa | null | null | null | null | 2027-06-30 | unverified |
-| `farm-gardens` | Farm Gardens | 1 | villa | 146 | Horizon, Earth | null | null | 2026-09-30 | corroborated |
 | `farm-grove` | Farm Grove | 1 | villa | 482 | null | null | null | 2028-12-31 | corroborated |
 
-**Orania:** target was Q4 2025 and is now past. Completion unconfirmed. Leave `handover_actual` null.
 **Elva:** sources say Q3 2028 and Q4 2028. Leave `handover_target` null, flag.
 **Farm Grove phase:** may belong to phase 2. Set `phase = 1`, note the uncertainty in `notes`.
 
-`plex_config` for Orania: `43 clusters in 4, 6, 8 and 10-plex rows`
+(Orania's completion-status note and `plex_config` moved to `docs/clusters/orania/reference.md`.)
 
 ### C.2 Valley 2 clusters (11) — all `state = 'draft'`
 
@@ -138,16 +145,11 @@ Rivera `unit_count` = 378 (corroborated).
 
 ### C.4 Positioning text (approved, for `positioning` field)
 
-- **Eden** — the only genuinely mature cluster. Delivered 2023, grown-in landscaping, established resident base, direct Golden Beach access. Three facade styles.
-- **Nara** — the value entry point. Smallest footprints, lowest price, every home single-row with no back-to-back neighbours.
-- **Talia** — same footprint as Nara; the difference is location. Closest of the early clusters to Golden Beach, Town Centre and Sports Village. Best walkability.
-- **Orania** — the layout-choice cluster. 43 clusters across four plex configurations, widest variety of orientation and plot shape. No back-to-back units.
-- **Elora** — meaningfully larger 3-bed than the earlier clusters; the floor starts where they peak. All 430 units single-row, every home a corner or end unit.
-- **Lillia** — largest 3-bed in the original Valley. 3-beds are middle units, 4-beds are corners with a ground-floor bedroom and larger L-shaped garden.
+Eden, Nara, Talia, Orania, Elora, Lillia, and Farm Gardens' positioning text moved to their `docs/clusters/<slug>/reference.md` (content unchanged in the move — Farm Gardens' remains exactly as Ray specified, untouched by Batch 001 too).
+
 - **Elva** — largest townhouse 4-bed and the only cluster publishing plot figures. Genuine outdoor space rather than a strip of garden.
 - **Rivana** — widest bedroom range at The Valley. Its 3-bed is larger than the biggest 4-bed townhouse.
 - **Alana** — the premium twin villa. Ground + 2, full published plot matrix.
-- **Farm Gardens** — top of the original Valley. 146 homes only, farm-style landscaping, hydroponics greenhouse, community gardening.
 - **Farm Grove** — the accessible standalone, set among ghaf trees.
 
 ---
@@ -156,20 +158,10 @@ Rivera `unit_count` = 378 (corroborated).
 
 Only rows with data. Everything absent is a genuine gap — do not invent.
 
+**Eden, Nara, Talia, Orania, Elora, Lillia, and Farm Gardens' unit type rows moved to their `docs/clusters/<slug>/reference.md`** (values unchanged — Farm Gardens' still shows the known `bua_max` error there, pending Batch 001 promotion).
+
 | cluster | bedrooms | bua_min | bua_max | plot_min | plot_max | layout | notes | confidence |
 |---|---|---|---|---|---|---|---|---|
-| eden | 3 | 1929 | 2057 | — | — | — | — | corroborated |
-| eden | 4 | 2311 | 2336 | — | — | — | — | corroborated |
-| nara | 3 | 1866 | — | — | — | — | — | corroborated |
-| nara | 4 | — | 2249 | — | — | — | — | corroborated |
-| talia | 3 | 1862 | — | — | — | — | — | corroborated |
-| talia | 4 | — | 2248 | — | — | — | — | corroborated |
-| orania | 3 | 1898 | — | — | — | — | — | corroborated |
-| orania | 4 | — | 2345 | — | — | — | — | corroborated |
-| elora | 3 | 2095 | 2179 | — | — | — | — | corroborated |
-| elora | 4 | 2586 | 2608 | — | — | — | — | corroborated |
-| lillia | 3 | 2344 | — | — | — | G+1 | Middle units. Maid's room ground floor | unverified |
-| lillia | 4 | — | — | — | — | G+1 | Corner units. Ground-floor bedroom + maid's room. L-shaped garden | unverified |
 | elva | 3 | 2241 | 2416 | 1938 | 1961 | — | Saleable area | unverified |
 | elva | 4 | 2706 | 2711 | 2968 | 3376 | — | BUA | unverified |
 | rivana | 3 | 3152 | — | — | — | — | — | unverified |
@@ -177,8 +169,6 @@ Only rows with data. Everything absent is a genuine gap — do not invent.
 | alana | 3 | 3788 | — | 3456 | — | G+2 | — | unverified |
 | alana | 4 | 4157 | — | 4147 | — | G+2 | — | unverified |
 | alana | 5 | 4859 | — | 5096 | — | G+2 | — | unverified |
-| farm-gardens | 4 | 4950 | — | — | — | — | — | corroborated |
-| farm-gardens | 5 | — | 10004 | — | — | — | — | corroborated |
 | farm-grove | 4 | 3741 | — | — | — | — | — | corroborated |
 | farm-grove | 5 | — | 6078 | — | — | — | — | corroborated |
 | avena | 4 | 3685 | 3685 | — | — | — | — | corroborated |

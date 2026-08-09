@@ -25,7 +25,7 @@ Conflicts resolve downward. Higher wins, always.
 |---|---|---|
 | 1 | `src/types/database.ts` (generated) | Column names and types. Absolute. |
 | 2 | `supabase/migrations/0001_init.sql` | Schema structure |
-| 3 | **Doc 1 — Information Reference** | Every fact about The Valley |
+| 3 | **Doc 1 — Information Reference** | Valley-wide facts and the cluster overview table. Per-cluster facts, once migrated, live in `docs/clusters/<slug>/reference.md` at this same rank. |
 | 4 | **Doc 2 — Master Build Guide** | What to build and in what order |
 | 5 | **Doc 3 — this file** | How to behave |
 | 6 | Ray, in conversation | Overrides anything above — but must be written into the relevant doc |
@@ -259,11 +259,13 @@ Saying "this appears wrong, here is why" is always the correct move. Fixing it q
 
 Changing the **document** to match the code is also a silent correction, and a worse one. Correcting code leaves the spec intact as a record of intent; rewriting the spec destroys that record and makes every later gate self-certifying — the work is checked against a description the agent wrote to fit it.
 
-**Docs 1, 2 and 3 are Ray's.** The agent's only permitted writes to them are:
+**Docs 1, 2 and 3 are Ray's**, and so is `docs/clusters/<slug>/reference.md` (Doc 4 #09) — same weight as Doc 1, just relocated per-cluster once a cluster migrates. The agent's only permitted writes to any of them are:
 - Doc 2's status block fields
 - toggling `[ ]` to `[x]` where the surrounding text is otherwise unchanged
 
-Everything else — prose, step descriptions, gate assertions, tables, headings, rules — is Ray's alone, including obvious errors and stale wording. Docs 4, 5 and 6 are the agent's to write under their own rules.
+Everything else — prose, step descriptions, gate assertions, tables, headings, rules — is Ray's alone, including obvious errors and stale wording. Docs 4, 5 and 6, Doc 7 (staging format template), and `docs/clusters/<slug>/staging.md` (per-cluster staging, same rules as Doc 7) are the agent's to write under their own rules.
+
+**Doc 1 / `reference.md` sync:** Doc 1's per-cluster overview table (Annex C) carries exactly 7 fields per migrated cluster — `slug, name, phase, product_type, unit_count, state, confidence`. Nothing else about a cluster is ever duplicated into Doc 1; depth lives only in `reference.md`. Whenever a cluster's `reference.md` changes, check whether any of those 7 fields changed; if so, flag it to Ray so Doc 1's overview row can be updated too (§12). This keeps the check mechanical rather than an open-ended re-read of the whole reference file.
 
 This is enforced by a pre-commit hook. If it rejects a commit, the hook is right. Never use `--no-verify`; never make a document writable to get around it.
 
