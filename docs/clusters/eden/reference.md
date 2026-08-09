@@ -1,8 +1,8 @@
 # Eden — Reference
 
 **Slug:** `eden`
-**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / unit depth promoted from staging Batch 002 on 2026-08-10 (Doc 4 #12).
-**Source:** Relocated from Doc 1 Annex C/D, then Batch 002 (Emaar PDF floor plans + site plan, source `a1000000-0000-4000-8000-000000000001`).
+**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / unit depth from staging Batch 002 (2026-08-10, Doc 4 #12); amenities from Batch 003 (2026-08-10).
+**Source:** Relocated from Doc 1 Annex C/D, then Batch 002–003 (Emaar PDF floor plans + site plan + p15 amenity legend, source `a1000000-0000-4000-8000-000000000001`).
 
 ---
 
@@ -55,6 +55,19 @@ Style is layout-determining here (`unit_types.layout` = `{facade_style}-{label}`
 
 Copy and promo images from Emaar brochure (Batch 002). Floor plans linked per `unit_types` row via `media_links`.
 
+## Amenities (`places`, cluster-scoped)
+
+4 published `places` rows with `cluster_id` → eden (Batch 003). From `EDEN .pdf` page 15 peach-boundary pins only. Categories per Annex L (#10).
+
+| name | category | subcategory |
+|---|---|---|
+| Community Centre | gathering | community-centre |
+| Central Gardens | nature | gardens |
+| Food Trucks | gathering | food-trucks |
+| Kiosks | gathering | kiosks |
+
+Internal **Alley** walkways between townhouse rows are shown on the site plan but not stored as a `places` row. Community Centre interiors are not itemized in the brochure — single parent row only. Pins #1–10 on the same legend sit in The Pavilion (Valley-wide / adjacent), not Eden. Residents also have access to Golden Beach, Town Centre, Sports Village and Kids’ Dale.
+
 ## Units / plexes
 
 362 `units` rows across 43 `plexes` (21×8, 11×10, 6×9, 5×6). Per-unit `bua` / `th_position` / `plex_id` populated. Unit-row confidence: **unverified** (OCR plot numbers + geometrically classified style/type/position — not field-verified). Full CSV: `eden-floorplans/eden-units.csv`.
@@ -65,4 +78,4 @@ None recorded (Eden is the comparison baseline the other original-Valley cluster
 
 ## Staging
 
-See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batch 002 promoted 2026-08-10. Still open from that batch: payments jpeg, plot sizes, amenities, pricing.
+See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batch 002 + Batch 003 (amenities) promoted 2026-08-10. Still open: payments jpeg, plot sizes, pricing; Community Centre interior breakdown if a better source appears.

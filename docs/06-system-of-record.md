@@ -113,7 +113,7 @@ media ←→ media_links (polymorphic subject, incl. unit_type / facade_style_de
 auth.users ──→ profiles (optional unit_id → units)
 ```
 
-**Row counts (live):** clusters 25 · unit_types 42 · units 508 · plexes 43 · facade_style_descriptions 5 · places 66 (47 Valley-wide + 19 Farm Gardens draft amenities) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 30 · media_links 30 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens Batch 001 + Eden Batch 002 promoted. Live schema: **17** base tables / **72** RLS policies (after Doc 4 #12 / migration `0003`).
+**Row counts (live):** clusters 25 · unit_types 42 · units 508 · plexes 43 · facade_style_descriptions 5 · places 70 (47 Valley-wide + 19 Farm Gardens draft amenities + 4 Eden published amenities) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 30 · media_links 30 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens Batch 001 + Eden Batch 002 + Eden Batch 003 promoted. Live schema: **17** base tables / **72** RLS policies (after Doc 4 #12 / migration `0003`).
 
 ### 3.2 Tables
 
@@ -455,11 +455,17 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-10 — Eden Batch 003 amenities promoted
+**Why:** Ray authorized go-live for Eden cluster amenities from brochure page 15 (peach Eden boundary only).
+**Affects:** 4 published `places` (`eden-community-centre`, `eden-central-gardens`, `eden-food-trucks`, `eden-kiosks`); `docs/clusters/eden/{staging,reference}.md`; `eden-floorplans/eden-batch-003-amenities.sql`. Public `/clusters/eden` amenities section via existing Doc 8 published-cluster-places query.
+**Breaking:** No.
+**Still open:** Eden payments/plot/pricing; Community Centre interior breakdown; Pavilion Valley-wide place row; 19 Farm Gardens draft amenities publish review; units/map app surfaces.
+
 ### 2026-08-10 — Doc 4 #12 live + Eden Batch 002 promoted
 **Why:** Ray approved #12 and authorized promote. Apply `0003_eden_plexes_units.sql`, upload 22 Eden images, run `eden-batch-002-promotion.sql`, update Eden `reference.md` / staging, regenerate `src/types/database.ts`.
 **Affects:** Live schema now 17 tables / 72 policies (`plexes`; `unit_types.bathrooms`; `units.bua`/`plex_id`/`th_position`). Eden: 15 unit_types, 43 plexes, 362 units, 3 facades, 22 media+links. Public `/clusters/eden` picks up facades, floor plans, and expanded unit_types via existing Doc 8 queries (no units UI).
 **Breaking:** No for Farm Gardens (new columns nullable / plex null). Eden seed 2-row unit_types replaced by 15 style-specific rows.
-**Still open:** Eden payments/plot/amenities/pricing; units/map app surfaces; optional unit-types table layout column on public page.
+**Still open:** Eden payments/plot/amenities/pricing; units/map app surfaces; optional unit-types table layout column on public page. *(Amenities closed by Batch 003 entry above.)*
 
 ### 2026-08-10 — Eden deep-dive: plex structure schema designed (#12), Batch 002 staged (not yet promoted)
 

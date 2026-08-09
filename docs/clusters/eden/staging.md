@@ -146,10 +146,47 @@ Eden's site plan (`EDEN FLOOR PLAN.pdf` pages 2/3/10/16 — one all-3-styles mas
 
 - Two source-data quirks worth flagging, not corrected: (1) the small ensuite bath on May Bell's 3BR ground floor is labeled "MASTER BATH" in Emaar's own PDF despite sitting next to the Maid's Room, far from the actual Master Bedroom upstairs — almost certainly a copy-paste labeling error in the source file (the equivalent room is correctly labeled "MAID'S BATH" on the Spruce/Iris pages). Doesn't change the bathroom count. (2) Two floor-plan pages (Iris 3BR-A/B, pages 11–12) have a text-extraction corruption bug in the source PDF (character-doubling); bathroom counts for those two were confirmed by rendering and visually reading the floor plan image instead of trusting the extracted text.
 - `EDEN CLUSTER PAYMENTS.jpeg` still not examined — Eden's `handover_actual` is already 2023-11-01 (delivered), so a construction-linked payment plan may not even apply the way it did for Farm Gardens; needs checking before assuming the field applies at all.
-- Plot/land size (`plot_min`/`plot_max`), amenities, `summary`/`body`/`positioning` copy beyond what's already in `reference.md`, and pricing are still not collected — brochure pages beyond 17–22 not yet reviewed.
+- Plot/land size (`plot_min`/`plot_max`), `summary`/`body`/`positioning` copy beyond what's already in `reference.md`, and pricing are still not collected — brochure pages beyond 17–22 not yet reviewed for those. Amenities moved to Batch 003.
 
 ### Promotion
 
 **Promoted:** [x]
 **Date:** 2026-08-10
 **By:** agent (Ray authorized: #12 APPROVED + promote Batch 002). Migration `0003` applied; 22 images uploaded to `media/eden/*`; promotion SQL run; `reference.md` updated. Live sanity: 15 unit_types (sum 362), 43 plexes, 362 units, 3 facades, 22 media + links; style split spruce/iris/may_bell = 190/126/46.
+
+---
+
+## Batch 003 — Eden cluster amenities from site-plan legend (2026-08-10)
+
+**Source:** `EDEN .pdf` page 15 (combined Eden + Pavilion site-plan legend); cross-checked against local `eden-floorplans/eden-cluster-map.jpg`. Retrieval via brochure text extract 2026-08-10.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar PDF)
+**Confidence:** corroborated
+**Status:** promoted
+
+### Proposed reference.md diff
+
+- **New `places` rows, `cluster_id = eden` (4 rows), `state = published`:**
+
+  | name | category | subcategory | brochure pin |
+  |---|---|---|---|
+  | Community Centre | gathering | community-centre | #11 |
+  | Central Gardens | nature | gardens | #12 |
+  | Food Trucks | gathering | food-trucks | #13 |
+  | Kiosks | gathering | kiosks | #14 |
+
+  Each row: `slug = eden-<name>`, `in_community = true`, `parent_place_id` null, `google_place_id` null, `confidence = corroborated`, `source_id` as above, `sort_order` = pin number.
+
+- **Amenities prose for reference:** Eden’s private amenity set is light — the four named facilities above, plus an unnumbered internal **Alley** walkway system between townhouse rows (shown as dots on the site plan; matches “Opens to alley” on style pages). Not staged as a `places` row (fabric, not a named facility). Residents also rely on Valley-wide amenities (Golden Beach, Town Centre, Sports Village, Kids’ Dale) and the adjacent **Pavilion** park.
+
+### Notes
+
+- Page 15 legend covers two boundaries: peach = EDEN, white = The Pavilion. Pins **#1–10** (Bicycle track, Basketball courts, Kids’ play area, Amphitheatre, Edu-scape playground, Multi-purpose lawn, Beach & splash pad, Hammock zone, Zen garden, Observation tower) sit inside the Pavilion boundary — Valley-wide / adjacent, **not** Eden `places`. Zen garden + Observation tower match The Pavilion’s dedicated brochure page almost word-for-word.
+- Community Centre has **no brochure itemization** of interiors (no gym/pool/spa/conference list under pin #11). Site plan shows pool water adjacent to the amenity pad, but that is not staged as a child place until corroborated as a named facility. Leave as one parent row.
+- No new Annex L categories required — `gathering` / `nature` already live from Doc 4 #10.
+- Pavilion itself is still not a Valley-wide `places` row; out of scope for this Eden batch.
+
+### Promotion
+
+**Promoted:** [x]
+**Date:** 2026-08-10
+**By:** agent (Ray authorized: finalize amenities go-live). Promotion SQL `eden-floorplans/eden-batch-003-amenities.sql`; `reference.md` + Doc 6 updated.
