@@ -535,7 +535,9 @@ Expect nulls. Do not fill.
 
 **`questions.topic`** — `basics` · `amenities` · `services` · `connectivity` · `clusters` · `market` · `comparison`
 
-**`places.category`** — `pharmacy` · `clinic` · `hospital` · `dental` · `optical` · `nursery` · `school` · `vet` · `grocery` · `mall` · `salon` · `spa` · `gym` · `fuel` · `mosque`
+**`places.category`** — `pharmacy` · `clinic` · `hospital` · `dental` · `optical` · `nursery` · `school` · `vet` · `grocery` · `mall` · `salon` · `spa` · `gym` · `fuel` · `mosque` · `recreation` · `nature` · `family` · `farming` · `wellness` · `gathering`
+
+The last six (`recreation, nature, family, farming, wellness, gathering`, added 2026-08-09, Doc 4 #10) describe cluster-internal amenities (`places.cluster_id` set) — a different kind of place than the rest of this list, which are all third-party businesses. They don't map into the `living/[category]` route list below; cluster amenities surface on their cluster's own page instead.
 
 **`status_log.amenity_key`** — `town-centre` · `golden-beach` · `sports-village` · `kids-dale` · `pocket-parks` · `pavilion` · `pet-park` · `jogging-trails` · `cycling-tracks`
 

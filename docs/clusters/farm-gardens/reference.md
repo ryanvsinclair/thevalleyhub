@@ -1,7 +1,7 @@
 # Farm Gardens — Reference
 
 **Slug:** `farm-gardens`
-**Status:** DRAFT — migrated content, pending Ray's review and commit (this file is not yet guarded; see Doc 4 proposal for the pending `scripts/pre-commit` update)
+**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09.
 **Source:** Relocated verbatim from Doc 1 Annex C.1/C.4 and Annex D, 2026-08-09. No values changed in the move — this still reflects Doc 1 as it stood *before* today's PDF deep-dive. Batch 001's corrections and additions (price, payment plan, corrected 5-bed BUA, amenities, units, images) are staged separately and have **not** been promoted into this file yet.
 
 ---

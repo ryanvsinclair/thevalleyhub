@@ -1,7 +1,7 @@
 # Nara — Reference
 
 **Slug:** `nara`
-**Status:** DRAFT — migrated content, pending Ray's review and commit (this file is not yet guarded; see Doc 4 proposal for the pending `scripts/pre-commit` update)
+**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09.
 **Source:** Relocated verbatim from Doc 1 Annex C.1/C.4 and Annex D, 2026-08-09. No values changed in the move.
 
 ---
