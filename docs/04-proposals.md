@@ -698,10 +698,10 @@ Low–medium — UI scope creep into units/map or Farm Gardens hardcoding. Mitig
 
 ## #12 — Plex structure (`plexes` table, `units.plex_id`/`th_position`/`bua`), `unit_types.bathrooms`, and the `unit_types.layout` convention
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-10
 **Category:** A — Future-proofing
-**Affects step:** `docs/0001_init.sql` / `supabase/migrations/0001_init.sql` schema · `src/types/database.ts` regen
+**Affects step:** `docs/0001_init.sql` (reference) · `supabase/migrations/0003_eden_plexes_units.sql` · `src/types/database.ts` regen
 **Blocking:** Yes — for Eden Batch 002 (`docs/clusters/eden/staging.md`), all 362 units and 15 `unit_types` rows depend on these columns existing
 
 ### What Doc 2 currently specifies
@@ -757,8 +757,8 @@ Eden's per-unit floor area, bathroom count, and plex/row structure stay unrecord
 Low — entirely additive, nullable, no existing row changes shape. The `unit_types.layout` convention (reusing an existing unused column rather than adding a new one) is a naming/data decision, not a schema risk, but it does mean any future reader of that column needs to know the `'{style}-{letter}'` convention — documented here and in `docs/clusters/eden/staging.md` for that reason.
 
 ---
-**RAY'S DECISION:**
-**Date:**
-**Notes:**
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-10
+**Notes:** Approved as proposed. Mixed 10-plex key-plan template accepted after review; Farm Gardens leaves plex columns null. Proceed with 0003 + Eden Batch 002 promotion.
 
 ---

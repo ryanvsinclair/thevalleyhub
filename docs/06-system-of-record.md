@@ -90,11 +90,9 @@ This document describes what **exists**. Where the migration file and the live d
 
 ## 3. DATABASE — AUTHORITATIVE
 
-**Live audit 2026-08-09:** 16 base tables, 1 view (`current_status`), 67 RLS policies in `public`, 3 enums. Migration `0002_farm_gardens_units_places` applied (recorded as `20260809155601`).
+**Live audit 2026-08-10:** 17 base tables, 1 view (`current_status`), 72 RLS policies in `public`, 3 enums. Migrations `0002` + `0003_eden_plexes_units` (`eden_plexes_units`) applied. Doc 4 #12 APPROVED.
 
-**Pending, not yet live (2026-08-10):** Doc 4 #12 (`plexes` table; `units.bua`/`plex_id`/`th_position`; `unit_types.bathrooms`) — `Status: PENDING`, not yet approved or pushed. Migration drafted at `supabase/migrations/0003_eden_plexes_units.sql`; row counts below do not reflect it.
-
-**Earlier baseline (2026-08-08):** 14 base tables / 57 policies — superseded by the audit above.
+**Earlier baselines:** 2026-08-09 — 16 tables / 67 policies (`0002`); 2026-08-08 — 14 tables / 57 policies.
 
 ### 3.1 Overview
 
@@ -103,9 +101,9 @@ This document describes what **exists**. Where the migration file and the live d
 **Relationship sketch:**
 
 ```
-sources ←── clusters ──→ unit_types ──→ units
-   ↑         ↓              ↓
-   │      questions ←→ places (optional cluster_id / parent_place_id)
+sources ←── clusters ──→ unit_types ──→ units ──→ plexes
+   ↑         ↓              ↓              ↑
+   │      questions ←→ places        units.plex_id
    │         ↓
    └── status_log
 clusters ──→ facade_style_descriptions
@@ -115,7 +113,7 @@ media ←→ media_links (polymorphic subject, incl. unit_type / facade_style_de
 auth.users ──→ profiles (optional unit_id → units)
 ```
 
-**Row counts (live):** clusters 25 · unit_types 29 · units 146 · facade_style_descriptions 2 · places 66 (47 Valley-wide + 19 Farm Gardens draft amenities) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 8 · media_links 8 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens Batch 001 promoted 2026-08-09.
+**Row counts (live):** clusters 25 · unit_types 42 · units 508 · plexes 43 · facade_style_descriptions 5 · places 66 (47 Valley-wide + 19 Farm Gardens draft amenities) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 30 · media_links 30 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens Batch 001 + Eden Batch 002 promoted. Live schema: **17** base tables / **72** RLS policies (after Doc 4 #12 / migration `0003`).
 
 ### 3.2 Tables
 
@@ -141,18 +139,23 @@ Column lists verified against `information_schema` / generated `src/types/databa
 
 #### `unit_types`
 - **Purpose:** Bedroom/layout specs per cluster (Annex D / per-cluster `reference.md`).
-- **Key columns:** `cluster_id`, `bedrooms`, size fields (`bua_*`, `plot_*`), floor-plan breakdown (`suite_area`, `garage_area`, `balcony_area`, `roof_terrace_area` — Doc 4 #06), `unit_count` (units of this bedroom type within the cluster — Doc 4 #05), layout flags, `confidence`, `source_id`, …
+- **Key columns:** `cluster_id`, `bedrooms`, size fields (`bua_*`, `plot_*`), floor-plan breakdown (`suite_area`, `garage_area`, `balcony_area`, `roof_terrace_area` — Doc 4 #06), `unit_count` (Doc 4 #05), `bathrooms` (Doc 4 #12), `layout` (Eden convention `{facade_style}-{label}`), layout flags, `confidence`, `source_id`, …
 - **No** `state` — visibility follows parent cluster publish + ConfidenceGate on specs.
 
 #### `units`
 - **Purpose:** Individual physical units (distinct from `unit_types` floor-plan templates). Foundation for a future interactive map / per-unit drive times (Doc 4 #06).
-- **Key columns:** `cluster_id`, `unit_type_id`, `unit_number`, `plot_number`, `facade_style`, `lat`/`lng`, `confidence`, `source_id`, …
-- **Live rows:** 146 (Farm Gardens only, Batch 001). Public read when parent cluster is published (`pub_units`).
+- **Key columns:** `cluster_id`, `unit_type_id`, `unit_number`, `plot_number`, `facade_style`, `bua`, `plex_id`, `th_position` (Doc 4 #12), `lat`/`lng`, `confidence`, `source_id`, …
+- **Live rows:** 508 (Farm Gardens 146 + Eden 362). Public read when parent cluster is published (`pub_units`). App UI for units still deferred (Doc 8 Appendix C).
+
+#### `plexes`
+- **Purpose:** One physical plex/building row (6/8/9/10-plex townhouse configuration). Doc 4 #12.
+- **Key columns:** `cluster_id`, `plex_size`, `street_side` (`up|down|left|right`), `range_start`/`range_end`, `confidence`, `source_id`.
+- **Live rows:** 43 (Eden only). Null `units.plex_id` for standalone-villa clusters (Farm Gardens).
 
 #### `facade_style_descriptions`
 - **Purpose:** Per-cluster facade style copy (Horizon/Earth ≠ May Bell/Iris — not a Valley-wide catalog). Doc 4 #07.
 - **Key columns:** `cluster_id`, `style_name` (unique per cluster), `description`, `sort_order`, `confidence`, `source_id`.
-- **Live rows:** 2 (Farm Gardens Horizon + Earth). **Admin:** CRUD on `/admin/clusters/[id]` (Doc 8).
+- **Live rows:** 5 (Farm Gardens Horizon + Earth; Eden Spruce + Iris + May Bell). **Admin:** CRUD on `/admin/clusters/[id]` (Doc 8).
 - **Public:** rendered on `/clusters/[slug]` when rows exist; images via `media_links` subject `facade_style_description`.
 
 #### `places`
@@ -181,7 +184,7 @@ Column lists verified against `information_schema` / generated `src/types/databa
 
 #### `media` / `media_links`
 - **Purpose:** Files in Storage + polymorphic links (`subject_type`: cluster|place|question|status_log|community|post|**unit_type**|**facade_style_description** — Doc 4 #08).
-- **Live rows:** 8 (Farm Gardens Batch 001). Floor-plan/style images link to the shared template, not duplicated per unit.
+- **Live rows:** 30 (Farm Gardens 8 + Eden 22). Floor-plan/style images link to the shared template, not duplicated per unit.
 - **Admin:** `/admin/media` upload + link/unlink to cluster / unit_type / facade_style_description (and manual other subject types).
 
 #### `redirects`
@@ -452,15 +455,21 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-10 — Doc 4 #12 live + Eden Batch 002 promoted
+**Why:** Ray approved #12 and authorized promote. Apply `0003_eden_plexes_units.sql`, upload 22 Eden images, run `eden-batch-002-promotion.sql`, update Eden `reference.md` / staging, regenerate `src/types/database.ts`.
+**Affects:** Live schema now 17 tables / 72 policies (`plexes`; `unit_types.bathrooms`; `units.bua`/`plex_id`/`th_position`). Eden: 15 unit_types, 43 plexes, 362 units, 3 facades, 22 media+links. Public `/clusters/eden` picks up facades, floor plans, and expanded unit_types via existing Doc 8 queries (no units UI).
+**Breaking:** No for Farm Gardens (new columns nullable / plex null). Eden seed 2-row unit_types replaced by 15 style-specific rows.
+**Still open:** Eden payments/plot/amenities/pricing; units/map app surfaces; optional unit-types table layout column on public page.
+
 ### 2026-08-10 — Eden deep-dive: plex structure schema designed (#12), Batch 002 staged (not yet promoted)
 
 **Why:** Extracting Eden's 15 floor-plan layouts (3 facade styles × 3-/4-bed, each layout-determining unlike Farm Gardens' cosmetic-only Horizon/Earth) required deriving all 362 physical units' style, bedroom type, exact layout, and exact per-unit floor area from the site plan and floor-plan PDFs — OCR'd plot positions, whole-plex and per-TH-position color/geometry cross-checks against the developer's own key-plan diagrams, and street-side orientation read directly off each of the 43 physical plex rows. That exposed the same class of schema gap Farm Gardens did: no way to represent a physical plex/building row, no per-unit floor-area column, no bathroom count anywhere, and no way for `unit_types` to carry a style discriminator without duplicating `units.facade_style`'s name and meaning. Each addressed by Doc 4 #12 (`plexes` table; `units.bua`/`plex_id`/`th_position`; `unit_types.bathrooms`; `unit_types.layout` repurposed as a populated-data convention, no schema change).
 
-**Affects:** `supabase/migrations/0003_eden_plexes_units.sql` (designed here, not yet applied); `docs/0001_init.sql` (updated to match — `plexes` table, `unit_types.bathrooms`, `units.bua`/`plex_id`/`th_position`); `docs/clusters/eden/staging.md` Batch 002 (15 `unit_types` rows, 43 `plexes` rows, 362 `units` rows, 3 `facade_style_descriptions` rows, 22 images — full unit-level dataset in `eden-floorplans/eden-units.csv`); `eden-floorplans/eden-batch-002-promotion.sql` (generated, ready to run once #12 is approved and pushed).
+**Affects:** `supabase/migrations/0003_eden_plexes_units.sql` (designed here; applied in the changelog entry above); `docs/0001_init.sql`; `docs/clusters/eden/staging.md` Batch 002; `eden-floorplans/*`.
 
-**Breaking:** No at design time — nothing pushed to the live schema yet.
+**Breaking:** No at design time — see apply/promote entry above for the live push.
 
-**Not yet done:** Ray's decision on #12 (currently PENDING); migration push; image upload to the `media` bucket; promotion SQL run; plot size, amenities, and pricing still not collected for Eden (payments jpeg not yet examined); application code for any of this (same as Farm Gardens, deferred to Doc 8-style work).
+**Superseded status:** #12 APPROVED and Batch 002 promoted in the entry above.
 
 ### 2026-08-09 — Doc 8 Blocks D-A + D-B (cluster depth app surfaces)
 **Why:** Doc 4 #11 APPROVED. Surface post-`0002` cluster depth on the public cluster page and in admin without hardcoding Farm Gardens or reading `units`.

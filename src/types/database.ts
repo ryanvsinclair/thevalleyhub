@@ -531,6 +531,63 @@ export type Database = {
           },
         ]
       }
+      plexes: {
+        Row: {
+          cluster_id: string
+          confidence: Database["public"]["Enums"]["confidence_level"]
+          created_at: string
+          id: string
+          notes: string | null
+          plex_size: number
+          range_end: number | null
+          range_start: number | null
+          source_id: string | null
+          street_side: string | null
+          updated_at: string
+        }
+        Insert: {
+          cluster_id: string
+          confidence?: Database["public"]["Enums"]["confidence_level"]
+          created_at?: string
+          id?: string
+          notes?: string | null
+          plex_size: number
+          range_end?: number | null
+          range_start?: number | null
+          source_id?: string | null
+          street_side?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cluster_id?: string
+          confidence?: Database["public"]["Enums"]["confidence_level"]
+          created_at?: string
+          id?: string
+          notes?: string | null
+          plex_size?: number
+          range_end?: number | null
+          range_start?: number | null
+          source_id?: string | null
+          street_side?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plexes_cluster_id_fkey"
+            columns: ["cluster_id"]
+            isOneToOne: false
+            referencedRelation: "clusters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "plexes_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           body: string | null
@@ -826,6 +883,7 @@ export type Database = {
       unit_types: {
         Row: {
           balcony_area: number | null
+          bathrooms: number | null
           bedrooms: number
           bua_max: number | null
           bua_min: number | null
@@ -853,6 +911,7 @@ export type Database = {
         }
         Insert: {
           balcony_area?: number | null
+          bathrooms?: number | null
           bedrooms: number
           bua_max?: number | null
           bua_min?: number | null
@@ -880,6 +939,7 @@ export type Database = {
         }
         Update: {
           balcony_area?: number | null
+          bathrooms?: number | null
           bedrooms?: number
           bua_max?: number | null
           bua_min?: number | null
@@ -924,6 +984,7 @@ export type Database = {
       }
       units: {
         Row: {
+          bua: number | null
           cluster_id: string
           confidence: Database["public"]["Enums"]["confidence_level"]
           created_at: string
@@ -932,14 +993,17 @@ export type Database = {
           lat: number | null
           lng: number | null
           notes: string | null
+          plex_id: string | null
           plot_number: number | null
           sort_order: number
           source_id: string | null
+          th_position: string | null
           unit_number: string
           unit_type_id: string
           updated_at: string
         }
         Insert: {
+          bua?: number | null
           cluster_id: string
           confidence?: Database["public"]["Enums"]["confidence_level"]
           created_at?: string
@@ -948,14 +1012,17 @@ export type Database = {
           lat?: number | null
           lng?: number | null
           notes?: string | null
+          plex_id?: string | null
           plot_number?: number | null
           sort_order?: number
           source_id?: string | null
+          th_position?: string | null
           unit_number: string
           unit_type_id: string
           updated_at?: string
         }
         Update: {
+          bua?: number | null
           cluster_id?: string
           confidence?: Database["public"]["Enums"]["confidence_level"]
           created_at?: string
@@ -964,9 +1031,11 @@ export type Database = {
           lat?: number | null
           lng?: number | null
           notes?: string | null
+          plex_id?: string | null
           plot_number?: number | null
           sort_order?: number
           source_id?: string | null
+          th_position?: string | null
           unit_number?: string
           unit_type_id?: string
           updated_at?: string
@@ -977,6 +1046,13 @@ export type Database = {
             columns: ["cluster_id"]
             isOneToOne: false
             referencedRelation: "clusters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "units_plex_id_fkey"
+            columns: ["plex_id"]
+            isOneToOne: false
+            referencedRelation: "plexes"
             referencedColumns: ["id"]
           },
           {

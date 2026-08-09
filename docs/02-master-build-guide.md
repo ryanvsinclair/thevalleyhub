@@ -10,15 +10,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Doc 8 A+B complete · Gates D0–D4 passed (Ray smoke confirmed).
+LAST COMPLETED:   Doc 4 #12 APPROVED · migration 0003 live · Eden Batch 002 promoted (15 unit_types, 43 plexes, 362 units, 3 facades, 22 media).
 SPEC ALIGNED:     Yes
 CURRENT TASK:     None — product iteration by Ray. Doc 3 §11 in force.
-NEXT UP:          Ray publish review on 19 draft Farm Gardens amenity places · SETUP.md §7 launch checklist · units/map only via a future Doc 4 (not #11)
+NEXT UP:          Nara/Talia deep-dives when ready · Ray publish review on 19 draft Farm Gardens amenity places · SETUP.md §7 launch checklist · units/map UI only via a future Doc 4
 CONTEXT BLOCK:    C complete · Doc 8 D-A and D-B complete
 BLOCKERS:         None
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: (1) 19 Farm Gardens amenity `places` remain draft — publish when ready [R]. (2) Launch checklist parked in SETUP.md §7 [R]
-GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · Doc 8 A+B COMPLETE (D0–D4)
+ATTENTION NEEDED: (1) 19 Farm Gardens amenity `places` remain draft — publish when ready [R]. (2) Launch checklist parked in SETUP.md §7 [R]. (3) Eden public unit-types table shows repeated A/B labels — layout/style column polish optional
+GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · Doc 8 A+B COMPLETE · #12 LIVE
 ```
 
 **Rules for this block**

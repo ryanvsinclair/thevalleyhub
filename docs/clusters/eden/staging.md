@@ -50,7 +50,7 @@
 **Source:** 3 files from `/Users/ryansinclair/Downloads/EDEN/` — `EDEN .pdf` (27-page brochure), `EDEN FLOOR PLAN.pdf` (20 pages), `EDEN CLUSTER PAYMENTS.jpeg`. No numbered site plan / cluster map in this folder (unlike Farm Gardens) — still needed before `units` can be populated.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** corroborated (structural findings below), not yet extracted as exact field values
-**Status:** staged — design/structure only, no field-level diff yet
+**Status:** superseded by Batch 002
 
 ### Findings so far
 
@@ -72,7 +72,7 @@ Exact dimensions, style description copy, and plex-position tables for all 15 la
 
 ### Promotion
 
-**Promoted:** [ ]
+**Promoted:** [ ] — superseded; do not promote
 **Date:**
 **By:**
 
@@ -83,7 +83,7 @@ Exact dimensions, style description copy, and plex-position tables for all 15 la
 **Source:** Same 3 files as Batch 001 (`EDEN .pdf`, `EDEN FLOOR PLAN.pdf`, `EDEN CLUSTER PAYMENTS.jpeg` — the payments jpeg still not examined), plus `EDEN .pdf` pages 17–22 (facade style copy + promo photography) newly used in this batch.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** unverified for per-unit style/type/position (visually and geometrically classified from the developer's own site plan and floor-plan PDFs, not independently field-verified); corroborated for the structural facts that were externally cross-checked (see Notes)
-**Status:** staged — blocked on Doc 4 #12 (schema for `plexes`, `unit_types.bathrooms`, `units.bua`/`plex_id`/`th_position`, and the `unit_types.layout` convention)
+**Status:** promoted
 
 ### Method summary
 
@@ -150,6 +150,6 @@ Eden's site plan (`EDEN FLOOR PLAN.pdf` pages 2/3/10/16 — one all-3-styles mas
 
 ### Promotion
 
-**Promoted:** [ ]
-**Date:**
-**By:**
+**Promoted:** [x]
+**Date:** 2026-08-10
+**By:** agent (Ray authorized: #12 APPROVED + promote Batch 002). Migration `0003` applied; 22 images uploaded to `media/eden/*`; promotion SQL run; `reference.md` updated. Live sanity: 15 unit_types (sum 362), 43 plexes, 362 units, 3 facades, 22 media + links; style split spruce/iris/may_bell = 190/126/46.
