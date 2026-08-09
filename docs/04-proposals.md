@@ -368,6 +368,8 @@ Low — both columns are additive and nullable, same shape as `facade_styles`. M
 **Date:** 2026-08-08
 **Notes:** Both columns approved as proposed — plain `text[]` for amenities (no richer structure), `unit_count` on `unit_types` independent of `clusters.unit_count`. Migration execution against the live schema (docs/0001_init.sql, supabase/migrations, database.ts regen, `supabase db push`) is a separate step requiring its own go-ahead before touching the live database — not yet authorized to run.
 
+**Amendment 2026-08-09:** the `clusters.amenities text[]` half of this proposal is **SUPERSEDED BY #06** (cluster-specific amenities become `places` rows instead — see #06's reasoning: a shared array can't hold per-instance photos, and each cluster's amenity, e.g. a pool, is a physically distinct thing from another cluster's). `unit_types.unit_count` is unaffected and stands as approved here. Not applied in `supabase/migrations/0002_farm_gardens_units_places.sql`.
+
 ---
 
 ## #06 — Places unification (cluster-scoped amenities), unit floor-plan breakdown, and individual units
@@ -598,5 +600,50 @@ Low — same category and same author-tested pattern as proposal #03, which adde
 **RAY'S DECISION:** APPROVED
 **Date:** 2026-08-09
 **Notes:** Approved as proposed.
+
+---
+
+## #10 — Extend Annex L's `places.category` controlled vocabulary
+
+**Status:** APPROVED
+**Raised:** 2026-08-09
+**Category:** B — Better execution
+**Affects step:** `docs/01-information-reference.md` Annex L
+**Blocking:** Yes — for promoting the 19 Farm Gardens amenity `places` rows in Batch 001
+
+### What Doc 1 currently specifies
+
+Annex L's `places.category` controlled vocabulary is exactly: `pharmacy · clinic · hospital · dental · optical · nursery · school · vet · grocery · mall · salon · spa · gym · fuel · mosque`. Rule: "No value outside these lists without a proposal." Every existing value describes a third-party business a visitor would drive to.
+
+### What I propose instead
+
+Extend the list with six new values: `recreation, nature, family, farming, wellness, gathering`. These describe cluster-internal amenities — a real, different kind of "place" than Annex L's existing business-directory list, needed now that cluster-specific amenities are `places` rows (Doc 4 #06) rather than a separate structure. `mosque` amenities use the existing `mosque` category directly — that one was never a vocabulary gap, just a mistake in the original promotion SQL (had been filed as `community`/`mosque`).
+
+These six do not slot into the existing `living/[category]` route map (`schools, healthcare, groceries, services, getting-around`) — that route structure is for the external, third-party services directory. Cluster-internal amenities surface on a cluster's own page instead, a separate consumption path. No route-map change needed.
+
+### Why
+
+Caught during Cursor's pre-merge review: the Batch 001 promotion SQL used six category values (`outdoor, family, farming, sports, nature, community, wellness`) never checked against Annex L, violating the controlled-vocabulary rule outright. Verified by trying to force these 19 amenities into the *existing* 15 terms instead (Option B considered and rejected): 10 of 19 have no reasonable existing fit at all (Grand Lawn, Hydroponics Greenhouse, Petting Zoo, Desert Majlis, Stargazing Platforms, Picnic Spots, Ghaf Forest, Xeriscape Garden, Events Plaza, Arrival Plaza) — reconciliation doesn't work on real data, only extension does.
+
+### Vision test
+
+Doc 3 §1: "every fact carries a source, a confidence level" — Annex L's whole purpose is preventing vocabulary drift on a field the site's routing already depends on. Extending it properly (named, proposed, decided) rather than silently introducing new strings is that same discipline applied to this specific gap.
+
+### Cost if approved
+
+Six words added to one line in Doc 1, plus the corresponding category values already corrected in `docs/clusters/farm-gardens/staging.md` and `farm-gardens-floorplans/farm-gardens-batch-001-promotion.sql`. This is the first cluster to need these categories — every future cluster's deep-dive reuses them rather than re-deriving a taxonomy.
+
+### Cost if rejected
+
+The 19 Farm Gardens amenity rows can't promote with a compliant category value. Either they stay unpromoted indefinitely, or get force-fit into misleading existing terms (Padel Court as `gym`? Grand Lawn as `mall`?) that break filtering later.
+
+### Risk
+
+Low — additive to a text list, no schema or code dependency on the current 15 values being exhaustive.
+
+---
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-09
+**Notes:** Extend as proposed. Confirmed this doesn't affect the per-cluster-instance `places` row design (a pool in Eden and a pool in Farm Gardens remain separate rows with separate photos regardless of category vocabulary — orthogonal concerns).
 
 ---

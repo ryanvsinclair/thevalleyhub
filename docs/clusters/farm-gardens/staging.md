@@ -67,25 +67,27 @@
 
   | name | category | subcategory |
   |---|---|---|
-  | Grand Lawn | outdoor | lawn |
+  | Grand Lawn | gathering | lawn |
   | Petting Zoo & Animal Farm | family | petting-zoo |
   | Kids Play Area | family | play-area |
   | Hydroponics Greenhouse | farming | greenhouse |
   | Community Farming Allotments | farming | allotments |
-  | Desert Majlis & Bonfire | outdoor | majlis |
-  | Stargazing Platforms | outdoor | stargazing |
-  | Picnic Spots | outdoor | picnic |
-  | Outdoor Fitness Station | sports | fitness-station |
-  | Yoga/Events Lawn | sports | yoga-lawn |
+  | Desert Majlis & Bonfire | gathering | majlis |
+  | Stargazing Platforms | gathering | stargazing |
+  | Picnic Spots | gathering | picnic |
+  | Outdoor Fitness Station | recreation | fitness-station |
+  | Yoga/Events Lawn | recreation | yoga-lawn |
   | Xeriscape Botanical Garden | nature | botanical-garden |
-  | Events Plaza | community | events-plaza |
-  | Pool Deck | sports | pool |
-  | Padel Court | sports | padel-court |
-  | Volleyball Court | sports | volleyball |
+  | Events Plaza | gathering | events-plaza |
+  | Pool Deck | recreation | pool |
+  | Padel Court | recreation | padel-court |
+  | Volleyball Court | recreation | volleyball |
   | Ghaf Forest | nature | ghaf-forest |
-  | Mosque | community | mosque |
+  | Mosque | mosque | — |
   | Wellness Centre | wellness | wellness-centre |
-  | Arrival Plaza | community | arrival-plaza |
+  | Arrival Plaza | gathering | arrival-plaza |
+
+  Categories (`recreation, nature, family, farming, wellness, gathering`) extended into Doc 1 Annex L for this batch — see the pending Doc 1 update. `mosque` uses the existing Annex L category directly, no subcategory, matching how Annex L already treats it.
 
   Wellness Centre's constituent sub-features (gym, adult & kids pool decks, restaurant, male & female spa, plunge pools, treatment rooms) are individually decomposable as child `places` rows (`parent_place_id` → Wellness Centre) if/when you want those separately filterable — not staged as separate rows yet since the brochure describes them as one facility, not itemized the way the 19 amenities above are. Each row: `confidence = corroborated`, `source_id = a1000000-0000-4000-8000-000000000001`, `cluster_id` → farm-gardens, `parent_place_id` null, `google_place_id` null (none of these are public Google listings).
 - **New `facade_style_descriptions` rows, `cluster_id = farm-gardens`:** — *depends on Doc 4 #07, approved 2026-08-09, not yet migrated onto the live schema*
@@ -113,7 +115,7 @@
 
 - Unit-split, floor-plan breakdown, amenities, style descriptions, and the 146-row units dataset above are staged with real values but **cannot be promoted until Doc 4 #05, #06, and #07's columns/tables actually exist on the live schema** — all three approved, migration text is written into `docs/0001_init.sql` / `supabase/migrations/0001_init.sql`, but nothing has been pushed to the live Supabase project yet (no credentials in this session; `supabase db push` is a separate, explicitly-authorized step).
 - The 146-row `units` dataset and its classification methodology (plot number via PDF text layer, facade style via mode roof-color, unit type via weighted yellow-tint score) is the template this same process will follow for every future cluster deep-dive per Ray's stated plan — not guaranteed to transfer identically to another cluster's site-plan PDF without re-validating against that cluster's own rendering.
-- `places.category`/`subcategory` values above are my own taxonomy for filter grouping, same caveat as before — not sourced from Emaar material, worth a review pass before treated as final.
+- `places.category` values now use Doc 1 Annex L's controlled vocabulary (extended with `recreation, nature, family, farming, wellness, gathering` for this batch — see the pending Doc 1 update). `subcategory` values remain my own, uncontrolled labels for finer filtering, not sourced from Emaar material.
 - Drive-time distances from the factsheet (5 min Rugby Sevens Stadium, 8 min Dubai Outlet Mall, 25 min Burj Khalifa/Downtown, 25 min DXB) intentionally left out of this batch per Ray's instruction.
 - `positioning` intentionally left unchanged per Ray's instruction.
 - The 6 source PDFs themselves (for visitor-facing download) go through `media` / `media_links` — that's a separate, already-existing pipeline, not a `reference.md` fact and not staged here.

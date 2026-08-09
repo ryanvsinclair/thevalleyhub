@@ -1,7 +1,10 @@
 -- ============================================================
 -- Farm Gardens — Doc 7 Batch 001 promotion
--- Ready to run once Doc 4 #05, #06, #07, #08 are pushed live
--- (docs/0001_init.sql / supabase/migrations/0001_init.sql).
+-- Ready to run once Doc 4 #05-#08 are pushed live via
+-- supabase/migrations/0002_farm_gardens_units_places.sql
+-- (0001_init.sql is unchanged — already applied, do not re-run it).
+-- Also requires the pending Doc 1 Annex L update (adds recreation,
+-- nature, family, farming, wellness, gathering categories).
 --
 -- Source: Doc 7 (docs/07-data-staging.md), Batch 001.
 -- All facts below: source_id = a1000000-0000-4000-8000-000000000001
@@ -66,33 +69,36 @@ select id, 'Earth',
 from clusters where slug = 'farm-gardens';
 
 -- ---------- 4. places: 19 cluster-specific amenities ----------
--- category/subcategory are a provisional taxonomy (not sourced from
--- Emaar material) — review before treating as final, per Doc 7.
+-- category values use Doc 1 Annex L's controlled vocabulary, extended
+-- with recreation/nature/family/farming/wellness/gathering for this
+-- batch (pending Doc 1 update). subcategory remains uncontrolled,
+-- finer-grained labels, not sourced from Emaar material.
+-- Requires migration 0002 (media_links/places changes) applied first.
 
 insert into places (slug, name, category, subcategory, cluster_id, in_community, confidence, source_id, state)
 select 'farm-gardens-' || v.slug, v.name, v.category, v.subcategory,
        (select id from clusters where slug = 'farm-gardens'), true,
        'corroborated', 'a1000000-0000-4000-8000-000000000001', 'draft'
 from (values
-  ('grand-lawn', 'Grand Lawn', 'outdoor', 'lawn'),
+  ('grand-lawn', 'Grand Lawn', 'gathering', 'lawn'),
   ('petting-zoo-animal-farm', 'Petting Zoo & Animal Farm', 'family', 'petting-zoo'),
   ('kids-play-area', 'Kids Play Area', 'family', 'play-area'),
   ('hydroponics-greenhouse', 'Hydroponics Greenhouse', 'farming', 'greenhouse'),
   ('community-farming-allotments', 'Community Farming Allotments', 'farming', 'allotments'),
-  ('desert-majlis-bonfire', 'Desert Majlis & Bonfire', 'outdoor', 'majlis'),
-  ('stargazing-platforms', 'Stargazing Platforms', 'outdoor', 'stargazing'),
-  ('picnic-spots', 'Picnic Spots', 'outdoor', 'picnic'),
-  ('outdoor-fitness-station', 'Outdoor Fitness Station', 'sports', 'fitness-station'),
-  ('yoga-events-lawn', 'Yoga/Events Lawn', 'sports', 'yoga-lawn'),
+  ('desert-majlis-bonfire', 'Desert Majlis & Bonfire', 'gathering', 'majlis'),
+  ('stargazing-platforms', 'Stargazing Platforms', 'gathering', 'stargazing'),
+  ('picnic-spots', 'Picnic Spots', 'gathering', 'picnic'),
+  ('outdoor-fitness-station', 'Outdoor Fitness Station', 'recreation', 'fitness-station'),
+  ('yoga-events-lawn', 'Yoga/Events Lawn', 'recreation', 'yoga-lawn'),
   ('xeriscape-botanical-garden', 'Xeriscape Botanical Garden', 'nature', 'botanical-garden'),
-  ('events-plaza', 'Events Plaza', 'community', 'events-plaza'),
-  ('pool-deck', 'Pool Deck', 'sports', 'pool'),
-  ('padel-court', 'Padel Court', 'sports', 'padel-court'),
-  ('volleyball-court', 'Volleyball Court', 'sports', 'volleyball'),
+  ('events-plaza', 'Events Plaza', 'gathering', 'events-plaza'),
+  ('pool-deck', 'Pool Deck', 'recreation', 'pool'),
+  ('padel-court', 'Padel Court', 'recreation', 'padel-court'),
+  ('volleyball-court', 'Volleyball Court', 'recreation', 'volleyball'),
   ('ghaf-forest', 'Ghaf Forest', 'nature', 'ghaf-forest'),
-  ('mosque', 'Mosque', 'community', 'mosque'),
+  ('mosque', 'Mosque', 'mosque', null),
   ('wellness-centre', 'Wellness Centre', 'wellness', 'wellness-centre'),
-  ('arrival-plaza', 'Arrival Plaza', 'community', 'arrival-plaza')
+  ('arrival-plaza', 'Arrival Plaza', 'gathering', 'arrival-plaza')
 ) as v(slug, name, category, subcategory);
 -- NOTE: state = 'draft' deliberately, not 'published' — Ray should
 -- flip these once the category/subcategory taxonomy is reviewed.

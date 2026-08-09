@@ -92,6 +92,8 @@ This document describes what **exists**. Where the migration file and the live d
 
 **Live audit 2026-08-08:** 14 base tables, 1 view (`current_status`), 57 RLS policies in `public`, 3 enums.
 
+**Pending, not yet live (2026-08-09):** `supabase/migrations/0002_farm_gardens_units_places.sql` — designed, not applied. Adds `units`, `facade_style_descriptions` tables; `unit_types.unit_count`/`suite_area`/`garage_area`/`balcony_area`/`roof_terrace_area`; `places.cluster_id`/`parent_place_id`/`google_place_id` + an RLS policy change on `pub_places`; `media_links.subject_type` gains `'unit_type'`/`'facade_style_description'`; `profiles.unit_id`. Per this doc's own rule ("where migration file and live database disagree, the database wins"), none of this is reflected in the table list below until it's actually pushed and re-audited. See the Changelog entry below for the full reasoning.
+
 ### 3.1 Overview
 
 **Design principle:** one content spine (clusters, places, questions, status, communities/comparisons, posts, media) with provenance (`sources`, `confidence`, `verified_at`) and soft publish (`state`, `deleted_at`). Append-only `status_log` + `audit_log`. (Doc 5 Block A; Doc 3 vision.)
@@ -431,6 +433,12 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 ---
 
 ## 10. CHANGELOG
+
+### 2026-08-09 — Farm Gardens deep-dive: schema designed (#05–#08, #10), docs restructured per-cluster (#09)
+**Why:** PDF extraction of Farm Gardens' official Emaar collateral found real errors and gaps in the live `farm-gardens` cluster/`unit_types` rows (`bua_max` had the plot figure instead of BUA; no price, payment plan, or amenities recorded). Fixing it exposed schema gaps — no home for floor-plan sub-areas, no way to scope `places` to one cluster, no per-unit tracking, no facade-style descriptions — each addressed by its own Doc 4 proposal (#05–#08). Separately, Doc 1's single-file cluster register and Doc 7's single-file staging log were identified as unworkable across the 15+ clusters still to come over the build-out, leading to the `docs/clusters/<slug>/{reference,staging}.md` restructure (#09 extends the docs guard to match).
+**Affects:** `supabase/migrations/0002_farm_gardens_units_places.sql` (**designed, not applied** — see §3 note above); `docs/01-information-reference.md` (Annex C slimmed for 7 migrated clusters, Annex L extended with 6 categories per #10); `docs/03-agent-operating-rules.md` (§2/§9 updated for the per-cluster split); `scripts/pre-commit` (guard extended per #09, applied and tested); new `docs/clusters/` tree (7 clusters migrated: Eden, Nara, Talia, Orania, Elora, Lillia, Farm Gardens); Doc 7 trimmed to a template/pointer.
+**Breaking:** No — schema change is designed but not pushed; no live table, column, or RLS policy has actually changed yet. Doc 1/Doc 3 edits are prose/vocabulary only, no code depends on them. The guard extension was tested (new `reference.md` correctly rejected without `DOCS_GUARD=off`; `staging.md` unaffected) before being applied.
+**Not yet done:** the actual `supabase db push` of migration 0002, the Batch 001 promotion SQL run, `src/types/database.ts` regen, image upload to Supabase storage, and all application code (`lib/queries/`, UI components, `/admin` extensions) — none of today's new data or schema is visible on the live site yet.
 
 ### 2026-08-08 — Docs guard given an owner bypass (Doc 4 #03)
 **Why:** `scripts/pre-commit` filters on file path with no author check, so installing it would have locked Ray out of editing his own Docs 1–3 while Doc 3 §9 forbids `--no-verify`. Blocked approved proposal #02, which has to be written into Doc 2 Appendix B.  

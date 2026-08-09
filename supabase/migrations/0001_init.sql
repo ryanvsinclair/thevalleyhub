@@ -38,7 +38,6 @@ create table profiles (
   email        citext,
   display_name text,
   role         app_role not null default 'viewer',
-  unit_id      uuid, -- fkey added after `units` exists, see below
   created_at   timestamptz not null default now()
 );
 
@@ -123,27 +122,6 @@ create table clusters (
   updated_at       timestamptz not null default now()
 );
 
--- ---------- facade style descriptions ----------
--- Styles aren't shared vocabulary across clusters (Eden's May Bell/
--- Iris/Spruce have nothing to do with Farm Gardens' Horizon/Earth),
--- so this is scoped per cluster rather than a Valley-wide catalog.
--- Deliberately additive/separate from clusters.facade_styles (text[])
--- rather than restructuring that column — it's already populated for
--- six clusters (Doc 4 #07).
-
-create table facade_style_descriptions (
-  id           uuid primary key default gen_random_uuid(),
-  cluster_id   uuid not null references clusters(id) on delete cascade,
-  style_name   text not null,
-  description  text,
-  sort_order   int not null default 0,
-  confidence   confidence_level not null default 'unverified',
-  source_id    uuid references sources(id) on delete set null,
-  created_at   timestamptz not null default now(),
-  updated_at   timestamptz not null default now(),
-  unique (cluster_id, style_name)
-);
-
 create table unit_types (
   id                   uuid primary key default gen_random_uuid(),
   cluster_id           uuid not null references clusters(id) on delete cascade,
@@ -153,11 +131,6 @@ create table unit_types (
   bua_max              int,
   plot_min             int,
   plot_max             int,
-  suite_area           int,
-  garage_area          int,
-  balcony_area         int,
-  roof_terrace_area    int,
-  unit_count           int,
   layout               text,
   maids_room           boolean,
   ground_floor_bedroom boolean,
@@ -172,32 +145,6 @@ create table unit_types (
   updated_at           timestamptz not null default now()
 );
 
--- ---------- units ----------
--- Individual physical units, distinct from unit_types (a floor-plan
--- template). Foundation for the future interactive map / per-unit
--- drive times (Doc 4 #06).
-
-create table units (
-  id             uuid primary key default gen_random_uuid(),
-  cluster_id     uuid not null references clusters(id) on delete cascade,
-  unit_type_id   uuid not null references unit_types(id) on delete restrict,
-  unit_number    text not null,
-  plot_number    int,
-  facade_style   text,
-  lat            numeric(9,6),
-  lng            numeric(9,6),
-  notes          text,
-  sort_order     int not null default 0,
-  confidence     confidence_level not null default 'unverified',
-  source_id      uuid references sources(id) on delete set null,
-  created_at     timestamptz not null default now(),
-  updated_at     timestamptz not null default now()
-);
-
-alter table profiles
-  add constraint profiles_unit_id_fkey
-  foreign key (unit_id) references units(id) on delete set null;
-
 -- ---------- places ----------
 
 create table places (
@@ -206,9 +153,6 @@ create table places (
   name             text not null,
   category         text not null,
   subcategory      text,
-  cluster_id       uuid references clusters(id) on delete cascade,
-  parent_place_id  uuid references places(id) on delete set null,
-  google_place_id  text,
   in_community     boolean not null default false,
   operator         text,
   address          text,
@@ -353,20 +297,12 @@ create table media (
 create table media_links (
   media_id     uuid not null references media(id) on delete cascade,
   subject_type text not null check (subject_type in
-                 ('cluster','place','question','status_log','community','post',
-                  'unit_type','facade_style_description')),
+                 ('cluster','place','question','status_log','community','post')),
   subject_id   uuid not null,
   sort_order   int not null default 0,
   is_primary   boolean not null default false,
   primary key (media_id, subject_type, subject_id)
 );
--- unit_type / facade_style_description (Doc 4 #08): an image is linked
--- to the shared template (unit_types row) or the shared style
--- (facade_style_descriptions row), never duplicated across every
--- individual units row that happens to match — e.g. all 79 Farm
--- Gardens 4-bed units share one floor-plan image via unit_type_id,
--- not 79 separate links. 'unit' deliberately not added — no
--- per-physical-unit photos planned yet.
 
 -- Doc 2 step 2.2: if db push fails on this block with
 -- "must be owner of table objects", comment out from here to the
@@ -432,8 +368,7 @@ end $$;
 do $$
 declare t text;
 begin
-  foreach t in array array['clusters','unit_types','units','places',
-                           'facade_style_descriptions','questions',
+  foreach t in array array['clusters','unit_types','places','questions',
                            'communities','comparisons','posts'] loop
     execute format(
       'create trigger %I_updated_at before update on %I
@@ -442,8 +377,7 @@ begin
 
   -- Every admin-editable table is audited (Doc 2 §5.2), including
   -- media_links — the log_audit() branch above exists for it.
-  foreach t in array array['clusters','unit_types','units','places',
-                           'facade_style_descriptions','questions',
+  foreach t in array array['clusters','unit_types','places','questions',
                            'status_log','communities','comparisons','posts',
                            'media','media_links','redirects','sources'] loop
     execute format(
@@ -458,16 +392,9 @@ create index clusters_state_idx     on clusters (state) where deleted_at is null
 create index clusters_phase_idx     on clusters (phase);
 create index unit_types_cluster_idx on unit_types (cluster_id, bedrooms);
 
-create index units_cluster_idx      on units (cluster_id, unit_type_id);
-create index units_geo_idx          on units (lat, lng);
-
-create index fsd_cluster_idx        on facade_style_descriptions (cluster_id);
-
 create index places_category_idx    on places (category, in_community) where deleted_at is null;
 create index places_state_idx       on places (state) where deleted_at is null;
 create index places_geo_idx         on places (lat, lng);
-create index places_cluster_idx     on places (cluster_id);
-create index places_parent_idx      on places (parent_place_id);
 
 create index questions_audience_idx on questions (audience, topic) where deleted_at is null;
 create index questions_ask_idx      on questions (ask_count desc);
@@ -487,8 +414,6 @@ alter table profiles     enable row level security;
 alter table sources      enable row level security;
 alter table clusters     enable row level security;
 alter table unit_types   enable row level security;
-alter table units        enable row level security;
-alter table facade_style_descriptions enable row level security;
 alter table places       enable row level security;
 alter table status_log   enable row level security;
 alter table questions    enable row level security;
@@ -503,14 +428,7 @@ alter table audit_log    enable row level security;
 create policy pub_clusters on clusters for select to anon, authenticated
   using (state = 'published' and deleted_at is null);
 create policy pub_places on places for select to anon, authenticated
-  using (
-    state = 'published' and deleted_at is null
-    and (
-      cluster_id is null
-      or exists (select 1 from clusters c
-                 where c.id = cluster_id and c.state = 'published' and c.deleted_at is null)
-    )
-  );
+  using (state = 'published' and deleted_at is null);
 create policy pub_questions on questions for select to anon, authenticated
   using (state = 'published' and deleted_at is null);
 create policy pub_posts on posts for select to anon, authenticated
@@ -520,12 +438,6 @@ create policy pub_communities on communities for select to anon, authenticated
   using (state = 'published');
 
 create policy pub_unit_types on unit_types for select to anon, authenticated
-  using (exists (select 1 from clusters c
-                 where c.id = cluster_id and c.state = 'published' and c.deleted_at is null));
-create policy pub_units on units for select to anon, authenticated
-  using (exists (select 1 from clusters c
-                 where c.id = cluster_id and c.state = 'published' and c.deleted_at is null));
-create policy pub_fsd on facade_style_descriptions for select to anon, authenticated
   using (exists (select 1 from clusters c
                  where c.id = cluster_id and c.state = 'published' and c.deleted_at is null));
 create policy pub_comparisons on comparisons for select to anon, authenticated
@@ -545,13 +457,12 @@ do $$
 declare t text;
 begin
   foreach t in array array['clusters','places','questions','posts','communities',
-                           'unit_types','units','facade_style_descriptions','comparisons'] loop
+                           'unit_types','comparisons'] loop
     execute format(
       'create policy staff_read_%I on %I for select to authenticated using (can_edit())', t, t);
   end loop;
 
-  foreach t in array array['clusters','unit_types','units','facade_style_descriptions',
-                           'places','questions','status_log',
+  foreach t in array array['clusters','unit_types','places','questions','status_log',
                            'communities','comparisons','posts','media','media_links',
                            'redirects','sources'] loop
     execute format('create policy staff_ins_%I on %I for insert to authenticated with check (can_edit())', t, t);
@@ -577,13 +488,12 @@ create policy media_staff_del on storage.objects for delete to authenticated
 grant usage on schema public to anon, authenticated;
 
 grant select on
-  clusters, unit_types, units, facade_style_descriptions, places, questions,
-  status_log, current_status,
+  clusters, unit_types, places, questions, status_log, current_status,
   communities, comparisons, posts, media, media_links, redirects, sources
 to anon, authenticated;
 
 grant insert, update, delete on
-  clusters, unit_types, units, facade_style_descriptions, places, questions, status_log,
+  clusters, unit_types, places, questions, status_log,
   communities, comparisons, posts, media, media_links, redirects, sources
 to authenticated;
 
