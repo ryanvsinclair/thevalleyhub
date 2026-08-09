@@ -30,6 +30,24 @@ export const placeCategoryValues = [
   "gym",
   "fuel",
   "mosque",
+  // Cluster-internal amenities (Doc 4 #10)
+  "recreation",
+  "nature",
+  "family",
+  "farming",
+  "wellness",
+  "gathering",
+] as const;
+
+export const mediaSubjectTypeValues = [
+  "cluster",
+  "place",
+  "question",
+  "status_log",
+  "community",
+  "post",
+  "unit_type",
+  "facade_style_description",
 ] as const;
 
 export const amenityKeyValues = [
@@ -182,6 +200,9 @@ export const placeUpdate = z.object({
   name: z.string().min(1),
   category: z.enum(placeCategoryValues),
   subcategory: optionalString,
+  cluster_id: optionalUuid,
+  parent_place_id: optionalUuid,
+  google_place_id: optionalString,
   in_community: formBool,
   operator: optionalString,
   address: optionalString,
@@ -222,10 +243,15 @@ export const placeUpdate = z.object({
 export const unitTypeFields = z.object({
   bedrooms: z.coerce.number().int().nonnegative(),
   label: optionalString,
+  unit_count: optionalInt,
   bua_min: optionalInt,
   bua_max: optionalInt,
   plot_min: optionalInt,
   plot_max: optionalInt,
+  suite_area: optionalInt,
+  garage_area: optionalInt,
+  balcony_area: optionalInt,
+  roof_terrace_area: optionalInt,
   layout: optionalString,
   maids_room: optionalFormBool,
   ground_floor_bedroom: optionalFormBool,
@@ -236,6 +262,22 @@ export const unitTypeFields = z.object({
   confidence: z.enum(confidenceValues),
   source_id: optionalUuid,
   verified_at: optionalDate,
+});
+
+export const facadeStyleFields = z.object({
+  style_name: z.string().min(1),
+  description: optionalString,
+  sort_order: z.coerce.number().int().default(0),
+  confidence: z.enum(confidenceValues),
+  source_id: optionalUuid,
+});
+
+export const mediaLinkFields = z.object({
+  media_id: z.uuid(),
+  subject_type: z.enum(mediaSubjectTypeValues),
+  subject_id: z.uuid(),
+  sort_order: z.coerce.number().int().default(0),
+  is_primary: formBool,
 });
 
 export const clusterUpdate = z.object({
@@ -310,6 +352,8 @@ export type QuestionUpdate = z.infer<typeof questionUpdate>;
 export type PlaceUpdate = z.infer<typeof placeUpdate>;
 export type ClusterUpdate = z.infer<typeof clusterUpdate>;
 export type UnitTypeFields = z.infer<typeof unitTypeFields>;
+export type FacadeStyleFields = z.infer<typeof facadeStyleFields>;
+export type MediaLinkFields = z.infer<typeof mediaLinkFields>;
 export type MediaUpload = z.infer<typeof mediaUpload>;
 export type ComparisonUpdate = z.infer<typeof comparisonUpdate>;
 export type SourceUpdate = z.infer<typeof sourceUpdate>;

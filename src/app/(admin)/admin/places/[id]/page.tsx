@@ -20,10 +20,17 @@ export default async function AdminPlaceEditPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
 
-  const [{ data: place }, { data: sources }] = await Promise.all([
-    supabase.from("places").select("*").eq("id", id).maybeSingle(),
-    supabase.from("sources").select("id, label").order("label"),
-  ]);
+  const [{ data: place }, { data: sources }, { data: clusters }] =
+    await Promise.all([
+      supabase.from("places").select("*").eq("id", id).maybeSingle(),
+      supabase.from("sources").select("id, label").order("label"),
+      supabase
+        .from("clusters")
+        .select("id, name, slug")
+        .is("deleted_at", null)
+        .order("sort_order")
+        .order("name"),
+    ]);
 
   if (!place) notFound();
 
@@ -50,6 +57,30 @@ export default async function AdminPlaceEditPage({ params }: Props) {
           label="Subcategory"
           name="subcategory"
           defaultValue={place.subcategory}
+        />
+        <SelectField
+          label="Cluster"
+          name="cluster_id"
+          options={(clusters ?? []).map((c) => ({
+            value: c.id,
+            label: `${c.name} (${c.slug})`,
+          }))}
+          defaultValue={place.cluster_id}
+          allowEmpty
+        />
+        <p className="-mt-2 text-xs text-neutral-500">
+          Set for on-site amenities; leave empty for Valley-wide places.
+        </p>
+        <FormField
+          label="Parent place id"
+          name="parent_place_id"
+          defaultValue={place.parent_place_id}
+          hint="UUID of containing place, if any"
+        />
+        <FormField
+          label="Google Place ID"
+          name="google_place_id"
+          defaultValue={place.google_place_id}
         />
         <SelectField
           label="In community"

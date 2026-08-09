@@ -647,3 +647,51 @@ Low — additive to a text list, no schema or code dependency on the current 15 
 **Notes:** Extend as proposed. Confirmed this doesn't affect the per-cluster-instance `places` row design (a pool in Eden and a pool in Farm Gardens remain separate rows with separate photos regardless of category vocabulary — orthogonal concerns).
 
 ---
+
+## #11 — Adopt Doc 8 (cluster depth build guide) and ship public + admin surfaces
+
+**Status:** APPROVED
+**Raised:** 2026-08-09
+**Category:** B — Better execution
+**Affects step:** Post-V1 product work after Doc 2 Gate 8 / Doc 6 live; schema already landed via #05–#10 / migration `0002`
+**Blocking:** Yes — for any `src/` work that surfaces facades, cluster-scoped places, media links, or new `unit_types` columns
+
+### What Doc 2 currently specifies
+
+Doc 2 Appendix C and the V1 build are complete. Doc 2 does not specify app queries or UI for post-`0002` cluster-depth tables (`facade_style_descriptions`, `places.cluster_id`, `media_links` subject types `unit_type` / `facade_style_description`, unit-type area breakdown columns). Doc 2's remaining attention items only note that those surfaces are missing. Units/map remain explicitly out of V1 (Doc 2 Appendix C: offline map · property listings).
+
+### What I propose instead
+
+1. **Adopt `docs/08-cluster-depth-build-guide.md` as the execution vehicle** for this work — same shape as Doc 2 (status block, context blocks D-A / D-B, actor tags, dual checkboxes, Appendix A checklist, Appendix B objective gates, Appendix C scope boundary). Name reflects the work: cluster depth app surfaces, not another "master plan."
+2. **Execute Doc 8 Sections 1–4 only after this proposal is APPROVED:**
+   - **Block D-A:** public query helpers + extend `/clusters/[slug]` (price/payment already partly there; unit-type breakdown; facades; published cluster amenities; media via `media_links`).
+   - **Block D-B:** admin forms for new unit-type fields, facade editors, cluster-scoped places, media subject linking.
+3. **Hard locks in Doc 8:** no `slug === 'farm-gardens'` branching; public amenities `state = 'published'` only; **no `units` reads/writes in `src/`**; no new migrations; Doc 6 updated same session (Doc 3 §11).
+4. **Defer entirely** per-plot units UI and interactive map until multiple clusters have Batch-001-scale injections — reopen with a **new** Doc 4 proposal later (do not expand this entry).
+
+### Why
+
+Schema and Farm Gardens Batch 001 are live; the public/admin app still only partially reflects that depth. Without a Doc-2-shaped guide, agents either freestyle `src/` changes or treat a Cursor plan file as process — neither matches Doc 3. Doc 8 makes gates and scope auditable the same way V1 was. Deferring units/map avoids building inventory UI before enough clusters have injectable unit data.
+
+### Vision test
+
+Doc 3 §1 spine: clusters as first-class pages with sourced, confidence-gated facts. Surfacing facades, floor-plan breakdown, and on-site amenities on the existing cluster page is better execution of that spine — not a new product surface. Keeping units/map out preserves Doc 2 Appendix C discipline.
+
+### Cost if approved
+
+Two context blocks of app work (queries → page → admin forms → media linking), Doc 6 updates each block, no schema cost. Doc 8 becomes the checklist Ray and agents follow for this iteration.
+
+### Cost if rejected
+
+Depth data stays SQL/admin-invisible on the public site; each future agent reinvents whether/how to surface it. Or ad-hoc `src/` lands without gates.
+
+### Risk
+
+Low–medium — UI scope creep into units/map or Farm Gardens hardcoding. Mitigated by Doc 8 Appendix C + Gate D1/D2 greps forbidding `units` queries and slug hardcodes. Draft amenities accidentally published is a content risk, not a code one — public query filters `published` only.
+
+---
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-09
+**Notes:** Approved as proposed.
+
+---

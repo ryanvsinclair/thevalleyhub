@@ -9,6 +9,8 @@ import { parseForm } from "@/lib/admin/form";
 import {
   clusterUpdate,
   comparisonUpdate,
+  facadeStyleFields,
+  mediaLinkFields,
   mediaUpload,
   placeUpdate,
   questionCreate,
@@ -136,6 +138,14 @@ export async function updatePlace(
   revalidatePath(`/admin/places/${id}`);
   revalidatePath("/places");
   revalidatePath("/living");
+  if (parsed.data.cluster_id) {
+    const { data: cluster } = await supabase
+      .from("clusters")
+      .select("slug")
+      .eq("id", parsed.data.cluster_id)
+      .maybeSingle();
+    if (cluster) revalidatePath(`/clusters/${cluster.slug}`);
+  }
   return { success: "Place saved." };
 }
 
@@ -185,7 +195,119 @@ export async function upsertUnitType(
 
   revalidatePath(`/admin/clusters/${clusterId}`);
   revalidatePath("/clusters");
+  const { data: cluster } = await supabase
+    .from("clusters")
+    .select("slug")
+    .eq("id", clusterId)
+    .maybeSingle();
+  if (cluster) revalidatePath(`/clusters/${cluster.slug}`);
   return { success: id ? "Unit type updated." : "Unit type added." };
+}
+
+export async function upsertFacadeStyle(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const clusterId = String(formData.get("cluster_id") ?? "");
+  if (!clusterId) return { error: "Missing cluster id" };
+
+  const id = String(formData.get("id") ?? "");
+  const parsed = parseForm(facadeStyleFields, formData);
+  if ("error" in parsed) return { error: parsed.error };
+
+  const { supabase } = await requireSessionClient();
+  const payload = { ...parsed.data, cluster_id: clusterId };
+
+  const { error } = id
+    ? await supabase
+        .from("facade_style_descriptions")
+        .update(payload)
+        .eq("id", id)
+    : await supabase.from("facade_style_descriptions").insert(payload);
+
+  if (error) return { error: error.message };
+
+  revalidatePath(`/admin/clusters/${clusterId}`);
+  revalidatePath("/clusters");
+  const { data: cluster } = await supabase
+    .from("clusters")
+    .select("slug")
+    .eq("id", clusterId)
+    .maybeSingle();
+  if (cluster) revalidatePath(`/clusters/${cluster.slug}`);
+  return { success: id ? "Facade style updated." : "Facade style added." };
+}
+
+export async function deleteFacadeStyle(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const id = String(formData.get("id") ?? "");
+  const clusterId = String(formData.get("cluster_id") ?? "");
+  if (!id || !clusterId) return { error: "Missing facade id" };
+
+  const { supabase } = await requireSessionClient();
+  const { error } = await supabase
+    .from("facade_style_descriptions")
+    .delete()
+    .eq("id", id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath(`/admin/clusters/${clusterId}`);
+  revalidatePath("/clusters");
+  const { data: cluster } = await supabase
+    .from("clusters")
+    .select("slug")
+    .eq("id", clusterId)
+    .maybeSingle();
+  if (cluster) revalidatePath(`/clusters/${cluster.slug}`);
+  return { success: "Facade style deleted." };
+}
+
+export async function upsertMediaLink(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const parsed = parseForm(mediaLinkFields, formData);
+  if ("error" in parsed) return { error: parsed.error };
+
+  const { supabase } = await requireSessionClient();
+  const { error } = await supabase.from("media_links").upsert(parsed.data, {
+    onConflict: "media_id,subject_type,subject_id",
+  });
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/media");
+  revalidatePath("/clusters");
+  return { success: "Media linked." };
+}
+
+export async function deleteMediaLink(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const mediaId = String(formData.get("media_id") ?? "");
+  const subjectType = String(formData.get("subject_type") ?? "");
+  const subjectId = String(formData.get("subject_id") ?? "");
+  if (!mediaId || !subjectType || !subjectId) {
+    return { error: "Missing media link keys" };
+  }
+
+  const { supabase } = await requireSessionClient();
+  const { error } = await supabase
+    .from("media_links")
+    .delete()
+    .eq("media_id", mediaId)
+    .eq("subject_type", subjectType)
+    .eq("subject_id", subjectId);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/media");
+  revalidatePath("/clusters");
+  return { success: "Media link removed." };
 }
 
 export async function uploadMedia(

@@ -10,15 +10,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Migration 0002 live · Farm Gardens Batch 001 promoted (146 units, media, corrected BUA).
+LAST COMPLETED:   Doc 8 Blocks D-A + D-B shipped (public cluster depth + admin forms/media linking). Doc 4 #11 APPROVED.
 SPEC ALIGNED:     Yes
-CURRENT TASK:     None — product iteration by Ray. Doc 3 §11 in force (update Doc 6 with every code/DB change).
-NEXT UP:          App layer for new tables (lib/queries, UI, admin) · Ray publish review on 19 draft Farm Gardens amenity places · SETUP.md §7 launch checklist
-CONTEXT BLOCK:    C complete
+CURRENT TASK:     None — Doc 8 A+B complete. Doc 3 §11 in force.
+NEXT UP:          Ray publish review on 19 draft Farm Gardens amenity places · SETUP.md §7 launch checklist · units/map only via a future Doc 4 (not #11)
+CONTEXT BLOCK:    C complete · Doc 8 D-A and D-B complete
 BLOCKERS:         None
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: (1) 19 Farm Gardens amenity `places` are draft — publish when taxonomy reviewed. (2) No app queries/UI yet for units / facade_style_descriptions / cluster-scoped places. (3) Launch checklist parked in SETUP.md §7 [R] (domain, Auth URL, Search Console, Bing, analytics)
-GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · LAUNCH CHECKLIST OPEN
+ATTENTION NEEDED: (1) 19 Farm Gardens amenity `places` remain draft — publish when ready [R]. (2) Launch checklist parked in SETUP.md §7 [R]
+GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · Doc 8 D-A/D-B shipped (D3 admin smoke optional)
 ```
 
 **Rules for this block**

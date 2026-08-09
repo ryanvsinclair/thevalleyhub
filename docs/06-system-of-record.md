@@ -135,7 +135,7 @@ Column lists verified against `information_schema` / generated `src/types/databa
 - **Purpose:** Valley communities / product lines.
 - **Key columns:** `slug` (unique, `^[a-z0-9-]+$`), `name`, `phase`, `product_type` (townhouse|twin_villa|villa), unit/facade/handover/price fields, `summary`/`positioning`/`body`/`notes`, SEO meta, `sort_order`, `confidence`, `source_id`, `verified_at`, `state`, `deleted_at`, timestamps.
 - **Populated:** seed `02_clusters.sql` + admin.
-- **Read:** `lib/queries/clusters.ts`, admin editors.
+- **Read:** `lib/queries/clusters.ts` (includes facades, published cluster places, media_links helpers — Doc 8), admin editors.
 
 #### `unit_types`
 - **Purpose:** Bedroom/layout specs per cluster (Annex D / per-cluster `reference.md`).
@@ -150,7 +150,8 @@ Column lists verified against `information_schema` / generated `src/types/databa
 #### `facade_style_descriptions`
 - **Purpose:** Per-cluster facade style copy (Horizon/Earth ≠ May Bell/Iris — not a Valley-wide catalog). Doc 4 #07.
 - **Key columns:** `cluster_id`, `style_name` (unique per cluster), `description`, `sort_order`, `confidence`, `source_id`.
-- **Live rows:** 2 (Farm Gardens Horizon + Earth).
+- **Live rows:** 2 (Farm Gardens Horizon + Earth). **Admin:** CRUD on `/admin/clusters/[id]` (Doc 8).
+- **Public:** rendered on `/clusters/[slug]` when rows exist; images via `media_links` subject `facade_style_description`.
 
 #### `places`
 - **Purpose:** Nearby / in-community services, and (from Doc 4 #06) cluster-scoped amenities as their own rows.
@@ -179,6 +180,7 @@ Column lists verified against `information_schema` / generated `src/types/databa
 #### `media` / `media_links`
 - **Purpose:** Files in Storage + polymorphic links (`subject_type`: cluster|place|question|status_log|community|post|**unit_type**|**facade_style_description** — Doc 4 #08).
 - **Live rows:** 8 (Farm Gardens Batch 001). Floor-plan/style images link to the shared template, not duplicated per unit.
+- **Admin:** `/admin/media` upload + link/unlink to cluster / unit_type / facade_style_description (and manual other subject types).
 
 #### `redirects`
 - **Purpose:** Path redirects for middleware.
@@ -270,7 +272,7 @@ Route groups `(public)` / `(admin)` do not appear in URLs.
 | `/blog` | `(public)/blog/page.tsx` | `posts` |
 | `/blog/[slug]` | `(public)/blog/[slug]/page.tsx` | SSG `generateStaticParams` |
 | `/clusters` | `(public)/clusters/page.tsx` | `clusters` + ConfidenceGate |
-| `/clusters/[slug]` | `(public)/clusters/[slug]/page.tsx` | SSG + unit_types |
+| `/clusters/[slug]` | `(public)/clusters/[slug]/page.tsx` | SSG + unit_types + facades + media_links + published cluster places |
 | `/compare` | `(public)/compare/page.tsx` | `communities` |
 | `/compare/[slug]` | `(public)/compare/[slug]/page.tsx` | SSG + comparisons |
 | `/living` | `(public)/living/page.tsx` | Category index |
@@ -296,6 +298,8 @@ Route groups `(public)` / `(admin)` do not appear in URLs.
 - `src/lib/queries/{clusters,places,questions,communities,status,posts}.ts` — **only** public read path for pages.
 - All use `createAnonClient()` — SSG-safe; Proposal #01 APPROVED (Doc 5 Block B).
 - Pages must not invent ad-hoc Supabase selects (Doc 5 Block A convention).
+- **Cluster depth (Doc 8 / Doc 4 #11):** `listFacadeStylesForCluster`, `listPublishedClusterPlaces` (`state=published` only), `listMediaForSubject(s)` + `mediaPublicUrl` in `clusters.ts`. No `units` queries. UI gated on non-empty results — never `slug === 'farm-gardens'`.
+- **Admin (Doc 8 Block D-B):** unit_type breakdown fields; `facade_style_descriptions` CRUD on `/admin/clusters/[id]`; `places.cluster_id` on place editor; `media_links` upsert/delete on `/admin/media` (cluster / unit_type / facade pickers). Session client only.
 
 ### 4.3 Components
 
@@ -415,7 +419,7 @@ Amenity operational status; service charges; Nima specs; Orania handover; severa
 - Custom domain + Search Console / Bing / analytics parked in **SETUP.md §7**.
 
 ### Deferred from V1
-Map, forums, marketplace, events, listings, multi-editor, etc. (Appendix C).
+Map, forums, marketplace, events, listings, multi-editor, etc. (Appendix C). Units UI / interactive map also deferred under Doc 8 Appendix C until multiple clusters have Batch-001-scale injections (new Doc 4, not #11).
 
 ### Needs Ray
 SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional token rotation.
@@ -445,6 +449,12 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 ---
 
 ## 10. CHANGELOG
+
+### 2026-08-09 — Doc 8 Blocks D-A + D-B (cluster depth app surfaces)
+**Why:** Doc 4 #11 APPROVED. Surface post-`0002` cluster depth on the public cluster page and in admin without hardcoding Farm Gardens or reading `units`.
+**Affects:** `src/lib/queries/clusters.ts` (facades, published cluster places, media helpers); `src/app/(public)/clusters/[slug]/page.tsx` (payment plan, unit-type count/areas when present, plans/floor plans/facades/amenities sections); `src/lib/schema.ts` (unit_type breakdown, facade fields, media link fields, Annex L #10 categories on zod); `src/lib/admin/actions.ts` + `/admin/clusters/[id]`, `/admin/places/[id]`, `/admin/media`; Doc 8 checkboxes; README Doc 8 row.
+**Breaking:** No. Draft amenities stay hidden until published. Units/map still deferred (Doc 8 Appendix C).
+**Still open:** Gate D3 admin write smoke (edit a unit_type area in `/admin` once); Ray publish review on 19 Farm Gardens amenity places; place-*create* action not added (set `cluster_id` on existing rows).
 
 ### 2026-08-09 — Farm Gardens Batch 001 promoted
 **Why:** Complete the data path after migration 0002: upload 8 images to `media`/`farm-gardens/*`, run promotion SQL (cluster fields, unit_types BUA/plot fix, 2 facade descriptions, 19 draft amenity places, 146 units, 8 media links), update `docs/clusters/farm-gardens/{reference,staging}.md`.
