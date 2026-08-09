@@ -159,6 +159,7 @@ create table unit_types (
   roof_terrace_area    int,
   unit_count           int,
   layout               text,
+  bathrooms            numeric(3,1),
   maids_room           boolean,
   ground_floor_bedroom boolean,
   private_pool         boolean,
@@ -172,10 +173,33 @@ create table unit_types (
   updated_at           timestamptz not null default now()
 );
 
+-- ---------- plexes ----------
+-- One physical plex/building row (6/8/9/10-plex townhouse
+-- configuration) — the structural unit every plex-organized cluster
+-- (Eden, and others confirmed since) is built from. Plex-level facts
+-- (size, street-facing side, the unit-number range it spans) describe
+-- the row, not any single unit (Doc 4 #12).
+
+create table plexes (
+  id            uuid primary key default gen_random_uuid(),
+  cluster_id    uuid not null references clusters(id) on delete cascade,
+  plex_size     smallint not null,
+  street_side   text check (street_side in ('up','down','left','right')),
+  range_start   int,
+  range_end     int,
+  notes         text,
+  confidence    confidence_level not null default 'unverified',
+  source_id     uuid references sources(id) on delete set null,
+  created_at    timestamptz not null default now(),
+  updated_at    timestamptz not null default now()
+);
+
 -- ---------- units ----------
 -- Individual physical units, distinct from unit_types (a floor-plan
 -- template). Foundation for the future interactive map / per-unit
--- drive times (Doc 4 #06).
+-- drive times (Doc 4 #06). `plex_id`/`th_position` (Doc 4 #12) are
+-- null for standalone-villa clusters (e.g. Farm Gardens) — they only
+-- apply where units are organized into plex rows.
 
 create table units (
   id             uuid primary key default gen_random_uuid(),
@@ -184,6 +208,9 @@ create table units (
   unit_number    text not null,
   plot_number    int,
   facade_style   text,
+  bua            numeric,
+  plex_id        uuid references plexes(id) on delete set null,
+  th_position    text,
   lat            numeric(9,6),
   lng            numeric(9,6),
   notes          text,
@@ -432,7 +459,7 @@ end $$;
 do $$
 declare t text;
 begin
-  foreach t in array array['clusters','unit_types','units','places',
+  foreach t in array array['clusters','unit_types','units','plexes','places',
                            'facade_style_descriptions','questions',
                            'communities','comparisons','posts'] loop
     execute format(
@@ -442,7 +469,7 @@ begin
 
   -- Every admin-editable table is audited (Doc 2 §5.2), including
   -- media_links — the log_audit() branch above exists for it.
-  foreach t in array array['clusters','unit_types','units','places',
+  foreach t in array array['clusters','unit_types','units','plexes','places',
                            'facade_style_descriptions','questions',
                            'status_log','communities','comparisons','posts',
                            'media','media_links','redirects','sources'] loop
@@ -460,6 +487,9 @@ create index unit_types_cluster_idx on unit_types (cluster_id, bedrooms);
 
 create index units_cluster_idx      on units (cluster_id, unit_type_id);
 create index units_geo_idx          on units (lat, lng);
+create index units_plex_idx         on units (plex_id);
+
+create index plexes_cluster_idx     on plexes (cluster_id);
 
 create index fsd_cluster_idx        on facade_style_descriptions (cluster_id);
 
@@ -488,6 +518,7 @@ alter table sources      enable row level security;
 alter table clusters     enable row level security;
 alter table unit_types   enable row level security;
 alter table units        enable row level security;
+alter table plexes       enable row level security;
 alter table facade_style_descriptions enable row level security;
 alter table places       enable row level security;
 alter table status_log   enable row level security;
@@ -525,6 +556,9 @@ create policy pub_unit_types on unit_types for select to anon, authenticated
 create policy pub_units on units for select to anon, authenticated
   using (exists (select 1 from clusters c
                  where c.id = cluster_id and c.state = 'published' and c.deleted_at is null));
+create policy pub_plexes on plexes for select to anon, authenticated
+  using (exists (select 1 from clusters c
+                 where c.id = cluster_id and c.state = 'published' and c.deleted_at is null));
 create policy pub_fsd on facade_style_descriptions for select to anon, authenticated
   using (exists (select 1 from clusters c
                  where c.id = cluster_id and c.state = 'published' and c.deleted_at is null));
@@ -545,12 +579,12 @@ do $$
 declare t text;
 begin
   foreach t in array array['clusters','places','questions','posts','communities',
-                           'unit_types','units','facade_style_descriptions','comparisons'] loop
+                           'unit_types','units','plexes','facade_style_descriptions','comparisons'] loop
     execute format(
       'create policy staff_read_%I on %I for select to authenticated using (can_edit())', t, t);
   end loop;
 
-  foreach t in array array['clusters','unit_types','units','facade_style_descriptions',
+  foreach t in array array['clusters','unit_types','units','plexes','facade_style_descriptions',
                            'places','questions','status_log',
                            'communities','comparisons','posts','media','media_links',
                            'redirects','sources'] loop

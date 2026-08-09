@@ -92,6 +92,8 @@ This document describes what **exists**. Where the migration file and the live d
 
 **Live audit 2026-08-09:** 16 base tables, 1 view (`current_status`), 67 RLS policies in `public`, 3 enums. Migration `0002_farm_gardens_units_places` applied (recorded as `20260809155601`).
 
+**Pending, not yet live (2026-08-10):** Doc 4 #12 (`plexes` table; `units.bua`/`plex_id`/`th_position`; `unit_types.bathrooms`) — `Status: PENDING`, not yet approved or pushed. Migration drafted at `supabase/migrations/0003_eden_plexes_units.sql`; row counts below do not reflect it.
+
 **Earlier baseline (2026-08-08):** 14 base tables / 57 policies — superseded by the audit above.
 
 ### 3.1 Overview
@@ -449,6 +451,16 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 ---
 
 ## 10. CHANGELOG
+
+### 2026-08-10 — Eden deep-dive: plex structure schema designed (#12), Batch 002 staged (not yet promoted)
+
+**Why:** Extracting Eden's 15 floor-plan layouts (3 facade styles × 3-/4-bed, each layout-determining unlike Farm Gardens' cosmetic-only Horizon/Earth) required deriving all 362 physical units' style, bedroom type, exact layout, and exact per-unit floor area from the site plan and floor-plan PDFs — OCR'd plot positions, whole-plex and per-TH-position color/geometry cross-checks against the developer's own key-plan diagrams, and street-side orientation read directly off each of the 43 physical plex rows. That exposed the same class of schema gap Farm Gardens did: no way to represent a physical plex/building row, no per-unit floor-area column, no bathroom count anywhere, and no way for `unit_types` to carry a style discriminator without duplicating `units.facade_style`'s name and meaning. Each addressed by Doc 4 #12 (`plexes` table; `units.bua`/`plex_id`/`th_position`; `unit_types.bathrooms`; `unit_types.layout` repurposed as a populated-data convention, no schema change).
+
+**Affects:** `supabase/migrations/0003_eden_plexes_units.sql` (designed here, not yet applied); `docs/0001_init.sql` (updated to match — `plexes` table, `unit_types.bathrooms`, `units.bua`/`plex_id`/`th_position`); `docs/clusters/eden/staging.md` Batch 002 (15 `unit_types` rows, 43 `plexes` rows, 362 `units` rows, 3 `facade_style_descriptions` rows, 22 images — full unit-level dataset in `eden-floorplans/eden-units.csv`); `eden-floorplans/eden-batch-002-promotion.sql` (generated, ready to run once #12 is approved and pushed).
+
+**Breaking:** No at design time — nothing pushed to the live schema yet.
+
+**Not yet done:** Ray's decision on #12 (currently PENDING); migration push; image upload to the `media` bucket; promotion SQL run; plot size, amenities, and pricing still not collected for Eden (payments jpeg not yet examined); application code for any of this (same as Farm Gardens, deferred to Doc 8-style work).
 
 ### 2026-08-09 — Doc 8 Blocks D-A + D-B (cluster depth app surfaces)
 **Why:** Doc 4 #11 APPROVED. Surface post-`0002` cluster depth on the public cluster page and in admin without hardcoding Farm Gardens or reading `units`.

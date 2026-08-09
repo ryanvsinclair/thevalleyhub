@@ -695,3 +695,70 @@ Low–medium — UI scope creep into units/map or Farm Gardens hardcoding. Mitig
 **Notes:** Approved as proposed.
 
 ---
+
+## #12 — Plex structure (`plexes` table, `units.plex_id`/`th_position`/`bua`), `unit_types.bathrooms`, and the `unit_types.layout` convention
+
+**Status:** PENDING
+**Raised:** 2026-08-10
+**Category:** A — Future-proofing
+**Affects step:** `docs/0001_init.sql` / `supabase/migrations/0001_init.sql` schema · `src/types/database.ts` regen
+**Blocking:** Yes — for Eden Batch 002 (`docs/clusters/eden/staging.md`), all 362 units and 15 `unit_types` rows depend on these columns existing
+
+### What Doc 2 currently specifies
+
+`unit_types` has `label` (a bare layout letter, e.g. `'A'`) and an existing-but-never-populated `layout` column, with no way to represent bathroom count. `units` (added by #06) has no way to record a unit's position within a physical building row, or its exact per-unit floor area — only `unit_types.bua_min`/`bua_max`, a range across the whole layout. There is no table representing a physical plex/building row at all.
+
+### What I propose instead
+
+**`unit_types.layout` — no schema change, just a populated-data convention.** Eden has 15 distinct floor-plan templates because style is layout-determining there (Spruce/Iris/May Bell each have their own square footage per bedroom count, unlike Farm Gardens' Horizon/Earth which share one interior). `bedrooms` + `label` alone can't disambiguate "Spruce 3BR-A" from "Iris 3BR-A" — both would be `(3, 'A')`. Rather than add a second column that duplicates `units.facade_style`'s name and meaning (which would require a coalescing view to reconcile), the existing unused `layout` column is repurposed to hold the compound key: `'{facade_style}-{label}'`, e.g. `'spruce-a'`. `units.facade_style` stays the single, consistently-populated field for a unit's style across every cluster — Farm Gardens already works this way; Eden now does too, with no exception.
+
+**`unit_types.bathrooms numeric(3,1)`** — new nullable column. Supports halves (`3.5`, `4.0`) the way the market actually lists these ("3BR+M", counting the maid's room separately — `unit_types.maids_room` already handles that half, no change needed there).
+
+**New table `plexes`:**
+
+```sql
+create table plexes (
+  id            uuid primary key default gen_random_uuid(),
+  cluster_id    uuid not null references clusters(id) on delete cascade,
+  plex_size     smallint not null,
+  street_side   text check (street_side in ('up','down','left','right')),
+  range_start   int,
+  range_end     int,
+  notes         text,
+  confidence    confidence_level not null default 'unverified',
+  source_id     uuid references sources(id) on delete set null,
+  created_at    timestamptz not null default now(),
+  updated_at    timestamptz not null default now()
+);
+```
+
+Plus the standard scaffolding every table in this schema gets: RLS enabled, `pub_plexes` (published-cluster-gated, same pattern as `pub_units`/`pub_fsd`), staff CRUD policies, both triggers, a `cluster_id` index. This generalizes across every plex-organized cluster, not just Eden — the same 6/8/9/10-plex structure has since been confirmed present in other clusters' floor plans.
+
+**`units` — 3 new nullable columns:** `bua numeric` (exact per-unit floor area — plex position affects this even within one layout letter, e.g. two "Spruce 3BR-A" units 7.6 sqft apart depending on which slot in the row they sit in; `unit_types.bua_min`/`bua_max` only captures the layout-wide range), `plex_id uuid references plexes(id)` (nullable — null for standalone-villa clusters like Farm Gardens), `th_position text` (e.g. `'TH01'`, the unit's slot within its plex).
+
+### Why
+
+Eden's 362 units are organized into 43 physical plex rows (6/8/9/10-plex), each with real per-unit variation in floor area that the current schema has nowhere to record, and no way to represent the plex/row structure itself. Bathroom count is currently unrecorded anywhere despite being a standard listing figure. Without these, Eden's floor-plan and per-unit data either can't be promoted with full fidelity or gets force-fit into free-text `notes`.
+
+### Vision test
+
+Doc 3 §1: "every fact carries a source, a confidence level." Per-unit floor area, bathroom count, and physical plex membership are concrete, verifiable facts sourced directly from the developer's own floor-plan PDFs — exactly the kind of detail the site exists to publish accurately, and currently has no structured home.
+
+### Cost if approved
+
+One new table with the standard five-piece scaffolding (RLS, 4 policies, 2 triggers, 1 index), four new nullable columns across `unit_types` and `units`, no backfill required anywhere (Farm Gardens' existing rows stay null on all of them — its standalone villas have no plex structure and no per-unit area variation to record). `database.ts` regen required after push.
+
+### Cost if rejected
+
+Eden's per-unit floor area, bathroom count, and plex/row structure stay unrecorded or get force-fit into `notes`, where none of it is queryable, filterable, or sortable — the exact problem this session's design conversation was trying to solve.
+
+### Risk
+
+Low — entirely additive, nullable, no existing row changes shape. The `unit_types.layout` convention (reusing an existing unused column rather than adding a new one) is a naming/data decision, not a schema risk, but it does mean any future reader of that column needs to know the `'{style}-{letter}'` convention — documented here and in `docs/clusters/eden/staging.md` for that reason.
+
+---
+**RAY'S DECISION:**
+**Date:**
+**Notes:**
+
+---
