@@ -12,21 +12,18 @@ function supabaseHostname(): string | null {
 
 const supabaseHost = supabaseHostname();
 
+if (!supabaseHost) {
+  throw new Error(
+    "NEXT_PUBLIC_SUPABASE_URL must be set so images.remotePatterns can allow the Storage host",
+  );
+}
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      ...(supabaseHost
-        ? [
-            {
-              protocol: "https" as const,
-              hostname: supabaseHost,
-              pathname: "/storage/v1/object/public/media/**",
-            },
-          ]
-        : []),
       {
         protocol: "https",
-        hostname: "*.supabase.co",
+        hostname: supabaseHost,
         pathname: "/storage/v1/object/public/media/**",
       },
     ],

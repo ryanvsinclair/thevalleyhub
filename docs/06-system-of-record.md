@@ -249,6 +249,7 @@ Revalidate triggers pass public path args via `TG_ARGV` (e.g. `/`, `/clusters`).
 
 - **RLS enabled** on all 14 public tables (57 policies).
 - **Anon + authenticated public read:** published, non-deleted content patterns on clusters/places/questions/posts/communities; comparisons via published community; unit_types via published cluster; status_log open read; sources/redirects `using (true)`; **media / media_links** only when linked to a published subject via `media_subject_is_published()` (Doc 4 #18 / migration `0004` — apply live). Staff read all media via `staff_read_media` / `staff_read_media_links` (`can_edit()`).
+- **Storage is still open.** `#18` narrowed the *metadata* tables only. The `media` bucket remains `public: true` with `media_public_read` (`bucket_id = 'media'`), so anyone who knows or guesses an object path can still fetch unlinked/draft files directly from Storage. Treat the bucket as public until a follow-up proposal gates `storage.objects`.
 - **Staff write:** `can_edit()` gated INSERT/UPDATE/DELETE on content tables.
 - **profiles:** `own_profile` SELECT for authenticated.
 - **audit_log:** SELECT for authenticated (`read_audit`); inserts via trigger.
@@ -332,7 +333,7 @@ Route groups `(public)` / `(admin)` do not appear in URLs.
 - Clients: `createAnonClient` · cookie `createClient` · `createActionClient` · `createAdminClient` (service role, never content).
 - Types: only generated `src/types/database.ts`.
 - Seeds: `supabase/seed/0N_*.sql` numeric order; identity by `slug`.
-- Schema snapshot (reference): `docs/schema-current.sql`. Applyable history: `supabase/migrations/0001_init.sql` + later migrations. Do not treat the docs snapshot as `db push` input (Doc 4 #16).
+- Schema snapshot (reference): `docs/schema-current.sql`. Applyable history: `supabase/migrations/0001_init.sql` + later migrations. Do not treat the docs snapshot as `db push` input (Doc 4 #16). Doc 5 entries and decided Doc 4 entries still say `docs/0001_init.sql` — they are frozen historical records (Doc 5 rule 5), same file.
 - Optional form empties → `null` via zod preprocessors.
 - SEO: `src/lib/seo/*` + per-route metadata; no JSON-LD-only-in-root-layout.
 

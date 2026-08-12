@@ -76,17 +76,32 @@ function primaryMedia(items: LinkedMedia[]) {
   return items.find((m) => m.is_primary) ?? items[0] ?? null;
 }
 
-function MediaFigure({ media }: { media: LinkedMedia }) {
+/**
+ * Floor plans carry fine line work and text, so they render `fill` inside a
+ * fixed-height box rather than being letterboxed into an assumed aspect ratio.
+ */
+function MediaFigure({
+  media,
+  sizes,
+  priority = false,
+}: {
+  media: LinkedMedia;
+  sizes: string;
+  priority?: boolean;
+}) {
   return (
     <figure className="mt-3">
-      <Image
-        src={mediaPublicUrl(media.storage_path)}
-        alt={media.alt_text ?? media.caption ?? ""}
-        width={1200}
-        height={800}
-        className="max-h-80 w-full object-contain object-left"
-        sizes="(max-width: 768px) 100vw, 640px"
-      />
+      <div className="relative h-80 w-full">
+        <Image
+          src={mediaPublicUrl(media.storage_path)}
+          alt={media.alt_text ?? media.caption ?? ""}
+          fill
+          className="object-contain object-left"
+          sizes={sizes}
+          priority={priority}
+          quality={90}
+        />
+      </div>
       {media.caption ? (
         <figcaption className="mt-2 text-sm text-neutral-600">
           {media.caption}
@@ -95,6 +110,11 @@ function MediaFigure({ media }: { media: LinkedMedia }) {
     </figure>
   );
 }
+
+/** Two-up grid inside the 5xl (976px content) shell. */
+const GRID_SIZES = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 480px";
+/** Full content width. */
+const FULL_SIZES = "(max-width: 1024px) 100vw, 976px";
 
 export default async function ClusterDetailPage({ params }: Props) {
   const { slug } = await params;
@@ -226,8 +246,13 @@ export default async function ClusterDetailPage({ params }: Props) {
         <section className="mt-10">
           <h2 className="text-lg font-semibold tracking-tight">Plans</h2>
           <div className="mt-4 grid gap-6 sm:grid-cols-2">
-            {clusterMedia.map((media) => (
-              <MediaFigure key={media.id} media={media} />
+            {clusterMedia.map((media, index) => (
+              <MediaFigure
+                key={media.id}
+                media={media}
+                sizes={GRID_SIZES}
+                priority={index === 0}
+              />
             ))}
           </div>
         </section>
@@ -341,7 +366,11 @@ export default async function ClusterDetailPage({ params }: Props) {
                     </p>
                     <div className="mt-2 grid gap-4 sm:grid-cols-2">
                       {media.map((item) => (
-                        <MediaFigure key={item.id} media={item} />
+                        <MediaFigure
+                          key={item.id}
+                          media={item}
+                          sizes={GRID_SIZES}
+                        />
                       ))}
                     </div>
                   </div>
@@ -372,7 +401,9 @@ export default async function ClusterDetailPage({ params }: Props) {
                       </p>
                     ) : null}
                   </ConfidenceGate>
-                  {image ? <MediaFigure media={image} /> : null}
+                  {image ? (
+                    <MediaFigure media={image} sizes={FULL_SIZES} />
+                  ) : null}
                 </div>
               );
             })}

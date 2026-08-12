@@ -1,6 +1,8 @@
 -- ============================================================
--- 0001_init.sql — The Valley community site
--- Complete schema, RLS, triggers, views, grants
+-- schema-current.sql — The Valley community site
+-- REFERENCE SNAPSHOT ONLY — do not apply as a migration (Doc 4 #16).
+-- Consolidates migrations 0001_init through 0004_media_public_read_tighten.
+-- Applyable history lives in supabase/migrations/.
 --
 -- v1.1 amendments (7 Aug 2026, second review):
 --   1. Audit trigger loop now includes media_links, communities,
@@ -601,6 +603,7 @@ as $$
     when 'post' then exists (
       select 1 from posts po
       where po.id = p_subject_id and po.state = 'published' and po.deleted_at is null
+        and (po.published_at is null or po.published_at <= now())
     )
     when 'community' then exists (
       select 1 from communities m

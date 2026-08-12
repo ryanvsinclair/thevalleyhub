@@ -34,6 +34,7 @@ as $$
     when 'post' then exists (
       select 1 from posts po
       where po.id = p_subject_id and po.state = 'published' and po.deleted_at is null
+        and (po.published_at is null or po.published_at <= now())
     )
     when 'community' then exists (
       select 1 from communities m
@@ -72,6 +73,9 @@ create policy pub_media on media for select to anon, authenticated
         and public.media_subject_is_published(ml.subject_type, ml.subject_id)
     )
   );
+
+drop policy if exists staff_read_media on media;
+drop policy if exists staff_read_media_links on media_links;
 
 create policy staff_read_media on media for select to authenticated
   using (can_edit());

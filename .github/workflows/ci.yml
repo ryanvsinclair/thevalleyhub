@@ -5,14 +5,18 @@ on:
     branches: [main]
   pull_request:
 
+# Scope: type + lint only. `next build` needs live Supabase credentials for
+# generateStaticParams, so it stays a local/Vercel check (Doc 4 #19).
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          lfs: false
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version-file: .nvmrc
           cache: npm
       - run: npm ci
       - run: npx tsc --noEmit

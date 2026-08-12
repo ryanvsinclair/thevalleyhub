@@ -9,6 +9,8 @@ type RedirectRow = {
 };
 
 const CACHE_TTL_MS = 120_000;
+/** Explicit ceiling: PostgREST truncates silently at its own row cap. */
+const MAX_REDIRECT_ROWS = 2000;
 
 type CacheState = {
   expiresAt: number;
@@ -29,13 +31,19 @@ async function loadRedirectMap(): Promise<Map<string, RedirectRow>> {
   const supabase = createAnonClient();
   const { data, error } = await supabase
     .from("redirects")
-    .select("from_path, to_path, status_code");
+    .select("from_path, to_path, status_code")
+    .limit(MAX_REDIRECT_ROWS);
+
+  // A failed load must not be cached — that would mask every redirect for the
+  // whole TTL. Serve the last good map if there is one, else retry next request.
+  if (error || !data) {
+    console.error("middleware: redirects load failed", error);
+    return cached?.byFrom ?? new Map<string, RedirectRow>();
+  }
 
   const byFrom = new Map<string, RedirectRow>();
-  if (!error && data) {
-    for (const row of data) {
-      byFrom.set(row.from_path, row as RedirectRow);
-    }
+  for (const row of data) {
+    byFrom.set(row.from_path, row as RedirectRow);
   }
 
   globalThis.__valleyRedirectCache = {

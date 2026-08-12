@@ -77,10 +77,10 @@ Next.js 15 App Router · Tailwind v4 CSS-first `@theme`, no config file · CVA +
 # SECTION 2 — DATABASE
 
 **Scope:** one migration file creating the complete schema, RLS, triggers, views, grants. Then generated types.
-**Source (historical V1):** the applyable migration was authored as `supabase/migrations/0001_init.sql`. The living consolidated snapshot is now `docs/schema-current.sql` (Doc 4 #16) — reference only; do not re-apply it as a migration.
+**Source:** `docs/schema-current.sql` (renamed from `docs/0001_init.sql`, Doc 4 #16) — shipped alongside these documents. It is authoritative over all earlier SQL. Do not rewrite it; copy it.
 
 ### 2.1 Write the migration **[A]**
-- [x] Copy the then-authoritative init SQL verbatim to `supabase/migrations/0001_init.sql` — do not author from scratch *(path renamed: living snapshot is `docs/schema-current.sql`, Doc 4 #16)*
+- [x] Copy `docs/schema-current.sql` verbatim to `supabase/migrations/0001_init.sql` — do not author from scratch
 - [x] Extensions: `pgcrypto`, `citext`
 - [x] Enums: `app_role`, `publish_state`, `confidence_level`
 - [x] Function `set_updated_at()`
