@@ -762,3 +762,313 @@ Low — entirely additive, nullable, no existing row changes shape. The `unit_ty
 **Notes:** Approved as proposed. Mixed 10-plex key-plan template accepted after review; Farm Gardens leaves plex columns null. Proceed with 0003 + Eden Batch 002 promotion.
 
 ---
+
+## #13 — Cache middleware `redirects` lookup
+
+**Status:** PENDING
+**Raised:** 2026-08-12
+**Category:** B — Better execution
+**Affects step:** Post-V1 / Doc 6 §4.1 Middleware (`src/middleware.ts`)
+**Blocking:** No — `redirects` currently has 0 rows; pattern cost only
+
+### What Doc 2 currently specifies
+
+Doc 2 §6 and Doc 5 Block C: middleware reads the `redirects` table with `createAnonClient()` on Edge and issues redirects. No caching requirement was stated.
+
+### What I propose instead
+
+Cache the redirect map (or the per-path lookup) so Edge does not round-trip to Supabase on every non-static request. Preferred shape: load published `from_path → {to_path, status_code}` with a short TTL / `unstable_cache` (or equivalent Next 16 cache primitive), invalidate via existing `/api/revalidate` or a dedicated tag when `redirects` changes. Alternative if caching on Edge is awkward: narrow the `matcher` to paths that can plausibly have redirects once we know the slug vocabulary.
+
+### Why
+
+`src/middleware.ts` currently `.from('redirects').eq('from_path', …).maybeSingle()` on every matched request. Latency scales with traffic, not content. Table is empty today, so this is preventive, not a live outage.
+
+### Vision test
+
+Doc 3 §1: the site must stay fast and honest as traffic grows; paying a DB hop for a monthly-changing table works against that.
+
+### Cost if approved
+
+Small change to `src/middleware.ts` (+ possibly a tiny `lib/redirects` helper). Doc 6 §4 update same session. No schema change.
+
+### Cost if rejected
+
+Every crawl/bot/page view keeps an unnecessary Supabase round-trip once redirects are in use; easy to forget until traffic hurts.
+
+### Risk
+
+Stale redirects for up to the cache TTL after an admin/SQL edit — mitigated by tying invalidation to the existing revalidate path or keeping TTL short (e.g. 60–300s).
+
+---
+**RAY'S DECISION:**
+**Date:**
+**Notes:**
+
+---
+
+## #14 — Add a time-based revalidation floor on public routes
+
+**Status:** PENDING
+**Raised:** 2026-08-12
+**Category:** B — Better execution
+**Affects step:** Post-V1 public App Router pages / Doc 6 §2 Deploy
+**Blocking:** No — but SQL promotions are soft-broken if the webhook is down
+
+### What Doc 2 currently specifies
+
+Freshness via Server Action `revalidatePath` plus `POST /api/revalidate` (Doc 2 §5.3 / §7.2). No `export const revalidate` ISR interval.
+
+### What I propose instead
+
+Add a conservative time-based floor (suggested **3600s**) on public segment layouts or key public pages so content cannot stay invisible indefinitely when promotions happen via SQL seeds rather than admin actions. Keep on-demand revalidation as the primary path.
+
+### Why
+
+External review correctly noted: seed/SQL promotions fire no Server Action. Doc 6 already describes `notify_site_revalidate()` triggers — those must still be confirmed live `[R]`. A time floor is a safety net if the webhook URL/secret drifts after domain cutover.
+
+### Vision test
+
+Accuracy includes *showing* verified facts once promoted; a silent stale cache works against Doc 3 §1.
+
+### Cost if approved
+
+One (or few) `export const revalidate = 3600` lines; Doc 6 §2/§4 + changelog. Slightly more background regenerations on Vercel.
+
+### Cost if rejected
+
+Continued full dependence on webhook + deploy for SQL-side promotions; SETUP.md §7 domain cutover remains a footgun.
+
+### Risk
+
+Low. Worst case: pages refresh hourly even when unchanged. Do not set so low that it defeats SSG cost benefits.
+
+---
+**RAY'S DECISION:**
+**Date:**
+**Notes:**
+
+---
+
+## #15 — Configure `next/image` for Supabase Storage media
+
+**Status:** PENDING
+**Raised:** 2026-08-12
+**Category:** B — Better execution
+**Affects step:** Post-V1 cluster depth media rendering (Doc 8 surfaces)
+**Blocking:** No
+
+### What Doc 2 currently specifies
+
+No image-optimization requirement. Doc 8 shipped cluster media with a documented raw `<img>` because `remotePatterns` was unset (`clusters/[slug]/page.tsx`).
+
+### What I propose instead
+
+1. Set `images.remotePatterns` in `next.config.ts` for the Supabase Storage host (`NEXT_PUBLIC_SUPABASE_URL` hostname / `*.supabase.co` storage path).
+2. Switch public media renders (at least cluster page floor plans / façades / maps) from raw `<img>` to `next/image` with sensible `sizes` and lazy loading.
+
+### Why
+
+Floor plans are the content. Shipping multi-hundred-KB–5MB PNGs/JPGs at full size to mobile is the largest UX cost called out in the review, and the comment in the page already names the missing config.
+
+### Vision test
+
+Doc 3 §1: a resident-facing information hub should feel built by someone who lives there — including usable media on a phone.
+
+### Cost if approved
+
+`next.config.ts` + component updates wherever Storage URLs render; Doc 6 §2/§4. Verify build still passes without local Supabase.
+
+### Cost if rejected
+
+Mobile continues to download full-resolution floor plans; problem worsens as more clusters promote media.
+
+### Risk
+
+Misconfigured `remotePatterns` breaks images in prod — mitigate by matching the exact Storage URL shape used by `mediaPublicUrl`. Some very wide floor plans may need `width`/`height` or fill layout care.
+
+---
+**RAY'S DECISION:**
+**Date:**
+**Notes:**
+
+---
+
+## #16 — Rename docs schema snapshot away from `0001_init.sql`
+
+**Status:** PENDING
+**Raised:** 2026-08-12
+**Category:** B — Better execution
+**Affects step:** Doc 2 §2.1 path reference · `docs/0001_init.sql` · agent onboarding
+**Blocking:** Yes for the rename itself — Doc 2 prose names the path and Doc 3 §9 forbids the agent editing that prose
+
+### What Doc 2 currently specifies
+
+§2.1: copy `docs/0001_init.sql` verbatim to `supabase/migrations/0001_init.sql`.
+
+### What I propose instead
+
+Rename the docs copy to a non-migration name (e.g. `docs/schema-current.sql`) reflecting that it is now a **consolidated live snapshot** (625 lines, includes post-0002/0003 objects), not the applyable 501-line `0001_init` migration. Ray (or `DOCS_GUARD=off`) updates Doc 2 §2.1 / any other prose that cites the old path. `supabase/migrations/0001_init.sql` stays untouched.
+
+### Why
+
+Same basename, different content, one applyable and one not — a real footgun for future agents.
+
+### Vision test
+
+Doc 3 §2 source hierarchy and §3.2 “never invent a migration” rely on knowing which SQL file is authoritative to apply.
+
+### Cost if approved
+
+One git rename + Doc 2 prose edit by Ray + README/SETUP/Doc 6 path fixes where they cite the docs file.
+
+### Cost if rejected
+
+Ongoing risk of someone re-applying or diffing the wrong file.
+
+### Risk
+
+Broken links in docs until prose is updated in the same session as the rename.
+
+---
+**RAY'S DECISION:**
+**Date:**
+**Notes:**
+
+---
+
+## #17 — Floorplan binary storage policy (Git LFS or out-of-band)
+
+**Status:** PENDING
+**Raised:** 2026-08-12
+**Category:** A — Future-proofing
+**Affects step:** Per-cluster deep-dive archives (`*-floorplans/`) · promotion workflow
+**Blocking:** No for current code — **Yes** before committing more cluster image packs
+
+### What Doc 2 currently specifies
+
+No binary-storage policy. Practice so far: commit extracted PNGs/JPGs under `eden-floorplans/` and `farm-gardens-floorplans/`; runtime serves from Supabase Storage.
+
+### What I propose instead
+
+Pick one before Nara (and later clusters) land more binaries:
+
+**(A) Git LFS** for `*-floorplans/**/*.{png,jpg,jpeg,webp}` — keeps paths stable for agents, stops fat blobs in normal git history going forward (existing history still heavy unless rewritten).
+
+**(B) Out-of-band archive** (private bucket / Drive) — repo keeps CSV + promotion SQL only; Doc 9 / staging points at the archive. Cleanest git, slightly worse agent locality.
+
+**(C) Status quo** — accept ~35MB+ pack growth per few clusters.
+
+Measured now (this clone): Eden ~21MB, Farm Gardens ~16MB on disk; largest tracked blob ~5.0MB (`farm-gardens-site-plan.png`); pack ~35MB. Runtime does not need these paths (`mediaPublicUrl` → Storage).
+
+### Why
+
+Git stores every re-export forever. Three clusters in, seven+ planned — this is the cheap moment to decide. History rewrite later implies force-push over anything published.
+
+### Vision test
+
+Keeps the data spine maintainable so future map/listings phases are not blocked by an unclonable repo.
+
+### Cost if approved
+
+One-time tooling (LFS or archive convention) + Doc 6 / Doc 9 note. Optional history rewrite is Ray-only and disruptive.
+
+### Cost if rejected / defer (C)
+
+Repo weight climbs with every deep-dive; clones and CI get slower.
+
+### Risk
+
+LFS needs every clone/CI to have LFS smudge; out-of-band needs discipline so promotion images are not “lost.” Do **not** rewrite history without an explicit Ray decision.
+
+---
+**RAY'S DECISION:**
+**Date:**
+**Notes:**
+
+---
+
+## #18 — Tighten anon `using (true)` read policies on media-related tables
+
+**Status:** PENDING
+**Raised:** 2026-08-12
+**Category:** A — Future-proofing
+**Affects step:** RLS policies in live schema / new migration
+**Blocking:** No — V1 scale is fine; lowest priority in this bundle
+
+### What Doc 2 currently specifies
+
+`pub_sources`, `pub_status`, `pub_media`, `pub_media_links`, `pub_redirects` use `using (true)` for anon/authenticated select (see `0001_init.sql`).
+
+### What I propose instead
+
+Narrow `pub_media` / `pub_media_links` so only media linked to published subjects (or explicitly marked public) is listable — preventing anon enumeration of `uploaded_by` and uploaded-but-unlinked draft files. Leave `status_log` / `redirects` / `sources` as-is unless Ray wants those tightened too.
+
+### Why
+
+Review finding is real but low urgency. Worth a migration before media volume grows.
+
+### Vision test
+
+Accuracy and trust include not leaking draft assets.
+
+### Cost if approved
+
+New migration + policy rewrite + Doc 6 §3.6 + types unchanged. Careful QA that published cluster floor plans still render.
+
+### Cost if rejected
+
+Draft/unlinked media remains publicly selectable via anon key.
+
+### Risk
+
+Over-tight policies break admin previews or public pages that join media differently — needs a query audit before apply.
+
+---
+**RAY'S DECISION:**
+**Date:**
+**Notes:**
+
+---
+
+## #19 — Minimal CI: `tsc --noEmit` + `eslint` on push
+
+**Status:** PENDING
+**Raised:** 2026-08-12
+**Category:** B — Better execution
+**Affects step:** Repo tooling / GitHub Actions (new)
+**Blocking:** No
+
+### What Doc 2 currently specifies
+
+Local `npm run build` / gate checks. No CI workflow required in V1.
+
+### What I propose instead
+
+One GitHub Action on push/PR: `npm ci`, `npx tsc --noEmit`, `npm run lint`. Goal: catch `database.ts` drift and type errors before merge. Not a full Playwright suite.
+
+### Why
+
+No automated check today that migrations and generated types stay aligned with `src/`. Solo project tradeoff was defensible at V1; cheap insurance now.
+
+### Vision test
+
+Protects the data spine from silent breakage as more agents touch the repo.
+
+### Cost if approved
+
+One workflow file; Doc 6 §2 note. Needs Node version pin matching local/Vercel.
+
+### Cost if rejected
+
+Continued reliance on human `npm run build` before merge.
+
+### Risk
+
+Low. Flaky only if lockfile/CI Node mismatch — pin versions.
+
+---
+**RAY'S DECISION:**
+**Date:**
+**Notes:**
+
+---

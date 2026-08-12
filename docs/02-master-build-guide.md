@@ -12,12 +12,12 @@
 ```
 LAST COMPLETED:   Doc 4 #12 APPROVED · migration 0003 live · Eden Batch 002 promoted (15 unit_types, 43 plexes, 362 units, 3 facades, 22 media).
 SPEC ALIGNED:     Yes
-CURRENT TASK:     None — product iteration by Ray. Doc 3 §11 in force.
-NEXT UP:          Nara/Talia deep-dives when ready · Ray publish review on 19 draft Farm Gardens amenity places · SETUP.md §7 launch checklist · units/map UI only via a future Doc 4
+CURRENT TASK:     PAUSED — codebase-review remediation: Phase 1 (.gitignore) landed; Doc 4 #13–#19 PENDING Ray decision before any src/ work.
+NEXT UP:          Ray decide #13–#19 · confirm notify_site_revalidate live [R] · wire docs guard hooksPath on each clone [R]
 CONTEXT BLOCK:    C complete · Doc 8 D-A and D-B complete
-BLOCKERS:         None
+BLOCKERS:         Proposals #13–#19 pending (src/ and binary-policy items)
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: (1) 19 Farm Gardens amenity `places` remain draft — publish when ready [R]. (2) Launch checklist parked in SETUP.md §7 [R]. (3) Eden public unit-types table shows repeated A/B labels — layout/style column polish optional
+ATTENTION NEEDED: (1) Doc 4 #13–#19 PENDING — see raise message [R]. (2) Confirm notify_site_revalidate URL/secret on production [R]. (3) git config core.hooksPath scripts on every clone [R]. (4) 19 Farm Gardens amenity places still draft [R]. (5) SETUP.md §7 launch checklist [R].
 GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · Doc 8 A+B COMPLETE · #12 LIVE
 ```
 
