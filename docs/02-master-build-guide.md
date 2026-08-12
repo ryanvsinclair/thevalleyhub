@@ -10,15 +10,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Doc 4 #12 APPROVED · migration 0003 live · Eden Batch 002 promoted (15 unit_types, 43 plexes, 362 units, 3 facades, 22 media).
+LAST COMPLETED:   Doc 4 #13–#19 APPROVED and implemented in repo (2026-08-12). Migration 0004 pending live apply [R].
 SPEC ALIGNED:     Yes
-CURRENT TASK:     PAUSED — codebase-review remediation: Phase 1 (.gitignore) landed; Doc 4 #13–#19 PENDING Ray decision before any src/ work.
-NEXT UP:          Ray decide #13–#19 · confirm notify_site_revalidate live [R] · wire docs guard hooksPath on each clone [R]
+CURRENT TASK:     None — remediation code on cursor/codebase-review-remediation-98d9. Doc 3 §11 in force.
+NEXT UP:          Apply migration 0004 live [R] · confirm notify_site_revalidate [R] · wire docs guard hooksPath [R]
 CONTEXT BLOCK:    C complete · Doc 8 D-A and D-B complete
-BLOCKERS:         Proposals #13–#19 pending (src/ and binary-policy items)
+BLOCKERS:         None for approved remediation items (live 0004 apply is Ray)
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: (1) Doc 4 #13–#19 PENDING — see raise message [R]. (2) Confirm notify_site_revalidate URL/secret on production [R]. (3) git config core.hooksPath scripts on every clone [R]. (4) 19 Farm Gardens amenity places still draft [R]. (5) SETUP.md §7 launch checklist [R].
-GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · Doc 8 A+B COMPLETE · #12 LIVE
+ATTENTION NEEDED: (1) Apply `0004_media_public_read_tighten` to live Supabase [R]. (2) Confirm notify_site_revalidate URL/secret on production [R]. (3) git config core.hooksPath scripts on every clone [R]. (4) 19 Farm Gardens amenity places still draft [R]. (5) SETUP.md §7 launch checklist [R].
+GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · Doc 8 A+B COMPLETE · #12–#19 APPROVED · #13–#19 IN REPO
 ```
 
 **Rules for this block**
@@ -77,10 +77,10 @@ Next.js 15 App Router · Tailwind v4 CSS-first `@theme`, no config file · CVA +
 # SECTION 2 — DATABASE
 
 **Scope:** one migration file creating the complete schema, RLS, triggers, views, grants. Then generated types.
-**Source:** `docs/0001_init.sql` — shipped alongside these documents. It is authoritative over all earlier SQL. Do not rewrite it; copy it.
+**Source (historical V1):** the applyable migration was authored as `supabase/migrations/0001_init.sql`. The living consolidated snapshot is now `docs/schema-current.sql` (Doc 4 #16) — reference only; do not re-apply it as a migration.
 
 ### 2.1 Write the migration **[A]**
-- [x] Copy `docs/0001_init.sql` verbatim to `supabase/migrations/0001_init.sql` — do not author from scratch
+- [x] Copy the then-authoritative init SQL verbatim to `supabase/migrations/0001_init.sql` — do not author from scratch *(path renamed: living snapshot is `docs/schema-current.sql`, Doc 4 #16)*
 - [x] Extensions: `pgcrypto`, `citext`
 - [x] Enums: `app_role`, `publish_state`, `confidence_level`
 - [x] Function `set_updated_at()`

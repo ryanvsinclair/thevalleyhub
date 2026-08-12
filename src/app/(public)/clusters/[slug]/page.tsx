@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -78,12 +79,13 @@ function primaryMedia(items: LinkedMedia[]) {
 function MediaFigure({ media }: { media: LinkedMedia }) {
   return (
     <figure className="mt-3">
-      {/* Storage paths are public-bucket URLs; next/image remotePatterns not configured. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={mediaPublicUrl(media.storage_path)}
         alt={media.alt_text ?? media.caption ?? ""}
+        width={1200}
+        height={800}
         className="max-h-80 w-full object-contain object-left"
+        sizes="(max-width: 768px) 100vw, 640px"
       />
       {media.caption ? (
         <figcaption className="mt-2 text-sm text-neutral-600">

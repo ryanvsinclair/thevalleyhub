@@ -1,0 +1,14 @@
+# Git LFS — cluster floorplan / brochure image archives (Doc 4 #17).
+# Forward-only: do not rewrite history. Runtime media is served from Supabase Storage.
+eden-floorplans/**/*.png filter=lfs diff=lfs merge=lfs -text
+eden-floorplans/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+eden-floorplans/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+eden-floorplans/**/*.webp filter=lfs diff=lfs merge=lfs -text
+farm-gardens-floorplans/**/*.png filter=lfs diff=lfs merge=lfs -text
+farm-gardens-floorplans/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+farm-gardens-floorplans/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+farm-gardens-floorplans/**/*.webp filter=lfs diff=lfs merge=lfs -text
+*-floorplans/**/*.png filter=lfs diff=lfs merge=lfs -text
+*-floorplans/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+*-floorplans/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+*-floorplans/**/*.webp filter=lfs diff=lfs merge=lfs -text

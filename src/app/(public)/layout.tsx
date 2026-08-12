@@ -1,5 +1,8 @@
 import { SiteNav } from "@/components/content/SiteNav";
 
+/** Safety net when SQL promotions bypass Server Actions (Doc 4 #14). */
+export const revalidate = 3600;
+
 export default function PublicLayout({
   children,
 }: {

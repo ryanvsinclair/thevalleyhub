@@ -4,7 +4,7 @@
 -- already-live 0001_init.sql + 0002_farm_gardens_units_places.sql —
 -- does not repeat anything from either.
 --
--- Corresponds to the additions documented in docs/0001_init.sql
+-- Corresponds to the additions documented in docs/schema-current.sql
 -- (the authoritative full-schema reference, kept in sync with this
 -- file but not itself pushed).
 -- ============================================================
@@ -13,7 +13,7 @@
 
 alter table unit_types add column bathrooms numeric(3,1);
 
--- Note: unit_types.layout already exists (docs/0001_init.sql, never
+-- Note: unit_types.layout already exists (docs/schema-current.sql, never
 -- populated by Farm Gardens) — no schema change needed there, just a
 -- populated-data convention: '{facade_style}-{label}', e.g. 'spruce-a'.
 

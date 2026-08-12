@@ -3,7 +3,7 @@
 -- Delta migration for Doc 4 proposals #05-#08. Applies on top of
 -- the already-live 0001_init.sql — does not repeat anything from it.
 --
--- Corresponds to the additions documented in docs/0001_init.sql
+-- Corresponds to the additions documented in docs/schema-current.sql
 -- (the authoritative full-schema reference, kept in sync with this
 -- file but not itself pushed).
 -- ============================================================

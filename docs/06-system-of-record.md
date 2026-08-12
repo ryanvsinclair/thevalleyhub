@@ -78,6 +78,9 @@ This document describes what **exists**. Where the migration file and the live d
 - Build: `npm run build` → Next output on Vercel.
 - Admin saves call `revalidatePath` in Server Actions.
 - DB changes on key tables fire `notify_site_revalidate()` → `POST /api/revalidate` with `x-revalidate-secret` (Doc 5 Block C).
+- Public layout exports `revalidate = 3600` as a safety net when SQL promotions bypass actions (Doc 4 #14).
+- CI: `.github/workflows/ci.yml` runs `tsc --noEmit` + `eslint` on push/PR (Doc 4 #19).
+- Images: `next.config.ts` `images.remotePatterns` for Supabase Storage; cluster page uses `next/image` (Doc 4 #15).
 
 ### Fresh clone needs
 
@@ -85,12 +88,14 @@ This document describes what **exists**. Where the migration file and the live d
 2. `npm install` · `npm run dev` (use `env -u ADMIN_EMAIL` if empty shell var shadows).
 3. Linked Supabase project + seeds already applied remotely for production content.
 4. Install the docs guard: `git config core.hooksPath scripts` (SETUP.md "Docs guard"). Doc 3 §9 states this hook enforces Doc 1–3 ownership, but git never clones hooks, so it is inert in a fresh working copy until wired up. Found unset on 2026-08-08 — which is how an edit to Doc 2's version line reached `c9647d6`. Required **per clone**, not once per project. The guard filters on file path with no author check, so it blocks Ray too; owner edits use `DOCS_GUARD=off git commit` (Doc 4 #03). The agent never sets that variable and `--no-verify` stays forbidden.
+5. **Git LFS** (Doc 4 #17): `git lfs install` then pull — `*-floorplans/**/*.{png,jpg,jpeg,webp}` are LFS-tracked. Runtime still serves from Supabase Storage; repo copies are the source archive only.
+6. Apply pending migrations if behind: `0004_media_public_read_tighten` (Doc 4 #18) when not yet on the live project.
 
 ---
 
 ## 3. DATABASE — AUTHORITATIVE
 
-**Live audit 2026-08-10:** 17 base tables, 1 view (`current_status`), 72 RLS policies in `public`, 3 enums. Migrations `0002` + `0003_eden_plexes_units` (`eden_plexes_units`) applied. Doc 4 #12 APPROVED.
+**Live audit 2026-08-10:** 17 base tables, 1 view (`current_status`), 72 RLS policies in `public`, 3 enums. Migrations `0002` + `0003_eden_plexes_units` (`eden_plexes_units`) applied. Doc 4 #12 APPROVED. **Repo adds `0004_media_public_read_tighten` (Doc 4 #18) — apply to live before treating media RLS as tightened.**
 
 **Earlier baselines:** 2026-08-09 — 16 tables / 67 policies (`0002`); 2026-08-08 — 14 tables / 57 policies.
 
@@ -243,7 +248,7 @@ Revalidate triggers pass public path args via `TG_ARGV` (e.g. `/`, `/clusters`).
 ### 3.6 Security
 
 - **RLS enabled** on all 14 public tables (57 policies).
-- **Anon + authenticated public read:** published, non-deleted content patterns on clusters/places/questions/posts/communities; comparisons via published community; unit_types via published cluster; status_log open read; sources/media/media_links/redirects pub select as defined in migration.
+- **Anon + authenticated public read:** published, non-deleted content patterns on clusters/places/questions/posts/communities; comparisons via published community; unit_types via published cluster; status_log open read; sources/redirects `using (true)`; **media / media_links** only when linked to a published subject via `media_subject_is_published()` (Doc 4 #18 / migration `0004` — apply live). Staff read all media via `staff_read_media` / `staff_read_media_links` (`can_edit()`).
 - **Staff write:** `can_edit()` gated INSERT/UPDATE/DELETE on content tables.
 - **profiles:** `own_profile` SELECT for authenticated.
 - **audit_log:** SELECT for authenticated (`read_audit`); inserts via trigger.
@@ -292,7 +297,7 @@ Route groups `(public)` / `(admin)` do not appear in URLs.
 | `/sitemap.xml` | `sitemap.ts` | Published paths |
 | `/robots.txt` | `robots.ts` | Disallow `/admin/`, `/api/`, `/login` |
 | `/admin` … | `(admin)/admin/**` | Dynamic; cookie gate |
-| Middleware | `src/middleware.ts` | `redirects` table lookup |
+| Middleware | `src/middleware.ts` | Cached `redirects` map (120s in-process TTL, Doc 4 #13) |
 
 **Admin URLs:** `/admin`, `/admin/clusters`, `/admin/clusters/[id]`, `/admin/places`, `/admin/places/[id]`, `/admin/questions`, `/admin/questions/new`, `/admin/questions/[id]`, `/admin/comparisons`, `/admin/comparisons/[id]`, `/admin/sources`, `/admin/sources/[id]`, `/admin/media`, `/admin/status/new`, `/admin/audit`.
 
@@ -303,7 +308,7 @@ Route groups `(public)` / `(admin)` do not appear in URLs.
 - `src/lib/queries/{clusters,places,questions,communities,status,posts}.ts` — **only** public read path for pages.
 - All use `createAnonClient()` — SSG-safe; Proposal #01 APPROVED (Doc 5 Block B).
 - Pages must not invent ad-hoc Supabase selects (Doc 5 Block A convention).
-- **Cluster depth (Doc 8 / Doc 4 #11):** `listFacadeStylesForCluster`, `listPublishedClusterPlaces` (`state=published` only), `listMediaForSubject(s)` + `mediaPublicUrl` in `clusters.ts`. No `units` queries. UI gated on non-empty results — never `slug === 'farm-gardens'`.
+- **Cluster depth (Doc 8 / Doc 4 #11):** `listFacadeStylesForCluster`, `listPublishedClusterPlaces` (`state=published` only), `listMediaForSubject(s)` + `mediaPublicUrl` in `clusters.ts`. No `units` queries. UI gated on non-empty results — never `slug === 'farm-gardens'`. Cluster media renders via `next/image` (Doc 4 #15).
 - **Admin (Doc 8 Block D-B):** unit_type breakdown fields; `facade_style_descriptions` CRUD on `/admin/clusters/[id]`; `places.cluster_id` on place editor; `media_links` upsert/delete on `/admin/media` (cluster / unit_type / facade pickers). Session client only.
 
 ### 4.3 Components
@@ -327,7 +332,7 @@ Route groups `(public)` / `(admin)` do not appear in URLs.
 - Clients: `createAnonClient` · cookie `createClient` · `createActionClient` · `createAdminClient` (service role, never content).
 - Types: only generated `src/types/database.ts`.
 - Seeds: `supabase/seed/0N_*.sql` numeric order; identity by `slug`.
-- Schema source of truth file: `docs/0001_init.sql` ≡ `supabase/migrations/0001_init.sql`.
+- Schema snapshot (reference): `docs/schema-current.sql`. Applyable history: `supabase/migrations/0001_init.sql` + later migrations. Do not treat the docs snapshot as `db push` input (Doc 4 #16).
 - Optional form empties → `null` via zod preprocessors.
 - SEO: `src/lib/seo/*` + per-route metadata; no JSON-LD-only-in-root-layout.
 
@@ -455,11 +460,17 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-12 — Doc 4 #13–#19 implemented (codebase-review remediation)
+**Why:** Ray approved the full remediation bundle. Landed: middleware redirect map cache (120s); public `revalidate = 3600`; `next/image` + Storage `remotePatterns`; `docs/0001_init.sql` → `docs/schema-current.sql`; Git LFS forward-only for `*-floorplans` images (no history rewrite); migration `0004_media_public_read_tighten`; GitHub Actions CI (`tsc` + eslint); `.gitignore` env hardening from Phase 1.
+**Affects:** `src/middleware.ts`; `src/app/(public)/layout.tsx`; `src/app/(public)/clusters/[slug]/page.tsx`; `next.config.ts`; `docs/schema-current.sql`; `supabase/migrations/0004_*.sql`; `.gitattributes` + LFS pointers for floorplan images; `.github/workflows/ci.yml`; Doc 2 status; Doc 4 decisions; README.
+**Breaking:** Clones need `git lfs install` / LFS-aware pull for floorplan binaries. Migration `0004` must be applied live before anon media listing is restricted — until then live DB still uses `using (true)`.
+**Still open:** Apply `0004` to live Supabase `[R]`; confirm `notify_site_revalidate` URL/secret `[R]`; wire docs guard `hooksPath` per clone `[R]`; Farm Gardens draft amenities; SETUP §7 launch.
+
 ### 2026-08-12 — Codebase-review remediation Phase 0–2 (no src/ yet)
-**Why:** External review findings triaged under Doc 3 §11 / Doc 4. Phase 0 verified: `scripts/pre-commit` present and executable; this clone's `core.hooksPath` points at Cursor agent-hooks (docs guard inert until `git config core.hooksPath scripts`); `*-floorplans/` ~37MB on disk / pack ~35MB (largest blob ~5MB site plan); Supabase MCP `needsAuth` so live `notify_site_revalidate` check is `[R]`. Phase 1: `.gitignore` now ignores `.env.production` / `.env.development`. Phase 2: Doc 4 #13–#19 PENDING (middleware cache, revalidate floor, next/image, docs SQL rename, floorplan binary policy, media RLS tighten, minimal CI). `createAdminClient` left in place — still deliberate unused + privilege-stripped (§3.6).
+**Why:** External review findings triaged under Doc 3 §11 / Doc 4. Phase 0 verified: `scripts/pre-commit` present and executable; this clone's `core.hooksPath` points at Cursor agent-hooks (docs guard inert until `git config core.hooksPath scripts`); `*-floorplans/` ~37MB on disk / pack ~35MB (largest blob ~5MB site plan); Supabase MCP `needsAuth` so live `notify_site_revalidate` check is `[R]`. Phase 1: `.gitignore` now ignores `.env.production` / `.env.development`. Phase 2: Doc 4 #13–#19 written then APPROVED same day.
 **Affects:** `.gitignore`; `docs/04-proposals.md`; Doc 2 status block; this changelog.
-**Breaking:** No. No `src/` until Ray marks #13–#19.
-**Still open:** Ray decisions on #13–#19; confirm production revalidate webhook; wire docs guard per clone; Farm Gardens draft amenities; SETUP §7 launch.
+**Breaking:** No.
+**Still open:** Superseded by implementation entry above.
 
 ### 2026-08-10 — Eden Batch 003 amenities promoted
 **Why:** Ray authorized go-live for Eden cluster amenities from brochure page 15 (peach Eden boundary only).

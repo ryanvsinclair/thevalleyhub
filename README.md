@@ -33,7 +33,7 @@ See [`.env.example`](./.env.example) and [`SETUP.md`](./SETUP.md).
 
 ## Database
 
-- Authoritative schema: [`docs/0001_init.sql`](./docs/0001_init.sql) → copied to [`supabase/migrations/0001_init.sql`](./supabase/migrations/0001_init.sql)
+- Schema snapshot (reference): [`docs/schema-current.sql`](./docs/schema-current.sql) · applyable history: [`supabase/migrations/`](./supabase/migrations/)
 - Seeds: [`supabase/seed/`](./supabase/seed/) (`01`–`08_*.sql`), Doc 1 only
 - Types: generated [`src/types/database.ts`](./src/types/database.ts)
 

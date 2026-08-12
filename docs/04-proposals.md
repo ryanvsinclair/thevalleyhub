@@ -765,7 +765,7 @@ Low — entirely additive, nullable, no existing row changes shape. The `unit_ty
 
 ## #13 — Cache middleware `redirects` lookup
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-12
 **Category:** B — Better execution
 **Affects step:** Post-V1 / Doc 6 §4.1 Middleware (`src/middleware.ts`)
@@ -800,15 +800,15 @@ Every crawl/bot/page view keeps an unnecessary Supabase round-trip once redirect
 Stale redirects for up to the cache TTL after an admin/SQL edit — mitigated by tying invalidation to the existing revalidate path or keeping TTL short (e.g. 60–300s).
 
 ---
-**RAY'S DECISION:**
-**Date:**
-**Notes:**
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-12
+**Notes:** Approved as proposed. Prefer short TTL cache (60–300s) with invalidation via existing revalidate path when practical.
 
 ---
 
 ## #14 — Add a time-based revalidation floor on public routes
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-12
 **Category:** B — Better execution
 **Affects step:** Post-V1 public App Router pages / Doc 6 §2 Deploy
@@ -843,15 +843,15 @@ Continued full dependence on webhook + deploy for SQL-side promotions; SETUP.md 
 Low. Worst case: pages refresh hourly even when unchanged. Do not set so low that it defeats SSG cost benefits.
 
 ---
-**RAY'S DECISION:**
-**Date:**
-**Notes:**
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-12
+**Notes:** Approved at 3600s on public routes. Webhook remains primary; floor is safety net.
 
 ---
 
 ## #15 — Configure `next/image` for Supabase Storage media
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-12
 **Category:** B — Better execution
 **Affects step:** Post-V1 cluster depth media rendering (Doc 8 surfaces)
@@ -887,15 +887,15 @@ Mobile continues to download full-resolution floor plans; problem worsens as mor
 Misconfigured `remotePatterns` breaks images in prod — mitigate by matching the exact Storage URL shape used by `mediaPublicUrl`. Some very wide floor plans may need `width`/`height` or fill layout care.
 
 ---
-**RAY'S DECISION:**
-**Date:**
-**Notes:**
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-12
+**Notes:** Approved as proposed.
 
 ---
 
 ## #16 — Rename docs schema snapshot away from `0001_init.sql`
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-12
 **Category:** B — Better execution
 **Affects step:** Doc 2 §2.1 path reference · `docs/0001_init.sql` · agent onboarding
@@ -930,15 +930,15 @@ Ongoing risk of someone re-applying or diffing the wrong file.
 Broken links in docs until prose is updated in the same session as the rename.
 
 ---
-**RAY'S DECISION:**
-**Date:**
-**Notes:**
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-12
+**Notes:** Rename to docs/schema-current.sql. Doc 2 prose path update authorized with this approval.
 
 ---
 
 ## #17 — Floorplan binary storage policy (Git LFS or out-of-band)
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-12
 **Category:** A — Future-proofing
 **Affects step:** Per-cluster deep-dive archives (`*-floorplans/`) · promotion workflow
@@ -981,15 +981,15 @@ Repo weight climbs with every deep-dive; clones and CI get slower.
 LFS needs every clone/CI to have LFS smudge; out-of-band needs discipline so promotion images are not “lost.” Do **not** rewrite history without an explicit Ray decision.
 
 ---
-**RAY'S DECISION:**
-**Date:**
-**Notes:**
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-12
+**Notes:** Option A — Git LFS going forward. Do NOT rewrite history. New tip may move current *-floorplans images to LFS pointers in a normal commit.
 
 ---
 
 ## #18 — Tighten anon `using (true)` read policies on media-related tables
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-12
 **Category:** A — Future-proofing
 **Affects step:** RLS policies in live schema / new migration
@@ -1024,15 +1024,15 @@ Draft/unlinked media remains publicly selectable via anon key.
 Over-tight policies break admin previews or public pages that join media differently — needs a query audit before apply.
 
 ---
-**RAY'S DECISION:**
-**Date:**
-**Notes:**
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-12
+**Notes:** Approved for media/media_links only. Add staff_read policies so admin can still see drafts.
 
 ---
 
 ## #19 — Minimal CI: `tsc --noEmit` + `eslint` on push
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-12
 **Category:** B — Better execution
 **Affects step:** Repo tooling / GitHub Actions (new)
@@ -1067,8 +1067,8 @@ Continued reliance on human `npm run build` before merge.
 Low. Flaky only if lockfile/CI Node mismatch — pin versions.
 
 ---
-**RAY'S DECISION:**
-**Date:**
-**Notes:**
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-12
+**Notes:** Approved as proposed — tsc --noEmit + eslint on push/PR.
 
 ---
