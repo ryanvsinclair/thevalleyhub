@@ -455,6 +455,12 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-12 — Codebase-review remediation Phase 0–2 (no src/ yet)
+**Why:** External review findings triaged under Doc 3 §11 / Doc 4. Phase 0 verified: `scripts/pre-commit` present and executable; this clone's `core.hooksPath` points at Cursor agent-hooks (docs guard inert until `git config core.hooksPath scripts`); `*-floorplans/` ~37MB on disk / pack ~35MB (largest blob ~5MB site plan); Supabase MCP `needsAuth` so live `notify_site_revalidate` check is `[R]`. Phase 1: `.gitignore` now ignores `.env.production` / `.env.development`. Phase 2: Doc 4 #13–#19 PENDING (middleware cache, revalidate floor, next/image, docs SQL rename, floorplan binary policy, media RLS tighten, minimal CI). `createAdminClient` left in place — still deliberate unused + privilege-stripped (§3.6).
+**Affects:** `.gitignore`; `docs/04-proposals.md`; Doc 2 status block; this changelog.
+**Breaking:** No. No `src/` until Ray marks #13–#19.
+**Still open:** Ray decisions on #13–#19; confirm production revalidate webhook; wire docs guard per clone; Farm Gardens draft amenities; SETUP §7 launch.
+
 ### 2026-08-10 — Eden Batch 003 amenities promoted
 **Why:** Ray authorized go-live for Eden cluster amenities from brochure page 15 (peach Eden boundary only).
 **Affects:** 4 published `places` (`eden-community-centre`, `eden-central-gardens`, `eden-food-trucks`, `eden-kiosks`); `docs/clusters/eden/{staging,reference}.md`; `eden-floorplans/eden-batch-003-amenities.sql`. Public `/clusters/eden` amenities section via existing Doc 8 published-cluster-places query.
