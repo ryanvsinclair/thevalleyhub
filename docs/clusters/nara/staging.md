@@ -237,3 +237,44 @@ Ran 2026-08-13: 16 `unit_types` + 57 `plexes` + 372 `units` + 3 facade name rows
 **Promoted:** [x]
 **Date:** 2026-08-13
 **By:** agent (Ray asked why descriptions were null). Three live `facade_style_descriptions.description` rows updated.
+
+---
+
+## Batch 005 — Nara payment plan, summary/body, location maps (2026-08-13)
+
+**Source:** `PAYMENT PLANS.pdf` (InDesign 16.3, created 2021-08-02) and `BROCHURE.pdf` pp. 6–8 (intro copy), p.5 (location map), p.10 (Valley context map). Files in `/Users/mehdielghissassi/Desktop/clusters/NARA/`. Map PNGs from the existing export in `NARA-PACKAGE/media/maps/`, copied into `nara-floorplans/`. Read 2026-08-13.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
+**Confidence:** corroborated (printed Emaar PDFs). `summary` / `body` are brochure paragraphs collapsed to prose — Ray decides whether they go live; do not replace `positioning`.
+**Status:** staged
+
+### Proposed reference.md diff
+
+- **`clusters.payment_plan`:** `"12% Down Payment (on booking) · 10% 1st Instalment (Nov 2021) · 10% 2nd Instalment (May 2022) · 10% 3rd Instalment (Nov 2022) · 8% 4th Instalment (May 2023) · 50% 5th Instalment (100% construction, estimated Dec 2024)"`
+
+  Source labels: DOWN PAYMENT 12% ON BOOKING; 1ST–4TH INSTALMENT 10% / 10% / 10% / 8%; 5TH INSTALMENT 50% at 100% construction. Footnote: `*ESTIMATED COMPLETION DATE - DEC 2024`. Sums to 100%.
+
+- **`clusters.summary`:** `"THE VALLEY'S second townhouse community. NARA offers 3 and 4-bedroom townhouses in a choice of three contemporary designs, situated around a series of integrated parks."`
+
+- **`clusters.body`:**
+  > NARA is The Valley's second townhouse community, designed to capture your imagination. Envisage pleasant pathways, stunning landscaping and green spaces, complemented by an array of amenities.
+  >
+  > NARA offers 3 and 4-bedroom townhouses in a choice of three contemporary designs. NARA townhouses are situated around a series of integrated parks, which offer ample space for you and your family to enjoy the moments that matter, outdoors.
+
+- **`clusters.positioning`:** leave unchanged (brochure `summary`/`body` sit beside it; Doc 9).
+
+- **Images, 2 files copied into `nara-floorplans/`** for later `media` / `media_links` on the Nara cluster row (`kind = document`): `nara-location-map.png` (brochure p.5), `nara-valley-context-map.png` (brochure p.10). Hub already has the two cropped cluster-map JPGs from Batch 001.
+
+### Notes
+
+- Payment PDF is the 2021 construction schedule. Live Nara already has `handover_actual = 2024-12-01`, so this is historical, not a current instalment plan. Same situation Eden noted for its payments jpeg.
+- Brochure p.5 drive-time claims (Burj Khalifa, airport, etc.) skipped per Doc 9 / Farm Gardens.
+- Brochure p.10 lifestyle paragraph mixes Valley-wide destinations (Pavilion, Golden Beach, Sports Village, Kids' Dale, Town Centre). Not used in `summary`/`body`.
+- Uncropped cluster maps still sit only in the source folder (`NARA/media/maps/brochure_p17_cluster_map.png`, `sharp_cluster_map.png`). Not copied — hub already has cropped `nara-cluster-map.jpg` / `nara-cluster-map-fullres.jpg`.
+- `/ GARDEN VIEW` and `/ ACCESS TO PARKS` on every style page still not stored.
+- Price, plot sizes, suite/garage/balcony/roof areas: still not in the Emaar PDFs.
+
+### Promotion
+
+**Promoted:** [ ]
+**Date:**
+**By:**
