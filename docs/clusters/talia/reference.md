@@ -1,8 +1,8 @@
 # Talia — Reference
 
 **Slug:** `talia`
-**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / image depth from staging Batch 001 (2026-08-13); amenities from Batch 002 (2026-08-13); payment / summary / body from Batch 003 (2026-08-13); Golden Beach strip Valley-wide places from Batch 004 (2026-08-13); units / plexes / unit_count from Batch 005 (2026-08-13).
-**Source:** Relocated from Doc 1 Annex C/D, then Batches 001–005 (Emaar floor-plan PDF + brochure + cluster map + payment PDF + Doc 10 extract, source `a1000000-0000-4000-8000-000000000001`).
+**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / image depth from staging Batch 001 (2026-08-13); amenities from Batch 002, published Batch 006 (2026-08-13); payment / summary / body from Batch 003 (2026-08-13); Golden Beach strip Valley-wide places from Batch 004, published with leftover drafts (2026-08-13); units / plexes / unit_count from Batch 005 (2026-08-13).
+**Source:** Relocated from Doc 1 Annex C/D, then Batches 001–006 (Emaar floor-plan PDF + brochure + cluster map + payment PDF + Doc 10 extract, source `a1000000-0000-4000-8000-000000000001`).
 
 ---
 
@@ -69,7 +69,7 @@ Copy from Emaar brochure pp. 15 / 16 / 17 (Batch 001). Confidence corroborated. 
 
 ## Amenities (`places`, cluster-scoped)
 
-7 draft `places` rows with `cluster_id` → talia (Batch 002). From `TALIA CLUSTER MAP.pdf` legend. Categories per Annex L (#10). Not published on `/clusters/talia` until Ray flips `state`.
+7 published `places` rows with `cluster_id` → talia (Batch 002; `state` flipped in Batch 006). From `TALIA CLUSTER MAP.pdf` legend. Categories per Annex L (#10). Live on `/clusters/talia` On-site amenities.
 
 | name | category | subcategory |
 |---|---|---|
@@ -95,4 +95,4 @@ Batch 005 promoted: **330** `units` + **53** `plexes` (`18×4 · 20×6 · 6×8 �
 
 ## Staging
 
-See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–005 promoted 2026-08-13. Still open: publish Talia amenities; `single_row`; plot sizes; pricing.
+See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–006 promoted 2026-08-13. Still open: `single_row`; plot sizes; pricing.

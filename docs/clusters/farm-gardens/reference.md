@@ -1,8 +1,8 @@
 # Farm Gardens — Reference
 
 **Slug:** `farm-gardens`
-**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Batch 001 promoted 2026-08-09; bathrooms from Batch 002 (2026-08-13).
-**Source:** Relocated from Doc 1 Annex C.1/C.4 and Annex D, then Batches 001–002 (6 official Emaar PDFs + Ray bathroom totals, source `a1000000-0000-4000-8000-000000000001`) promoted into live DB + this file.
+**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Batch 001 promoted 2026-08-09; bathrooms from Batch 002 (2026-08-13); amenities published Batch 003 (2026-08-13).
+**Source:** Relocated from Doc 1 Annex C.1/C.4 and Annex D, then Batches 001–003 (6 official Emaar PDFs + Ray bathroom totals, source `a1000000-0000-4000-8000-000000000001`) promoted into live DB + this file.
 
 ---
 
@@ -59,7 +59,7 @@ Batch 001 corrected the 5-bed `bua_max` (was 10004 — that figure is average pl
 
 ## Amenities (`places`, cluster-scoped)
 
-19 draft `places` rows with `cluster_id` → farm-gardens (not published on `/living` until Ray flips `state`). Categories per Annex L (#10).
+19 published `places` rows with `cluster_id` → farm-gardens (Batch 001; `state` flipped in Batch 003). Categories per Annex L (#10). Live on `/clusters/farm-gardens` On-site amenities.
 
 | name | category | subcategory |
 |---|---|---|
@@ -100,4 +100,4 @@ Batch 001 corrected the 5-bed `bua_max` (was 10004 — that figure is average pl
 
 ## Staging
 
-See [`staging.md`](./staging.md) — Batches 001–002 are **promoted**.
+See [`staging.md`](./staging.md) — Batches 001–003 are **promoted**.

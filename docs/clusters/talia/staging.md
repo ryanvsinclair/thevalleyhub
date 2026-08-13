@@ -307,3 +307,28 @@ Ran 2026-08-13: `unit_count` backfilled on 14 `unit_types`; 53 `plexes` + 330 `u
 **Date:** 2026-08-13
 **By:** agent (Ray authorized: promote)
 
+---
+
+## Batch 006 — Publish Talia on-site amenities (2026-08-13)
+
+**Source:** No new extract. Ray authorized publishing all leftover draft places, including the 7 Batch 002 Talia rows.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
+**Confidence:** corroborated (same as Batch 002)
+**Status:** promoted
+
+### Proposed reference.md diff
+
+- **`places.state`:** `draft` → `published` on the 7 Talia cluster-scoped rows (`talia-gatehouse` … `talia-picnic-lawn`).
+
+### Notes
+
+- Same authorization also published Farm Gardens drafts, Golden Beach strip, and `masabih-masjid` (see Doc 6 changelog).
+- Places trigger revalidates `/`, `/places`, `/living` — not `/clusters/talia`.
+
+### Promotion
+
+Ran 2026-08-13: 7 Talia `places.state = published`. SQL: `scripts/publish-leftover-draft-places.sql`.
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: publish leftover draft places)

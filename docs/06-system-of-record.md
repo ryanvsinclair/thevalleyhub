@@ -118,7 +118,7 @@ media ←→ media_links (polymorphic subject, incl. unit_type / facade_style_de
 auth.users ──→ profiles (optional unit_id → units)
 ```
 
-**Row counts (live):** clusters 25 · unit_types 70 · units 1210 · plexes 153 · facade_style_descriptions 11 · places 93 (55 Valley-wide incl. 8 draft Golden Beach strip + 19 Farm Gardens draft + 4 Eden published + 8 Nara published + 7 Talia draft) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 72 · media_links 72 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens + Eden + Nara + Talia Batches 001–005 promoted. Live schema: **17** base tables / **72** RLS policies (after Doc 4 #12 / migration `0003`).
+**Row counts (live):** clusters 25 · unit_types 70 · units 1210 · plexes 153 · facade_style_descriptions 11 · places 93 (0 draft — all published as of leftover-draft publish 2026-08-13; includes Golden Beach strip + masabih-masjid + Farm Gardens 19 + Talia 7 + Eden 4 + Nara 8) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 72 · media_links 72 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens + Eden + Nara + Talia deep intakes promoted; all prior draft places published. Live schema: **17** base tables / **72** RLS policies (after Doc 4 #12 / migration `0003`).
 
 ### 3.2 Tables
 
@@ -264,7 +264,7 @@ Includes PKs, unique slug/path keys, plus: `clusters_phase_idx`, `clusters_state
 
 - Seeded from Doc 1 via `supabase/seed/0N_*.sql` in order.
 - Fixed source UUIDs; conflicting Doc 1 fields left null with notes (Doc 5 Block A).
-- `masabih-masjid` remains `draft` (missing hours — Annex K).
+- `masabih-masjid` is `published` (hours still null — Annex K open).
 - Confidence may be `unverified` on published rows; UI hides raw specs via ConfidenceGate.
 - SQL/MCP edits → `audit_log.actor_id` null; admin UI writes → non-null actor (Gate 5).
 
@@ -460,6 +460,12 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 ---
 
 ## 10. CHANGELOG
+
+### 2026-08-13 — Publish leftover draft places
+**Why:** Ray authorized publishing all remaining `places` still in `draft` (Talia 7, Farm Gardens 19, Golden Beach strip 8, `masabih-masjid`).
+**Affects:** 35 `places.state` `draft` → `published`; `docs/clusters/{talia,farm-gardens}/{staging,reference}.md`; `scripts/publish-leftover-draft-places.sql`. Public `/living`, `/places`, cluster amenity sections, homepage in-community counts. `masabih-masjid` still has null hours (was the prior draft reason).
+**Breaking:** No.
+**Still open:** masjid hours/coords; cluster-page revalidate for `/clusters/talia` and `/clusters/farm-gardens` (places trigger does not hit those paths).
 
 ### 2026-08-13 — Talia Batch 005 units / plexes / unit_count promoted
 **Why:** Ray authorized promote of the Doc 10 per-plot extract (staged Batch 005).

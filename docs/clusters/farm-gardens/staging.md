@@ -153,3 +153,28 @@ Ran 2026-08-13: both Farm Gardens `unit_types` rows updated.
 **Date:** 2026-08-13
 **By:** agent (Ray authorized: update)
 
+---
+
+## Batch 003 — Publish Farm Gardens on-site amenities (2026-08-13)
+
+**Source:** No new extract. Ray authorized publishing all leftover draft places, including the 19 Batch 001 Farm Gardens amenity rows.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
+**Confidence:** corroborated (same as Batch 001 amenities)
+**Status:** promoted
+
+### Proposed reference.md diff
+
+- **`places.state`:** `draft` → `published` on all 19 Farm Gardens cluster-scoped amenity rows.
+
+### Notes
+
+- Places trigger revalidates `/`, `/places`, `/living` — not `/clusters/farm-gardens`.
+- `farm-gardens-mosque` also matches `/living/services`.
+
+### Promotion
+
+Ran 2026-08-13: 19 Farm Gardens `places.state = published`. SQL: `scripts/publish-leftover-draft-places.sql`.
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: publish leftover draft places)
