@@ -54,7 +54,7 @@ Style is layout-determining here (`unit_types.layout` = `{facade_style}-{label}`
 
 ## Facades
 
-Copy from Emaar brochure pp. 23 / 24 (Batch 001). Confidence corroborated. Floor plans / facade photos / maps staged under `elora-floorplans/`; Storage `media/elora/*` + `media_links` still open (service-role upload pending).
+Copy from Emaar brochure pp. 23 / 24 (Batch 001). Confidence corroborated. Floor plans, facade photos, and maps in Storage under `media/elora/*` (13 files + links).
 
 | style_name | description |
 |---|---|
@@ -96,4 +96,4 @@ Batch 004 promoted: **430** `units` + **73** `plexes` (`32×4 · 13×6 · 28×8`
 
 ## Staging
 
-See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–004 promoted 2026-08-13. Still open: publish Elora amenities; Storage media upload + `media_links`; plot size breakdown.
+See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–004 promoted 2026-08-13; media uploaded 2026-08-13. Still open: publish Elora amenities; plot size breakdown.

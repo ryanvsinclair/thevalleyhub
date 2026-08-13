@@ -239,4 +239,4 @@
 
 **Promoted:** [x]
 **Date:** 2026-08-13
-**By:** Ray (authorized promote); agent applied live + docs. Storage media still open.
+**By:** Ray (authorized promote); agent applied live + docs. Storage `media/elora/*` + `media_links` uploaded 2026-08-13 (13 files).

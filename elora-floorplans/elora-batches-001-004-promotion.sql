@@ -618,9 +618,9 @@ insert into media (storage_path, kind, alt_text, caption, credit) values
   ('elora/elora-mysk-4br-b.png', 'floorplan', 'Elora Mysk 4BR-B floor plan', 'Mysk 4BR-B floor plan', 'Emaar Properties'),
   ('elora/elora-moon-facade.jpeg', 'photo', 'Elora Moon facade', 'Moon facade', 'Emaar Properties'),
   ('elora/elora-mysk-facade.jpeg', 'photo', 'Elora Mysk facade', 'Mysk facade', 'Emaar Properties'),
-  ('elora/elora-cluster-map.jpeg', 'map', 'Elora cluster map', 'Elora cluster map', 'Emaar Properties'),
-  ('elora/elora-valley-context-map.png', 'map', 'Elora valley context map', 'Valley context map', 'Emaar Properties'),
-  ('elora/elora-master-plan.jpeg', 'map', 'Elora master plan', 'Elora master plan', 'Emaar Properties');
+  ('elora/elora-cluster-map.jpeg', 'document', 'Elora cluster map', 'Elora cluster map', 'Emaar Properties'),
+  ('elora/elora-valley-context-map.png', 'document', 'Elora valley context map', 'Valley context map', 'Emaar Properties'),
+  ('elora/elora-master-plan.jpeg', 'document', 'Elora master plan', 'Elora master plan', 'Emaar Properties');
 
 insert into media_links (media_id, subject_type, subject_id, is_primary)
 select m.id, 'unit_type', ut.id, true
