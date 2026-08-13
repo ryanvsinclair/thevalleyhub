@@ -1,8 +1,8 @@
 # Nara — Reference
 
 **Slug:** `nara`
-**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / unit depth from staging Batches 001–002 (2026-08-13); amenities from Batch 003 (2026-08-13); facade copy from Batch 004 (2026-08-13).
-**Source:** Relocated from Doc 1 Annex C/D, then Batches 001–004 (Emaar floor-plan PNGs + `nara-units.csv` + brochure / sharp-map legend, source `a1000000-0000-4000-8000-000000000001`).
+**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / unit depth from staging Batches 001–002 (2026-08-13); amenities from Batch 003 (2026-08-13); facade copy from Batch 004 (2026-08-13); payment / summary / body from Batch 005 (2026-08-13).
+**Source:** Relocated from Doc 1 Annex C/D, then Batches 001–005 (Emaar floor-plan PNGs + `nara-units.csv` + brochure / sharp-map legend + payment PDF, source `a1000000-0000-4000-8000-000000000001`).
 
 ---
 
@@ -17,11 +17,24 @@
 | Single row | true |
 | Handover actual | 2024-12-01 |
 | Handover target | — |
+| Payment plan | 12% Down Payment (on booking) · 10% 1st Instalment (Nov 2021) · 10% 2nd Instalment (May 2022) · 10% 3rd Instalment (Nov 2022) · 8% 4th Instalment (May 2023) · 50% 5th Instalment (100% construction, estimated Dec 2024) |
 | Confidence | corroborated |
 
 ## Positioning
 
 > The value entry point. Smallest footprints, lowest price, every home single-row with no back-to-back neighbours.
+
+*(Left unchanged — Batch 005 added `summary`/`body` beside it.)*
+
+## Summary
+
+THE VALLEY'S second townhouse community. NARA offers 3 and 4-bedroom townhouses in a choice of three contemporary designs, situated around a series of integrated parks.
+
+## Body
+
+NARA is The Valley's second townhouse community, designed to capture your imagination. Envisage pleasant pathways, stunning landscaping and green spaces, complemented by an array of amenities.
+
+NARA offers 3 and 4-bedroom townhouses in a choice of three contemporary designs. NARA townhouses are situated around a series of integrated parks, which offer ample space for you and your family to enjoy the moments that matter, outdoors.
 
 ## Unit types
 
@@ -85,4 +98,4 @@ Legend pins **#9 Entrance** and **#10 Wadi Drive** are fabric/road, not `places`
 
 ## Staging
 
-See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–004 promoted 2026-08-13. Still open: Storage upload of 21 images; payment plan; `summary`/`body`; plot sizes; pricing.
+See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–005 promoted 2026-08-13. Still open: Storage upload of 23 images (21 from Batch 001 + 2 maps from Batch 005); plot sizes; pricing.

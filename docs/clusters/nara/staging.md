@@ -245,7 +245,7 @@ Ran 2026-08-13: 16 `unit_types` + 57 `plexes` + 372 `units` + 3 facade name rows
 **Source:** `PAYMENT PLANS.pdf` (InDesign 16.3, created 2021-08-02) and `BROCHURE.pdf` pp. 6–8 (intro copy), p.5 (location map), p.10 (Valley context map). Files in `/Users/mehdielghissassi/Desktop/clusters/NARA/`. Map PNGs from the existing export in `NARA-PACKAGE/media/maps/`, copied into `nara-floorplans/`. Read 2026-08-13.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** corroborated (printed Emaar PDFs). `summary` / `body` are brochure paragraphs collapsed to prose — Ray decides whether they go live; do not replace `positioning`.
-**Status:** staged
+**Status:** promoted
 
 ### Proposed reference.md diff
 
@@ -275,6 +275,8 @@ Ran 2026-08-13: 16 `unit_types` + 57 `plexes` + 372 `units` + 3 facade name rows
 
 ### Promotion
 
-**Promoted:** [ ]
-**Date:**
-**By:**
+Ran 2026-08-13: `payment_plan`, `summary`, and `body` written on the live Nara `clusters` row. `positioning` not touched. Location/valley maps are in `nara-floorplans/` but not in Storage (same gap as Batch 001 images).
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: promote)

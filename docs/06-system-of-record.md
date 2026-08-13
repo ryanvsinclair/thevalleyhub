@@ -461,6 +461,12 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-13 — Nara Batch 005 payment / summary / body promoted
+**Why:** Ray authorized promote of the leftover brochure + payment PDF facts staged as Batch 005.
+**Affects:** live Nara `clusters.payment_plan`, `summary`, `body` (`positioning` unchanged); `docs/clusters/nara/{staging,reference}.md`; `nara-floorplans/nara-batch-005-promotion.sql`. Public `/clusters/nara` will show summary, body, and the 2021 construction schedule. Two map PNGs are in git LFS, not yet in Storage.
+**Breaking:** No.
+**Still open:** Upload 23 files to `media/nara/*` (21 from Batch 001 + 2 maps); plot sizes; pricing; publish amenities after taxonomy review.
+
 ### 2026-08-13 — Nara Batch 004 facade copy promoted
 **Why:** Brochure pp. 11 / 13 / 15 copy was extracted in the Batch 003 source pass but never staged, so the 001–003 promote left `facade_style_descriptions.description` null. Ray flagged it.
 **Affects:** three live Nara facade description rows; `docs/clusters/nara/{staging,reference}.md`; `nara-floorplans/nara-batch-004-facade-copy.sql`. Public `/clusters/nara` will show the paragraphs (images still pending Storage).
