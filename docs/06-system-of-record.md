@@ -461,6 +461,12 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-13 — Align remediations + Doc 9 + Nara staging onto one branch
+**Why:** Unblock the next cluster deep-dives: land approved #13–#19 with leftover review fixes, merge Doc 9 (PDF extraction guide), and restage the local Nara intake under LFS + Doc 7 instead of merging fat git blobs.
+**Affects:** `docs/schema-current.sql` (`plexes` added to GRANT, matching live `0003`); `scripts/` Git LFS hooks (`pre-push`, `post-checkout`, `post-commit`, `post-merge`) so `core.hooksPath=scripts` actually runs LFS; `src/lib/admin/actions.ts` (`updateCluster` revalidates `/clusters/[slug]`); README Doc 8/9 rows; `docs/09-cluster-pdf-extraction-guide.md`; `nara-floorplans/` as LFS pointers + `docs/clusters/nara/staging.md` Batch 001 (staged, not promoted).
+**Breaking:** Clones need `git lfs install` (or these hooks via `core.hooksPath=scripts`). Nara is **not** live — no `reference.md` edit, no promotion SQL, no Storage upload.
+**Still open:** Apply `0004` live `[R]`; Ray review of Nara Batch 001 before any promote; bathrooms still missing from admin/public unit-type UI; `notify_site_revalidate` still live-only (not in migrations).
+
 ### 2026-08-12 — Doc 4 #13–#19 implemented (codebase-review remediation)
 **Why:** Ray approved the full remediation bundle. Landed: middleware redirect map cache (120s); public `revalidate = 3600`; `next/image` + Storage `remotePatterns`; `docs/0001_init.sql` → `docs/schema-current.sql`; Git LFS forward-only for `*-floorplans` images (no history rewrite); migration `0004_media_public_read_tighten`; GitHub Actions CI (`tsc` + eslint); `.gitignore` env hardening from Phase 1.
 **Affects:** `src/middleware.ts`; `src/app/(public)/layout.tsx`; `src/app/(public)/clusters/[slug]/page.tsx`; `next.config.ts`; `docs/schema-current.sql`; `supabase/migrations/0004_*.sql`; `.gitattributes` + LFS pointers for floorplan images; `.github/workflows/ci.yml`; Doc 2 status; Doc 4 decisions; README.

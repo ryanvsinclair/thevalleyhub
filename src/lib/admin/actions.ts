@@ -170,6 +170,7 @@ export async function updateCluster(
   revalidatePath("/admin/clusters");
   revalidatePath(`/admin/clusters/${id}`);
   revalidatePath("/clusters");
+  revalidatePath(`/clusters/${parsed.data.slug}`);
   return { success: "Cluster saved." };
 }
 

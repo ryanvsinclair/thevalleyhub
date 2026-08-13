@@ -681,13 +681,13 @@ create policy media_staff_del on storage.objects for delete to authenticated
 grant usage on schema public to anon, authenticated;
 
 grant select on
-  clusters, unit_types, units, facade_style_descriptions, places, questions,
+  clusters, unit_types, units, plexes, facade_style_descriptions, places, questions,
   status_log, current_status,
   communities, comparisons, posts, media, media_links, redirects, sources
 to anon, authenticated;
 
 grant insert, update, delete on
-  clusters, unit_types, units, facade_style_descriptions, places, questions, status_log,
+  clusters, unit_types, units, plexes, facade_style_descriptions, places, questions, status_log,
   communities, comparisons, posts, media, media_links, redirects, sources
 to authenticated;
 

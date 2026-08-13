@@ -53,7 +53,7 @@ npx supabase gen types typescript --project-id <ref> > src/types/database.ts
 | 5 Build notes | `docs/05-build-notes.md` |
 | 6 System of record | `docs/06-system-of-record.md` |
 | 7 Data staging | `docs/07-data-staging.md` (format template; live staging is per-cluster, see below) |
-| 8 Cluster depth | `docs/08-cluster-depth-build-guide.md` (post-V1 app surfaces for facades / amenities / media / unit-type depth — blocked on Doc 4 #11) |
+| 8 Cluster depth | `docs/08-cluster-depth-build-guide.md` (post-V1 app surfaces for facades / amenities / media / unit-type depth) |
 | 9 PDF extraction | `docs/09-cluster-pdf-extraction-guide.md` (what to pull from a cluster PDF folder and how to stage it) |
 
 **Per-cluster docs:** `docs/clusters/<slug>/reference.md` (facts — Ray's, guarded once Doc 4's pending guard-script proposal is applied) and `docs/clusters/<slug>/staging.md` (facts pending promotion — agent-writable, follows Doc 7's format). Doc 1's Annex C/D is being slimmed to a Valley-wide overview table pointing into these as each cluster migrates.
