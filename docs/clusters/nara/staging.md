@@ -50,7 +50,7 @@
 **Source:** Local `nara-floorplans/` intake (floor-plan PNGs, facade JPGs, cluster maps, `nara-units.csv`). Originally landed on the local-only `nara-cluster-deep-dive` branch without a staging batch; restaged here so Doc 7 is the record. Not independently field-verified.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** unverified for per-unit style/type/position and exact BUA (derived dataset in `nara-units.csv`; `nara-units-detection.csv` records plot-level style_source/orientation_margin/bua_sqm). Corroborated only where it matches the existing `reference.md` register: 372 units, facades Aston/Palma/Charm, 3BR starting size 1866, 4BR upper 2249.
-**Status:** staged
+**Status:** promoted
 
 ### Proposed reference.md diff
 
@@ -92,9 +92,11 @@
 
 ### Promotion
 
-**Promoted:** [ ]
-**Date:**
-**By:**
+Ran 2026-08-13: 16 `unit_types` + 57 `plexes` + 372 `units` + 3 facade name rows applied live. 21 images not yet in Storage (`media/nara/*`) — no service-role key in this environment. `reference.md` updated.
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: promote)
 
 ---
 
@@ -102,8 +104,8 @@
 
 **Source:** Existing `nara-floorplans/` intake — all 16 layout PNGs (bathrooms / maid’s / GF guest bedroom) and `nara-cluster-map.jpg` + `nara-cluster-map-fullres.jpg` (amenities legend). No Nara PDF / brochure folder is on disk in this workspace, so facade blurbs, payment plan, starting price, plot sizes, and `summary`/`body` were not available. Read 2026-08-13.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
-**Confidence:** `unverified` for bathroom counts (inferred from labelled rooms; no printed “n baths” figure). `corroborated` for `maids_room` (every layout PNG labels **MAID'S ROOM**) and for amenity names that OCR actually read off the cluster-map legend. Does not change Batch 001 unit/plex/layout assignment.
-**Status:** staged
+**Confidence:** `corroborated` for `bathrooms` and `maids_room` — counted from the labelled rooms on each of the 16 layout PNGs (any `BATH` label including those printed “MASTER BATH” on the drawing, plus `PWDR. RM` / `MAID'S ROOM`). Stored only as `unit_types.bathrooms` (numeric) and `maids_room` — no master-bath field. Amenity names that OCR actually read off the cluster-map legend also `corroborated`. Does not change Batch 001 unit/plex/layout assignment.
+**Status:** promoted
 
 ### Proposed reference.md diff
 
@@ -128,7 +130,14 @@
   | charm | 4 | A | charm-a | 4.0 | true | true |
   | charm | 4 | B | charm-b | 4.0 | true | true |
 
-  Count method (same as Eden): a labelled powder room = 0.5; maid’s bath counts as a full bath. Every 3BR PNG has Master Bath + shared first-floor Bath + Maid’s Bath + **PWDR. RM**. Every 4BR PNG has Master Bath + shared first-floor Bath + ground-floor guest Bath (with shower) + Maid’s Bath — no powder room. 4BR guest bedroom is on the ground floor.
+  Count method (same as Eden): every bath on the plan counts as 1 toward `unit_types.bathrooms`, including the ensuite labelled “MASTER BATH” on some drawings — that label is not stored. `PWDR. RM` = 0.5. Maid’s bath is one of the baths. OCR of all 16 PNGs:
+
+  | bedrooms | bath labels on plan | `PWDR. RM` | `unit_types.bathrooms` | `MAID'S ROOM` |
+  |---|---|---|---|---|
+  | 3 | 3 | 1 | 3.5 | 1 on every 3BR PNG |
+  | 4 | 4 | 0 | 4.0 | 1 on every 4BR PNG |
+
+  4BR guest bedroom is on the ground floor (`GUEST` on every 4BR PNG).
 
 - **New `places` rows, `cluster_id = nara` (2 rows), `state = draft`:**
 
@@ -143,16 +152,57 @@
 
 ### Notes
 
-- Bathroom counts were not printed as a figure on the PNGs. Tag stays `unverified` per Doc 9 §9.3.
+- Bathroom counts are the labelled rooms on the floor-plan PNGs, not a marketing “n baths” line. A drawing that says “MASTER BATH” still counts as one bath in `unit_types.bathrooms` — that wording is not stored. Powder is labelled `PWDR. RM`, not `BATH`; it is stored as 0.5 to match Eden. Maid’s bath is a `BATH` and is included in the 3 / 4.
 - Charm 3BR-A room dimensions match Aston 3BR-A on the PNGs (same kitchen 5.1×2.2, living 4.3×3.2, etc.). Keep both facade identities and both layout rows; do not collapse styles. Shared-interior finding only.
-- Both cluster-map JPGs crop the amenities legend. OCR of the full files only reads **1. COMMUNITY CENTRE** and **6. PICNIC AREA**. Pins **#2–#5** and **#7–#10** are drawn on the plan; their labels are not in the image. Names were not invented. Re-export a fuller legend page if those pins should become `places` rows.
-- The map **TYPES** legend only prints **3 BR TOWNHOUSES**. 4BR layouts still come from the floor-plan PNG set in Batch 001, not from this map’s type key.
-- No payment plan, `price_from_aed`, plot sizes, suite/garage/balcony/roof areas, or `summary`/`body` in this folder. Still null.
-- Green pedestrian corridors between rows are visible on the plan (Eden’s unnumbered “Alley” equivalent). Without a readable legend line they are not staged as `places`.
-- Do not promote this batch or Batch 001 until Ray authorizes. Live Nara is still the 2-row placeholder.
+- Both cluster-map JPGs crop the amenities legend. This batch only captured #1 and #6 from those JPGs. The full 10-item legend is in Batch 003 (brochure p.17 / sharp map). On promote, use Batch 003 for amenities — do not insert these two rows and then the ten.
+- The cropped JPG **TYPES** legend only printed **3 BR TOWNHOUSES**. The uncropped PDF also prints **4 BR TOWNHOUSES**.
+- No payment plan, `price_from_aed`, plot sizes, suite/garage/balcony/roof areas, or `summary`/`body` in the in-repo JPG folder. Brochure + payment PDF are in Batch 003’s source folder; copy/payment still not staged here.
+- Bathroom / maid’s / GF-bedroom columns applied on promote with Batch 001’s 16 layout rows. Amenities from this batch were superseded by Batch 003 — those 2 rows were not inserted.
 
 ### Promotion
 
-**Promoted:** [ ]
-**Date:**
-**By:**
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: promote). Bathrooms 3.5/4.0, `maids_room = true`, 4BR `ground_floor_bedroom = true` on the 16 live `unit_types` rows.
+
+---
+
+## Batch 003 — Nara on-site amenities from brochure / sharp-map legend (2026-08-13)
+
+**Source:** `BROCHURE.pdf` p.17 amenities legend (text layer) and `SHARP CLUSTER MAP.pdf` (same 10 names, titled SINGLE-ROW TOWNHOUSES). Files in `/Users/mehdielghissassi/Desktop/clusters/NARA/`. Not the cropped in-repo JPGs. Read 2026-08-13.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
+**Confidence:** corroborated (printed Emaar legend). Annex L category/subcategory are suggestions, not sourced.
+**Status:** promoted
+
+### Proposed reference.md diff
+
+- **New `places` rows, `cluster_id = nara` (8 rows), `state = draft`.** Supersedes Batch 002’s 2-row amenity list. One row per named legend item (Eden pattern), not one row per pin.
+
+  | name | category | subcategory | brochure pin | pins on plan |
+  |---|---|---|---|---|
+  | Community Centre | gathering | community-centre | #1 | 1 |
+  | Green Sikkas | nature | sikkas | #2 | 3 |
+  | Community Gardens | nature | gardens | #3 | 1 |
+  | Outdoor Fitness | recreation | fitness-station | #4 | 1 |
+  | Pocket Parks | nature | pocket-parks | #5 | 2 |
+  | Picnic Area | gathering | picnic | #6 | 1 |
+  | Lawn Area | gathering | lawn | #7 | 2 |
+  | Mosque | mosque | — | #8 | 1 |
+
+  Each row: `slug = nara-<name>`, `in_community = true`, `parent_place_id` null, `google_place_id` null, `confidence = corroborated`, `source_id` as above, `sort_order` = pin number. Community Centre pad on the plan includes a pool; brochure does not name a separate pool facility — leave as one parent row (same as Eden).
+
+- **Amenities prose for reference:** Nara’s on-site set is the eight named facilities above. Legend pins **#9 Entrance** and **#10 Wadi Drive** are fabric/road, not `places` (Ray, 2026-08-13). **Utility / Substation** is on the same legend sheet but is not an amenity. Brochure pp. 18–22 (Town Centre, Sports Village, Kids’ Dale, Pavilion, Golden Beach) are Valley-wide — not Nara `places`.
+
+### Notes
+
+- Green Sikkas are a named legend item (#2), unlike Eden’s unnumbered alley dots. Staged because they are on the amenities list.
+- Entrance (#9) and Wadi Drive (#10) dropped from this batch (fabric/road).
+- Multiple pins share one name (Green Sikkas ×3, Pocket Parks ×2, Lawn Area ×2). Not split into instance rows unless you ask.
+- No new Annex L categories required. Subcategory strings are suggestions for Ray to confirm before publish.
+- Default `state = draft`. Public `/clusters/nara` will not show them until published.
+
+### Promotion
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: promote). 8 draft `places` live (`nara-community-centre` … `nara-mosque`). Entrance / Wadi Drive not inserted.

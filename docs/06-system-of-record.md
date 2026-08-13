@@ -461,6 +461,12 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-13 — Nara Batches 001–003 promoted
+**Why:** Ray authorized promote after bathrooms (Batch 002) and the 8 named legend amenities (Batch 003, Entrance / Wadi Drive dropped).
+**Affects:** live Nara: 16 `unit_types` (sum 372), 57 `plexes`, 372 `units`, 3 facade name rows, 8 draft `places`; `docs/clusters/nara/{staging,reference}.md`; `nara-floorplans/nara-batches-001-003-promotion.sql`. Public `/clusters/nara` shows the 16 unit types; amenities stay hidden until published. 21 images not yet in Storage.
+**Breaking:** No.
+**Still open:** Upload 21 files to `media/nara/*` then run promotion SQL §7 (`media` + `media_links`); facade brochure copy; payment plan; `summary`/`body`; plot sizes; pricing; publish amenities after taxonomy review.
+
 ### 2026-08-13 — Align remediations + Doc 9 + Nara staging onto one branch
 **Why:** Unblock the next cluster deep-dives: land approved #13–#19 with leftover review fixes, merge Doc 9 (PDF extraction guide), and restage the local Nara intake under LFS + Doc 7 instead of merging fat git blobs.
 **Affects:** `docs/schema-current.sql` (`plexes` added to GRANT, matching live `0003`); `scripts/` Git LFS hooks (`pre-push`, `post-checkout`, `post-commit`, `post-merge`) so `core.hooksPath=scripts` actually runs LFS; `src/lib/admin/actions.ts` (`updateCluster` revalidates `/clusters/[slug]`); README Doc 8/9 rows; `docs/09-cluster-pdf-extraction-guide.md`; `nara-floorplans/` as LFS pointers + `docs/clusters/nara/staging.md` Batch 001 (staged, not promoted).
