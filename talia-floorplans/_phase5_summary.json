@@ -1,0 +1,38 @@
+{
+  "unit_count": 330,
+  "bedroom_counts": {
+    "4": 106,
+    "3": 224
+  },
+  "style_counts": {
+    "elio": 102,
+    "pharo": 156,
+    "cyrus": 72
+  },
+  "plex_type_counts": {
+    "8": 6,
+    "10": 9,
+    "6": 20,
+    "4": 18
+  },
+  "layout_counts": {
+    "elio-4br-b": 6,
+    "elio-3br-b": 45,
+    "elio-3br-a": 45,
+    "elio-4br-a": 6,
+    "pharo-4br-d": 9,
+    "pharo-3br-b": 49,
+    "pharo-3br-a": 9,
+    "pharo-4br-a": 29,
+    "pharo-4br-e": 20,
+    "pharo-3br-c": 40,
+    "cyrus-4br-b": 18,
+    "cyrus-3br-b": 18,
+    "cyrus-3br-a": 18,
+    "cyrus-4br-a": 18
+  },
+  "bua_sqft_min": 1862.37,
+  "bua_sqft_max": 2247.72,
+  "multiples_ok": true,
+  "mirror_pairs": false
+}

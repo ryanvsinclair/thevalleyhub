@@ -1,8 +1,8 @@
 # Nara — Reference
 
 **Slug:** `nara`
-**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / unit depth from staging Batches 001–002 (2026-08-13); amenities from Batch 003 (2026-08-13); facade copy from Batch 004 (2026-08-13); payment / summary / body from Batch 005 (2026-08-13).
-**Source:** Relocated from Doc 1 Annex C/D, then Batches 001–005 (Emaar floor-plan PNGs + `nara-units.csv` + brochure / sharp-map legend + payment PDF, source `a1000000-0000-4000-8000-000000000001`).
+**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / unit depth from staging Batches 001–002 (2026-08-13); amenities from Batch 003, published Batch 006 (2026-08-13); facade copy from Batch 004 (2026-08-13); payment / summary / body from Batch 005 (2026-08-13).
+**Source:** Relocated from Doc 1 Annex C/D, then Batches 001–006 (Emaar floor-plan PNGs + `nara-units.csv` + brochure / sharp-map legend + payment PDF, source `a1000000-0000-4000-8000-000000000001`).
 
 ---
 
@@ -61,7 +61,7 @@ Style is layout-determining here (`unit_types.layout` = `{facade_style}-{label}`
 
 ## Facades
 
-Copy from Emaar brochure pp. 11 / 13 / 15 (Batch 004). Confidence corroborated. Promo images and floor plans are in `nara-floorplans/`; Storage copies under `media/nara/*` still need uploading before they show on `/clusters/nara`.
+Copy from Emaar brochure pp. 11 / 13 / 15 (Batch 004). Confidence corroborated. Floor plans, facade photos, and maps are in Storage under `media/nara/*`.
 
 | style_name | description |
 |---|---|
@@ -71,7 +71,7 @@ Copy from Emaar brochure pp. 11 / 13 / 15 (Batch 004). Confidence corroborated. 
 
 ## Amenities (`places`, cluster-scoped)
 
-8 draft `places` rows with `cluster_id` → nara (Batch 003). From `BROCHURE.pdf` p.17 / `SHARP CLUSTER MAP.pdf` legend. Categories per Annex L (#10). Not published on `/clusters/nara` until Ray flips `state`.
+8 published `places` rows with `cluster_id` → nara (Batch 003; `state` flipped in Batch 006). From `BROCHURE.pdf` p.17 / `SHARP CLUSTER MAP.pdf` legend. Categories per Annex L (#10). Live on `/clusters/nara` On-site amenities.
 
 | name | category | subcategory |
 |---|---|---|
@@ -98,4 +98,4 @@ Legend pins **#9 Entrance** and **#10 Wadi Drive** are fabric/road, not `places`
 
 ## Staging
 
-See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–005 promoted 2026-08-13. Still open: Storage upload of 23 images (21 from Batch 001 + 2 maps from Batch 005); plot sizes; pricing.
+See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–006 promoted 2026-08-13. Still open: 3 brochure interiors (not staged); uncropped cluster maps; plot sizes; pricing.

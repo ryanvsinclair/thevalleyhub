@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Talia visual check — key plan vs map</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      background: #111;
+      color: #f2f2f2;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      padding: 1rem 1.25rem;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+    header h1 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+    header p { margin: 0.35rem 0 0; opacity: 0.7; font-size: 0.9rem; }
+    nav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 0.35rem 0.7rem;
+      font-size: 0.85rem;
+    }
+    nav a:hover { background: #333; }
+    section {
+      padding: 1.25rem;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    section h2 { margin: 0 0 0.75rem; font-size: 1rem; font-weight: 600; }
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #222;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Talia Batch 005 — visual check</h1>
+    <p>Key plan (street down, TH01 left) vs cluster map crop (red = TH01, blue → street)</p>
+    <nav>
+      <a href="#c1">1 · plex 16</a>
+      <a href="#c2">2 · plex 40</a>
+      <a href="#c3">3 · plex 25</a>
+      <a href="#c4">4 · plex 4</a>
+      <a href="#c5">5 · plex 24</a>
+    </nav>
+  </header>
+
+  <section id="c1">
+    <h2>1 — plex 16 · plots 115–122 · 8-plex Elio · street top · TH01 = 122</h2>
+    <img src="compare-1-plex16.jpg" alt="Compare 1 plex 16" />
+  </section>
+  <section id="c2">
+    <h2>2 — plex 40 · plots 249–258 · 10-plex · street top · TH01 = 258</h2>
+    <img src="compare-2-plex40.jpg" alt="Compare 2 plex 40" />
+  </section>
+  <section id="c3">
+    <h2>3 — plex 25 · plots 165–168 · 4-plex Cyrus · street right · TH01 = 168</h2>
+    <img src="compare-3-plex25.jpg" alt="Compare 3 plex 25" />
+  </section>
+  <section id="c4">
+    <h2>4 — plex 4 · plots 27–32 · 6-plex Pharo · street bottom · TH01 = 32</h2>
+    <img src="compare-4-plex4.jpg" alt="Compare 4 plex 4" />
+  </section>
+  <section id="c5">
+    <h2>5 — plex 24 · plots 159–164 · 6-plex Pharo · street top · TH01 = 164</h2>
+    <img src="compare-5-plex24.jpg" alt="Compare 5 plex 24" />
+  </section>
+</body>
+</html>

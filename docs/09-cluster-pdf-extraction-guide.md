@@ -294,6 +294,7 @@ Column names are absolute in `src/types/database.ts`. If a name above disagrees 
 |---|---|
 | Villa, cosmetic façades, amenities, payment, units CSV | `docs/clusters/farm-gardens/staging.md` + `farm-gardens-floorplans/` |
 | Townhouse, layout-determining styles, plexes, units CSV | `docs/clusters/eden/staging.md` + `eden-floorplans/` |
+| Per-plot units pipeline (master arrays, orientation, colour) | [`docs/10-cluster-extraction-playbook.md`](10-cluster-extraction-playbook.md) |
 | Empty staging shell | `docs/clusters/nara/staging.md` (until a batch lands) |
 | Format rules | `docs/07-data-staging.md` |
 

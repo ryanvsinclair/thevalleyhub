@@ -280,3 +280,30 @@ Ran 2026-08-13: `payment_plan`, `summary`, and `body` written on the live Nara `
 **Promoted:** [x]
 **Date:** 2026-08-13
 **By:** agent (Ray authorized: promote)
+
+---
+
+## Batch 006 — Publish Nara on-site amenities (2026-08-13)
+
+**Source:** No new extract. Ray authorized publishing the 8 Batch 003 `places` rows already live as `draft`.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
+**Confidence:** corroborated (same as Batch 003)
+**Status:** promoted
+
+### Proposed reference.md diff
+
+- **`places.state`:** `draft` → `published` on the 8 Nara cluster-scoped rows (`nara-community-centre` … `nara-mosque`). No new names, categories, or pins.
+
+### Notes
+
+- Places DB trigger revalidates `/`, `/places`, `/living` — not `/clusters/nara`. Cluster page was revalidated explicitly after this flip.
+- `nara-mosque` (`category = mosque`) also lists on `/living/services`, which maps `mosque`. Eden’s published amenities do not hit that map.
+- Homepage “In-community services” count includes every `in_community = true` published place (Eden’s 4 already do). These 8 add to it.
+
+### Promotion
+
+Ran 2026-08-13: 8 Nara `places.state = published`. SQL: `nara-floorplans/nara-batch-006-publish-amenities.sql`. `/clusters/nara` revalidated.
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: bring the amenities live)

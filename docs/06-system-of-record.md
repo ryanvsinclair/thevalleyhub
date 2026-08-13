@@ -118,7 +118,7 @@ media ←→ media_links (polymorphic subject, incl. unit_type / facade_style_de
 auth.users ──→ profiles (optional unit_id → units)
 ```
 
-**Row counts (live):** clusters 25 · unit_types 42 · units 508 · plexes 43 · facade_style_descriptions 5 · places 70 (47 Valley-wide + 19 Farm Gardens draft amenities + 4 Eden published amenities) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 30 · media_links 30 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens Batch 001 + Eden Batch 002 + Eden Batch 003 promoted. Live schema: **17** base tables / **72** RLS policies (after Doc 4 #12 / migration `0003`).
+**Row counts (live):** clusters 25 · unit_types 70 · units 880 · plexes 100 · facade_style_descriptions 11 · places 93 (55 Valley-wide incl. 8 draft Golden Beach strip + 19 Farm Gardens draft + 4 Eden published + 8 Nara published + 7 Talia draft) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 72 · media_links 72 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens + Eden + Nara + Talia Batches 001–004 promoted. Live schema: **17** base tables / **72** RLS policies (after Doc 4 #12 / migration `0003`).
 
 ### 3.2 Tables
 
@@ -460,6 +460,24 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 ---
 
 ## 10. CHANGELOG
+
+### 2026-08-13 — Talia Batches 001–003 promoted
+**Why:** Ray authorized promote of staged Talia layouts, amenities, payment/summary/body, and images.
+**Affects:** live Talia: 14 `unit_types`, 3 facade descriptions, 7 draft `places`, `payment_plan`/`summary`/`body`, 19 `media`+`media_links` under `talia/*`; `docs/clusters/talia/{staging,reference}.md`; `talia-floorplans/talia-batches-001-003-promotion.sql`. No units/plexes yet.
+**Breaking:** No.
+**Still open:** units/plexes/per-layout `unit_count` from colour map; publish Talia amenities; `single_row`; plot/pricing.
+
+### 2026-08-13 — Golden Beach strip places seeded (from Talia map)
+**Why:** Ray asked to put the Talia-legend Golden Beach strip amenities (G–I, K–O) in as their own Valley-wide places with a note that they sit directly next to Talia.
+**Affects:** 8 draft `places` (`golden-beach` + 7 children); `docs/clusters/talia/staging.md` Batch 004; `talia-floorplans/talia-batch-004-golden-beach-places.sql`. Not Talia `cluster_id` rows; not published.
+**Breaking:** No.
+**Still open:** Publish when Ray wants; Town Centre / Sports Village / Kids’ Dale / Pavilion still not seeded as places.
+
+### 2026-08-13 — Nara Batch 006 amenities published
+**Why:** Ray authorized bringing the 8 Batch 003 Nara amenities live.
+**Affects:** 8 Nara `places.state` `draft` → `published`; `docs/clusters/nara/{staging,reference}.md`; `nara-floorplans/nara-batch-006-publish-amenities.sql`. Public `/clusters/nara` On-site amenities section. `nara-mosque` also matches `/living/services`.
+**Breaking:** No.
+**Still open:** 3 brochure interiors (not staged); uncropped cluster maps; plot sizes; pricing. Places trigger does not revalidate `/clusters/nara`.
 
 ### 2026-08-13 — Nara Batch 005 payment / summary / body promoted
 **Why:** Ray authorized promote of the leftover brochure + payment PDF facts staged as Batch 005.
