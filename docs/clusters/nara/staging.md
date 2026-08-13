@@ -95,3 +95,64 @@
 **Promoted:** [ ]
 **Date:**
 **By:**
+
+---
+
+## Batch 002 — Nara bathrooms, maid’s rooms, and readable cluster-map amenities (2026-08-13)
+
+**Source:** Existing `nara-floorplans/` intake — all 16 layout PNGs (bathrooms / maid’s / GF guest bedroom) and `nara-cluster-map.jpg` + `nara-cluster-map-fullres.jpg` (amenities legend). No Nara PDF / brochure folder is on disk in this workspace, so facade blurbs, payment plan, starting price, plot sizes, and `summary`/`body` were not available. Read 2026-08-13.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
+**Confidence:** `unverified` for bathroom counts (inferred from labelled rooms; no printed “n baths” figure). `corroborated` for `maids_room` (every layout PNG labels **MAID'S ROOM**) and for amenity names that OCR actually read off the cluster-map legend. Does not change Batch 001 unit/plex/layout assignment.
+**Status:** staged
+
+### Proposed reference.md diff
+
+- **`unit_types` bathrooms / maid’s / GF bedroom** — fills the columns Batch 001 left null. Same 16 layout keys as Batch 001; do not rewrite that batch.
+
+  | facade_style | bedrooms | label | layout | bathrooms | maids_room | ground_floor_bedroom |
+  |---|---|---|---|---|---|---|
+  | aston | 3 | A | aston-a | 3.5 | true | false |
+  | aston | 3 | B | aston-b | 3.5 | true | false |
+  | aston | 3 | C | aston-c | 3.5 | true | false |
+  | aston | 4 | A | aston-a | 4.0 | true | true |
+  | aston | 4 | B | aston-b | 4.0 | true | true |
+  | aston | 4 | C | aston-c | 4.0 | true | true |
+  | aston | 4 | D | aston-d | 4.0 | true | true |
+  | aston | 4 | E | aston-e | 4.0 | true | true |
+  | palma | 3 | A | palma-a | 3.5 | true | false |
+  | palma | 3 | B | palma-b | 3.5 | true | false |
+  | palma | 4 | A | palma-a | 4.0 | true | true |
+  | palma | 4 | B | palma-b | 4.0 | true | true |
+  | charm | 3 | A | charm-a | 3.5 | true | false |
+  | charm | 3 | B | charm-b | 3.5 | true | false |
+  | charm | 4 | A | charm-a | 4.0 | true | true |
+  | charm | 4 | B | charm-b | 4.0 | true | true |
+
+  Count method (same as Eden): a labelled powder room = 0.5; maid’s bath counts as a full bath. Every 3BR PNG has Master Bath + shared first-floor Bath + Maid’s Bath + **PWDR. RM**. Every 4BR PNG has Master Bath + shared first-floor Bath + ground-floor guest Bath (with shower) + Maid’s Bath — no powder room. 4BR guest bedroom is on the ground floor.
+
+- **New `places` rows, `cluster_id = nara` (2 rows), `state = draft`:**
+
+  | name | category | subcategory | brochure pin |
+  |---|---|---|---|
+  | Community Centre | gathering | community-centre | #1 |
+  | Picnic Area | gathering | picnic | #6 |
+
+  Each row: `slug = nara-<name>`, `in_community = true`, `parent_place_id` null, `google_place_id` null, `confidence = corroborated`, `source_id` as above, `sort_order` = pin number. Pin #1 sits at the north edge of the Nara boundary (pool pad visible on the plan). Pin #6 is an internal green space.
+
+- **Facade copy:** none in this intake. The three facade JPGs are lifestyle renders (no brochure paragraphs). Leave `facade_style_descriptions.description` null until a Nara brochure PDF is available.
+
+### Notes
+
+- Bathroom counts were not printed as a figure on the PNGs. Tag stays `unverified` per Doc 9 §9.3.
+- Charm 3BR-A room dimensions match Aston 3BR-A on the PNGs (same kitchen 5.1×2.2, living 4.3×3.2, etc.). Keep both facade identities and both layout rows; do not collapse styles. Shared-interior finding only.
+- Both cluster-map JPGs crop the amenities legend. OCR of the full files only reads **1. COMMUNITY CENTRE** and **6. PICNIC AREA**. Pins **#2–#5** and **#7–#10** are drawn on the plan; their labels are not in the image. Names were not invented. Re-export a fuller legend page if those pins should become `places` rows.
+- The map **TYPES** legend only prints **3 BR TOWNHOUSES**. 4BR layouts still come from the floor-plan PNG set in Batch 001, not from this map’s type key.
+- No payment plan, `price_from_aed`, plot sizes, suite/garage/balcony/roof areas, or `summary`/`body` in this folder. Still null.
+- Green pedestrian corridors between rows are visible on the plan (Eden’s unnumbered “Alley” equivalent). Without a readable legend line they are not staged as `places`.
+- Do not promote this batch or Batch 001 until Ray authorizes. Live Nara is still the 2-row placeholder.
+
+### Promotion
+
+**Promoted:** [ ]
+**Date:**
+**By:**
