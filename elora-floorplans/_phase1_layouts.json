@@ -1,0 +1,132 @@
+[
+  {
+    "page": 2,
+    "style": "moon",
+    "bedrooms": 3,
+    "label": "A",
+    "layout": "moon-a",
+    "bua_min": 2180,
+    "bua_max": 2180,
+    "bathrooms": 3.5,
+    "maids_room": true,
+    "ground_floor_bedroom": false,
+    "printed": [
+      2179.8
+    ]
+  },
+  {
+    "page": 3,
+    "style": "moon",
+    "bedrooms": 3,
+    "label": "B",
+    "layout": "moon-b",
+    "bua_min": 2180,
+    "bua_max": 2180,
+    "bathrooms": 3.5,
+    "maids_room": false,
+    "ground_floor_bedroom": false,
+    "printed": [
+      2179.8
+    ]
+  },
+  {
+    "page": 4,
+    "style": "mysk",
+    "bedrooms": 3,
+    "label": "A",
+    "layout": "mysk-a",
+    "bua_min": 2095,
+    "bua_max": 2112,
+    "bathrooms": 3.5,
+    "maids_room": false,
+    "ground_floor_bedroom": false,
+    "printed": [
+      2111.02,
+      2111.55,
+      2094.76,
+      2111.45,
+      2094.76,
+      2094.65
+    ]
+  },
+  {
+    "page": 5,
+    "style": "mysk",
+    "bedrooms": 3,
+    "label": "B",
+    "layout": "mysk-b",
+    "bua_min": 2095,
+    "bua_max": 2112,
+    "bathrooms": 3.5,
+    "maids_room": false,
+    "ground_floor_bedroom": false,
+    "printed": [
+      2111.02,
+      2094.98,
+      2111.55,
+      2094.98,
+      2094.76,
+      2111.45
+    ]
+  },
+  {
+    "page": 6,
+    "style": "moon",
+    "bedrooms": 4,
+    "label": "A",
+    "layout": "moon-a",
+    "bua_min": 2608,
+    "bua_max": 2608,
+    "bathrooms": 4.0,
+    "maids_room": true,
+    "ground_floor_bedroom": true,
+    "printed": [
+      2607.99
+    ]
+  },
+  {
+    "page": 7,
+    "style": "moon",
+    "bedrooms": 4,
+    "label": "B",
+    "layout": "moon-b",
+    "bua_min": 2608,
+    "bua_max": 2608,
+    "bathrooms": 4.0,
+    "maids_room": true,
+    "ground_floor_bedroom": true,
+    "printed": [
+      2607.99
+    ]
+  },
+  {
+    "page": 8,
+    "style": "mysk",
+    "bedrooms": 4,
+    "label": "A",
+    "layout": "mysk-a",
+    "bua_min": 2586,
+    "bua_max": 2586,
+    "bathrooms": 4.0,
+    "maids_room": true,
+    "ground_floor_bedroom": true,
+    "printed": [
+      2586.13
+    ]
+  },
+  {
+    "page": 9,
+    "style": "mysk",
+    "bedrooms": 4,
+    "label": "B",
+    "layout": "mysk-b",
+    "bua_min": 2586,
+    "bua_max": 2586,
+    "bathrooms": 4.0,
+    "maids_room": true,
+    "ground_floor_bedroom": true,
+    "printed": [
+      2586.13
+    ]
+  }
+]

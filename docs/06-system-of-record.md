@@ -118,7 +118,7 @@ media ←→ media_links (polymorphic subject, incl. unit_type / facade_style_de
 auth.users ──→ profiles (optional unit_id → units)
 ```
 
-**Row counts (live):** clusters 25 · unit_types 70 · units 1210 · plexes 153 · facade_style_descriptions 11 · places 93 (0 draft — all published as of leftover-draft publish 2026-08-13; includes Golden Beach strip + masabih-masjid + Farm Gardens 19 + Talia 7 + Eden 4 + Nara 8) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 72 · media_links 72 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens + Eden + Nara + Talia deep intakes promoted; all prior draft places published. Live schema: **17** base tables / **72** RLS policies (after Doc 4 #12 / migration `0003`).
+**Row counts (live):** clusters 25 · unit_types 74 · units 1640 · plexes 226 · facade_style_descriptions 13 · places 106 (13 draft — Elora amenities only; remainder published) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 72 · media_links 72 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens + Eden + Nara + Talia + Elora deep intakes promoted. Live schema: **17** base tables / **72** RLS policies (after Doc 4 #12 / migration `0003`).
 
 ### 3.2 Tables
 
@@ -150,17 +150,17 @@ Column lists verified against `information_schema` / generated `src/types/databa
 #### `units`
 - **Purpose:** Individual physical units (distinct from `unit_types` floor-plan templates). Foundation for a future interactive map / per-unit drive times (Doc 4 #06).
 - **Key columns:** `cluster_id`, `unit_type_id`, `unit_number`, `plot_number`, `facade_style`, `bua`, `plex_id`, `th_position` (Doc 4 #12), `lat`/`lng`, `confidence`, `source_id`, …
-- **Live rows:** 508 (Farm Gardens 146 + Eden 362). Public read when parent cluster is published (`pub_units`). App UI for units still deferred (Doc 8 Appendix C).
+- **Live rows:** 1640 (Farm Gardens 146 + Eden 362 + Nara 372 + Talia 330 + Elora 430). Public read when parent cluster is published (`pub_units`). App UI for units still deferred (Doc 8 Appendix C).
 
 #### `plexes`
 - **Purpose:** One physical plex/building row (6/8/9/10-plex townhouse configuration). Doc 4 #12.
 - **Key columns:** `cluster_id`, `plex_size`, `street_side` (`up|down|left|right`), `range_start`/`range_end`, `confidence`, `source_id`.
-- **Live rows:** 43 (Eden only). Null `units.plex_id` for standalone-villa clusters (Farm Gardens).
+- **Live rows:** 226 (Eden 43 + Nara 57 + Talia 53 + Elora 73). Null `units.plex_id` for standalone-villa clusters (Farm Gardens).
 
 #### `facade_style_descriptions`
 - **Purpose:** Per-cluster facade style copy (Horizon/Earth ≠ May Bell/Iris — not a Valley-wide catalog). Doc 4 #07.
 - **Key columns:** `cluster_id`, `style_name` (unique per cluster), `description`, `sort_order`, `confidence`, `source_id`.
-- **Live rows:** 5 (Farm Gardens Horizon + Earth; Eden Spruce + Iris + May Bell). **Admin:** CRUD on `/admin/clusters/[id]` (Doc 8).
+- **Live rows:** 13 (Farm Gardens 2 + Eden 3 + Nara 3 + Talia 3 + Elora 2). **Admin:** CRUD on `/admin/clusters/[id]` (Doc 8).
 - **Public:** rendered on `/clusters/[slug]` when rows exist; images via `media_links` subject `facade_style_description`.
 
 #### `places`
@@ -189,7 +189,7 @@ Column lists verified against `information_schema` / generated `src/types/databa
 
 #### `media` / `media_links`
 - **Purpose:** Files in Storage + polymorphic links (`subject_type`: cluster|place|question|status_log|community|post|**unit_type**|**facade_style_description** — Doc 4 #08).
-- **Live rows:** 30 (Farm Gardens 8 + Eden 22). Floor-plan/style images link to the shared template, not duplicated per unit.
+- **Live rows:** 72 (Farm Gardens + Eden + Nara + Talia; Elora Storage upload still open). Floor-plan/style images link to the shared template, not duplicated per unit.
 - **Admin:** `/admin/media` upload + link/unlink to cluster / unit_type / facade_style_description (and manual other subject types).
 
 #### `redirects`
@@ -460,6 +460,12 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 ---
 
 ## 10. CHANGELOG
+
+### 2026-08-13 — Elora Batches 001–004 promoted
+**Why:** Ray authorized promote of staged Elora layouts/facades/images (001), draft amenities (002), payment/summary/body/price (003), and Doc 10 units/plexes (004).
+**Affects:** live Elora: 8 `unit_types`, 2 facade descriptions, 13 draft `places`, `price_from_aed`/`payment_plan`/`summary`/`body`, 73 `plexes`, 430 `units` (284×3BR / 146×4BR); `docs/clusters/elora/{staging,reference}.md`; `elora-floorplans/*`. Storage `media/elora/*` + `media_links` not applied (no service-role key in this environment).
+**Breaking:** No.
+**Still open:** Elora media upload; publish Elora amenities; plot size breakdown.
 
 ### 2026-08-13 — Publish leftover draft places
 **Why:** Ray authorized publishing all remaining `places` still in `draft` (Talia 7, Farm Gardens 19, Golden Beach strip 8, `masabih-masjid`).

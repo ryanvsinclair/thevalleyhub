@@ -1,0 +1,32 @@
+{
+  "unit_count": 430,
+  "bedroom_counts": {
+    "4": 146,
+    "3": 284
+  },
+  "style_counts": {
+    "moon": 146,
+    "mysk": 284
+  },
+  "plex_type_counts": {
+    "4-1": 16,
+    "4-2": 16,
+    "6": 13,
+    "8": 28
+  },
+  "layout_counts": {
+    "moon-4br-b": 57,
+    "mysk-3br-b": 126,
+    "mysk-3br-a": 126,
+    "moon-4br-a": 57,
+    "moon-3br-b": 16,
+    "moon-3br-a": 16,
+    "mysk-4br-b": 16,
+    "mysk-4br-a": 16
+  },
+  "bua_sqft_min": 2094.65,
+  "bua_sqft_max": 2607.99,
+  "multiples_ok": true,
+  "min_orientation_margin": 0.6238907431591856,
+  "mirror_pairs": false
+}

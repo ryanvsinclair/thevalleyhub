@@ -1,0 +1,1024 @@
+[
+  {
+    "start": 1,
+    "end": 8,
+    "size": 8,
+    "street_side": "up",
+    "margin": 0.8563031859995355,
+    "fill_vec": [
+      -4.558139057929565,
+      27.162396612527374
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 9,
+    "end": 16,
+    "size": 8,
+    "street_side": "up",
+    "margin": 0.8692066530663937,
+    "fill_vec": [
+      -4.782172001876111,
+      31.780642416431427
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 17,
+    "end": 22,
+    "size": 6,
+    "street_side": "up",
+    "margin": 0.9036732224611189,
+    "fill_vec": [
+      -3.346736403010864,
+      31.39684572640498
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 23,
+    "end": 30,
+    "size": 8,
+    "street_side": "up",
+    "margin": 0.9146929054421634,
+    "fill_vec": [
+      -3.2169966343678196,
+      34.493788919108695
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 31,
+    "end": 36,
+    "size": 6,
+    "street_side": "left",
+    "margin": 0.9165712204960526,
+    "fill_vec": [
+      42.400864704856296,
+      -3.8594398302757766
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.8
+  },
+  {
+    "start": 37,
+    "end": 40,
+    "size": 4,
+    "street_side": "left",
+    "margin": 0.6275910761268838,
+    "fill_vec": [
+      12.613763383782272,
+      7.4849334205696705
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 41,
+    "end": 48,
+    "size": 8,
+    "street_side": "left",
+    "margin": 0.8824755161649628,
+    "fill_vec": [
+      36.6008892082038,
+      4.874355889572276
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 49,
+    "end": 54,
+    "size": 6,
+    "street_side": "right",
+    "margin": 0.9026274643562281,
+    "fill_vec": [
+      -33.36752921391012,
+      -3.599580284670273
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 55,
+    "end": 58,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.6238907431591856,
+    "fill_vec": [
+      -7.684627638391078,
+      -4.632636399840699
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 59,
+    "end": 66,
+    "size": 8,
+    "street_side": "left",
+    "margin": 0.8966699964743085,
+    "fill_vec": [
+      15.876156077805254,
+      -1.8295274440701697
+    ],
+    "array_key": "8",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 67,
+    "end": 74,
+    "size": 8,
+    "street_side": "left",
+    "margin": 0.8789882601134543,
+    "fill_vec": [
+      32.29811185474999,
+      4.446532461196721
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 75,
+    "end": 78,
+    "size": 4,
+    "street_side": "left",
+    "margin": 0.8129157092235522,
+    "fill_vec": [
+      14.304141243553426,
+      3.2919517687223063
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 79,
+    "end": 84,
+    "size": 6,
+    "street_side": "left",
+    "margin": 0.9078106420036577,
+    "fill_vec": [
+      28.594793434839335,
+      2.9038376716612646
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.6
+  },
+  {
+    "start": 85,
+    "end": 92,
+    "size": 8,
+    "street_side": "right",
+    "margin": 0.9357808190830947,
+    "fill_vec": [
+      -32.903749465452975,
+      -2.2580617820913007
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 93,
+    "end": 96,
+    "size": 4,
+    "street_side": "left",
+    "margin": 0.9839370341926891,
+    "fill_vec": [
+      23.803916417622673,
+      0.38860262219223074
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 97,
+    "end": 102,
+    "size": 6,
+    "street_side": "right",
+    "margin": 0.922107241854917,
+    "fill_vec": [
+      -33.23205116796001,
+      -2.807195394080825
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 103,
+    "end": 110,
+    "size": 8,
+    "street_side": "left",
+    "margin": 0.8891039212766646,
+    "fill_vec": [
+      37.501227956692496,
+      4.677448990025446
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 111,
+    "end": 114,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.9955143020108995,
+    "fill_vec": [
+      -12.522016172146486,
+      -0.05642207965784252
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 115,
+    "end": 120,
+    "size": 6,
+    "street_side": "left",
+    "margin": 0.8936562270575863,
+    "fill_vec": [
+      32.93222125229449,
+      3.918884756410293
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 121,
+    "end": 124,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.9747208556511631,
+    "fill_vec": [
+      -24.754343551580057,
+      -0.6419967784132332
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 125,
+    "end": 128,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.8921837210775169,
+    "fill_vec": [
+      -22.025354883864853,
+      -2.6616613341406232
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 129,
+    "end": 132,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.9439408011803662,
+    "fill_vec": [
+      -23.613164065587146,
+      -1.4023486573705615
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 133,
+    "end": 136,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.8243557187568604,
+    "fill_vec": [
+      -22.755225422444873,
+      -4.848421984046514
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 137,
+    "end": 144,
+    "size": 8,
+    "street_side": "left",
+    "margin": 0.830516779571444,
+    "fill_vec": [
+      27.863213884700052,
+      5.686033691683659
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.6
+  },
+  {
+    "start": 145,
+    "end": 148,
+    "size": 4,
+    "street_side": "left",
+    "margin": 0.9099025142916187,
+    "fill_vec": [
+      18.12701760750347,
+      -1.7949151412078332
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 149,
+    "end": 152,
+    "size": 4,
+    "street_side": "left",
+    "margin": 0.8297353572471481,
+    "fill_vec": [
+      24.723234016487584,
+      5.073294443836987
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 153,
+    "end": 158,
+    "size": 6,
+    "street_side": "down",
+    "margin": 0.77350200482902,
+    "fill_vec": [
+      10.847240024107863,
+      -37.04387172468021
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.8
+  },
+  {
+    "start": 159,
+    "end": 166,
+    "size": 8,
+    "street_side": "down",
+    "margin": 0.9798805895021131,
+    "fill_vec": [
+      -0.589262459172609,
+      -28.699042937006283
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 167,
+    "end": 174,
+    "size": 8,
+    "street_side": "up",
+    "margin": 0.9151906454558316,
+    "fill_vec": [
+      -1.6069207506468182,
+      17.340537044242836
+    ],
+    "array_key": "8",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 175,
+    "end": 182,
+    "size": 8,
+    "street_side": "down",
+    "margin": 0.8814698263969833,
+    "fill_vec": [
+      4.715531500243019,
+      -35.06786068060527
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 183,
+    "end": 186,
+    "size": 4,
+    "street_side": "up",
+    "margin": 0.9268348035565902,
+    "fill_vec": [
+      -1.6840610609622182,
+      21.333193995539585
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 187,
+    "end": 190,
+    "size": 4,
+    "street_side": "up",
+    "margin": 0.9618908189638238,
+    "fill_vec": [
+      -0.939496044392973,
+      23.713277401248565
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 191,
+    "end": 194,
+    "size": 4,
+    "street_side": "down",
+    "margin": 0.885133509778688,
+    "fill_vec": [
+      2.5319301262995317,
+      -19.510451481729053
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 195,
+    "end": 198,
+    "size": 4,
+    "street_side": "down",
+    "margin": 0.9952320229217757,
+    "fill_vec": [
+      0.1027163283057142,
+      -21.440450061242686
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 199,
+    "end": 202,
+    "size": 4,
+    "street_side": "up",
+    "margin": 0.933152785482217,
+    "fill_vec": [
+      -1.4679053109713482,
+      20.491218262287443
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 203,
+    "end": 206,
+    "size": 4,
+    "street_side": "up",
+    "margin": 0.9325193204283287,
+    "fill_vec": [
+      -1.3313169149590625,
+      18.397557422537663
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 207,
+    "end": 212,
+    "size": 6,
+    "street_side": "left",
+    "margin": 0.9035166153634344,
+    "fill_vec": [
+      10.288856463202297,
+      -1.0987100571400532
+    ],
+    "array_key": "6",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 213,
+    "end": 218,
+    "size": 6,
+    "street_side": "left",
+    "margin": 0.9614567324261966,
+    "fill_vec": [
+      33.6492811673336,
+      -1.3489450356951036
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 219,
+    "end": 222,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.9028741145047049,
+    "fill_vec": [
+      -23.754788994356485,
+      2.5553994470450903
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 223,
+    "end": 226,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.9609317838033758,
+    "fill_vec": [
+      -24.179335739339592,
+      0.9830485068196957
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 227,
+    "end": 234,
+    "size": 8,
+    "street_side": "right",
+    "margin": 0.8720655916696147,
+    "fill_vec": [
+      -21.84165669856459,
+      3.2042297979797993
+    ],
+    "array_key": "8",
+    "style_vote": "moon",
+    "style_conf": 0.5
+  },
+  {
+    "start": 235,
+    "end": 238,
+    "size": 4,
+    "street_side": "left",
+    "margin": 0.8270595840166186,
+    "fill_vec": [
+      13.161163692530153,
+      -2.752034243649151
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 239,
+    "end": 242,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.8136465064592275,
+    "fill_vec": [
+      -19.156647126402923,
+      -4.387540872536601
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 243,
+    "end": 250,
+    "size": 8,
+    "street_side": "left",
+    "margin": 0.9624280168720958,
+    "fill_vec": [
+      37.61062716616114,
+      -1.4682707299830016
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 251,
+    "end": 258,
+    "size": 8,
+    "street_side": "left",
+    "margin": 0.6560488266300383,
+    "fill_vec": [
+      13.497795893719807,
+      7.07658011272142
+    ],
+    "array_key": "8",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 259,
+    "end": 266,
+    "size": 8,
+    "street_side": "right",
+    "margin": 0.9453031365913853,
+    "fill_vec": [
+      -37.33881870346935,
+      2.160487194111955
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 267,
+    "end": 270,
+    "size": 4,
+    "street_side": "left",
+    "margin": 0.9153307908046728,
+    "fill_vec": [
+      24.209602733162946,
+      -2.239416638893079
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 271,
+    "end": 274,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.9231177205636123,
+    "fill_vec": [
+      -20.90664535292812,
+      -1.741218472116623
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 275,
+    "end": 282,
+    "size": 8,
+    "street_side": "left",
+    "margin": 0.9572853716231573,
+    "fill_vec": [
+      35.151568200422396,
+      -1.5684823562205086
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 283,
+    "end": 286,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.9777434962687156,
+    "fill_vec": [
+      -24.242503769225692,
+      0.5518343000091548
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 287,
+    "end": 290,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.9442418368846034,
+    "fill_vec": [
+      -24.53319888970338,
+      1.4487021309138246
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 291,
+    "end": 298,
+    "size": 8,
+    "street_side": "right",
+    "margin": 0.9888396033055421,
+    "fill_vec": [
+      -36.81124467382372,
+      -0.415463845869124
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.7503035850787113
+  },
+  {
+    "start": 299,
+    "end": 302,
+    "size": 4,
+    "street_side": "left",
+    "margin": 0.9427084640234771,
+    "fill_vec": [
+      24.857330296172254,
+      -1.5106618266233518
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 303,
+    "end": 306,
+    "size": 4,
+    "street_side": "left",
+    "margin": 0.9006953045840044,
+    "fill_vec": [
+      12.140935040461144,
+      -1.3385780401285885
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 307,
+    "end": 314,
+    "size": 8,
+    "street_side": "left",
+    "margin": 0.7260979933085083,
+    "fill_vec": [
+      9.244986686742264,
+      -3.4874351706973195
+    ],
+    "array_key": "8",
+    "style_vote": "moon",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 315,
+    "end": 318,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.9387945004114062,
+    "fill_vec": [
+      -24.171784457983563,
+      1.5758988833614325
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 319,
+    "end": 322,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.9057564344062359,
+    "fill_vec": [
+      -28.212177263653068,
+      -2.935463852902714
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 323,
+    "end": 330,
+    "size": 8,
+    "street_side": "right",
+    "margin": 0.9446270787984157,
+    "fill_vec": [
+      -38.57343275000068,
+      2.2611279683303795
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 331,
+    "end": 334,
+    "size": 4,
+    "street_side": "left",
+    "margin": 0.98867770905794,
+    "fill_vec": [
+      24.44189150995351,
+      0.2799063998681035
+    ],
+    "array_key": "4-1",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 335,
+    "end": 338,
+    "size": 4,
+    "street_side": "right",
+    "margin": 0.8822671998874204,
+    "fill_vec": [
+      -6.871779310344827,
+      -0.9169931034482772
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 339,
+    "end": 346,
+    "size": 8,
+    "street_side": "left",
+    "margin": 0.9387579168557387,
+    "fill_vec": [
+      32.820130367391535,
+      -2.1410974841517643
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 347,
+    "end": 354,
+    "size": 8,
+    "street_side": "down",
+    "margin": 0.9572695521528923,
+    "fill_vec": [
+      -1.584325423489056,
+      -35.49289844337582
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 355,
+    "end": 362,
+    "size": 8,
+    "street_side": "down",
+    "margin": 0.9798311222948043,
+    "fill_vec": [
+      -0.7215731085685633,
+      -35.05503771464036
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 363,
+    "end": 368,
+    "size": 6,
+    "street_side": "down",
+    "margin": 0.9500601536923393,
+    "fill_vec": [
+      -1.6201104850688672,
+      -30.82114744648582
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 369,
+    "end": 376,
+    "size": 8,
+    "street_side": "down",
+    "margin": 0.9409383580378028,
+    "fill_vec": [
+      -2.243885073401502,
+      -35.74838774177131
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 377,
+    "end": 382,
+    "size": 6,
+    "street_side": "right",
+    "margin": 0.9443653085377096,
+    "fill_vec": [
+      -33.14903113453638,
+      1.9528832311027706
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 383,
+    "end": 388,
+    "size": 6,
+    "street_side": "right",
+    "margin": 0.9346524511467571,
+    "fill_vec": [
+      -33.39469523662728,
+      2.3348363780405434
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  },
+  {
+    "start": 389,
+    "end": 396,
+    "size": 8,
+    "street_side": "right",
+    "margin": 0.9719719427471094,
+    "fill_vec": [
+      -37.046194341778296,
+      1.0682735152894152
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 397,
+    "end": 404,
+    "size": 8,
+    "street_side": "down",
+    "margin": 0.8264277318726101,
+    "fill_vec": [
+      5.3408880500603875,
+      -25.42951631297
+    ],
+    "array_key": "8",
+    "style_vote": "moon",
+    "style_conf": 1.0
+  },
+  {
+    "start": 405,
+    "end": 410,
+    "size": 6,
+    "street_side": "up",
+    "margin": 0.8830347468582462,
+    "fill_vec": [
+      3.0353319467006825,
+      22.915390581611355
+    ],
+    "array_key": "6",
+    "style_vote": "mysk",
+    "style_conf": 0.6
+  },
+  {
+    "start": 411,
+    "end": 418,
+    "size": 8,
+    "street_side": "up",
+    "margin": 0.9364589093949545,
+    "fill_vec": [
+      2.4017365580932317,
+      35.39644209579076
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.75
+  },
+  {
+    "start": 419,
+    "end": 422,
+    "size": 4,
+    "street_side": "up",
+    "margin": 0.9280634624124938,
+    "fill_vec": [
+      1.6669712475633531,
+      21.505845119905707
+    ],
+    "array_key": "4-2",
+    "style_vote": "mysk",
+    "style_conf": 1.0
+  },
+  {
+    "start": 423,
+    "end": 430,
+    "size": 8,
+    "street_side": "up",
+    "margin": 0.907264600358483,
+    "fill_vec": [
+      2.9197472142192566,
+      28.564973105859092
+    ],
+    "array_key": "8",
+    "style_vote": "mysk",
+    "style_conf": 0.6666666666666666
+  }
+]

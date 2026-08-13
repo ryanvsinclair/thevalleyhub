@@ -44,3 +44,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 _baseline-export/
+
+# local extraction venvs
+.venv-elora/
+
+# ephemeral Elora promote chunks (regenerable)
+elora-floorplans/_chunk_*.sql
+elora-floorplans/_chunks.json
+elora-floorplans/_units_batch_*.sql
+elora-floorplans/_units_batch_*.json
+elora-floorplans/_test_write.txt
