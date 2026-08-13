@@ -127,3 +127,29 @@ Ran 2026-08-09: uploaded 8 images to `media`/`farm-gardens/*`, applied promotion
 **Promoted:** [x]
 **Date:** 2026-08-09
 **By:** Cursor agent (authorized by Ray — “do the rest”) · `reference.md` updated in the same session under `DOCS_GUARD=off`
+
+---
+
+## Batch 002 — Farm Gardens bathrooms (2026-08-13)
+
+**Source:** Ray (operator), 2026-08-13.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer) — bathroom totals stated by Ray for the live register.
+**Confidence:** corroborated
+**Status:** promoted
+
+### Proposed reference.md diff
+
+- **`unit_types.bathrooms`:** 4BR → `5.5`; 5BR → `6.5` (were null).
+
+### Notes
+
+- Batch 001 left bathrooms null (not in that intake). No PDF recount in this batch — values as given by Ray.
+
+### Promotion
+
+Ran 2026-08-13: both Farm Gardens `unit_types` rows updated.
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: update)
+

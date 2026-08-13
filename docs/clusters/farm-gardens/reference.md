@@ -1,8 +1,8 @@
 # Farm Gardens — Reference
 
 **Slug:** `farm-gardens`
-**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Batch 001 promoted 2026-08-09.
-**Source:** Relocated from Doc 1 Annex C.1/C.4 and Annex D, then Batch 001 (6 official Emaar PDFs, source `a1000000-0000-4000-8000-000000000001`) promoted into live DB + this file.
+**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Batch 001 promoted 2026-08-09; bathrooms from Batch 002 (2026-08-13).
+**Source:** Relocated from Doc 1 Annex C.1/C.4 and Annex D, then Batches 001–002 (6 official Emaar PDFs + Ray bathroom totals, source `a1000000-0000-4000-8000-000000000001`) promoted into live DB + this file.
 
 ---
 
@@ -43,12 +43,12 @@ Target handover: 30 September 2026.
 
 ## Unit types
 
-| bedrooms | bua_min | bua_max | plot_min | plot_max | suite | garage | balcony | roof | unit_count | confidence |
-|---|---|---|---|---|---|---|---|---|---|---|
-| 4 | 4950 | — | 8914 | — | 3843 | 608 | 500 | 423 | 79 | corroborated |
-| 5 | — | 5657 | — | 10004 | 4520 | 622 | 515 | 441 | 67 | corroborated |
+| bedrooms | bua_min | bua_max | plot_min | plot_max | suite | garage | balcony | roof | bathrooms | unit_count | confidence |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 4 | 4950 | — | 8914 | — | 3843 | 608 | 500 | 423 | 5.5 | 79 | corroborated |
+| 5 | — | 5657 | — | 10004 | 4520 | 622 | 515 | 441 | 6.5 | 67 | corroborated |
 
-Batch 001 corrected the 5-bed `bua_max` (was 10004 — that figure is average plot area, now in `plot_max`). Suite + garage + balcony equals published BUA totals.
+Batch 001 corrected the 5-bed `bua_max` (was 10004 — that figure is average plot area, now in `plot_max`). Suite + garage + balcony equals published BUA totals. Bathrooms from Batch 002 (Ray, 2026-08-13).
 
 ## Facade styles
 
@@ -100,4 +100,4 @@ Batch 001 corrected the 5-bed `bua_max` (was 10004 — that figure is average pl
 
 ## Staging
 
-See [`staging.md`](./staging.md) — Batch 001 is **promoted**.
+See [`staging.md`](./staging.md) — Batches 001–002 are **promoted**.
