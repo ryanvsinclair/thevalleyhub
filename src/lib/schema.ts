@@ -130,6 +130,11 @@ const optionalInt = z.preprocess((v) => {
   const n = Number(v);
   return Number.isFinite(n) ? n : v;
 }, z.number().int().nullable());
+const optionalNumeric = z.preprocess((v) => {
+  if (v === "" || v === null || v === undefined) return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : v;
+}, z.number().nullable());
 const optionalDate = z.preprocess(emptyToNull, z.iso.date().nullable());
 
 /** Form select "true"/"false" — do not use z.coerce.boolean (Boolean("false") === true). */
@@ -252,6 +257,7 @@ export const unitTypeFields = z.object({
   garage_area: optionalInt,
   balcony_area: optionalInt,
   roof_terrace_area: optionalInt,
+  bathrooms: optionalNumeric,
   layout: optionalString,
   maids_room: optionalFormBool,
   ground_floor_bedroom: optionalFormBool,
@@ -339,8 +345,18 @@ export const comparisonUpdate = z.object({
   source_id: optionalUuid,
 });
 
+export const sourceKindValues = [
+  "developer",
+  "government",
+  "operator",
+  "portal",
+  "site_visit",
+  "broker",
+  "resident",
+] as const;
+
 export const sourceUpdate = z.object({
-  kind: z.string().min(1),
+  kind: z.enum(sourceKindValues),
   label: z.string().min(1),
   url: optionalString,
   retrieved_at: z.iso.date(),

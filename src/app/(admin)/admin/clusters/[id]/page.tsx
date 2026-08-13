@@ -42,6 +42,7 @@ function UnitTypeForm({
     garage_area: number | null;
     balcony_area: number | null;
     roof_terrace_area: number | null;
+    bathrooms: number | null;
     layout: string | null;
     maids_room: boolean | null;
     ground_floor_bedroom: boolean | null;
@@ -125,6 +126,13 @@ function UnitTypeForm({
           name="roof_terrace_area"
           type="number"
           defaultValue={unit?.roof_terrace_area}
+        />
+        <FormField
+          label="Bathrooms"
+          name="bathrooms"
+          type="number"
+          step="0.5"
+          defaultValue={unit?.bathrooms}
         />
         <FormField label="Layout" name="layout" defaultValue={unit?.layout} />
         <FormField

@@ -10,6 +10,7 @@ export function FormField({
   defaultValue,
   required,
   hint,
+  step,
   className,
 }: {
   label: string;
@@ -18,6 +19,7 @@ export function FormField({
   defaultValue?: string | number | null;
   required?: boolean;
   hint?: string;
+  step?: string | number;
   className?: string;
 }) {
   return (
@@ -27,6 +29,7 @@ export function FormField({
         type={type}
         name={name}
         required={required}
+        step={step}
         defaultValue={defaultValue ?? ""}
         className={inputClass}
       />

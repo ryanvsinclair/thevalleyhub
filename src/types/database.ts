@@ -1093,6 +1093,10 @@ export type Database = {
       }
       can_edit: { Args: never; Returns: boolean }
       is_staff: { Args: never; Returns: boolean }
+      media_subject_is_published: {
+        Args: { p_subject_id: string; p_subject_type: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "owner" | "editor" | "viewer"

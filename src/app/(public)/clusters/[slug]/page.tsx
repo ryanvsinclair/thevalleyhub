@@ -141,6 +141,7 @@ export default async function ClusterDetailPage({ params }: Props) {
 
   const showBreakdownColumn = unitTypes.some(unitHasBreakdown);
   const showCountColumn = unitTypes.some((u) => u.unit_count != null);
+  const showBathsColumn = unitTypes.some((u) => u.bathrooms != null);
 
   return (
     <article>
@@ -267,6 +268,9 @@ export default async function ClusterDetailPage({ params }: Props) {
                 <tr className="border-b border-neutral-300 text-neutral-500">
                   <th className="py-2 pr-4 font-medium">Type</th>
                   <th className="py-2 pr-4 font-medium">Beds</th>
+                  {showBathsColumn ? (
+                    <th className="py-2 pr-4 font-medium">Baths</th>
+                  ) : null}
                   {showCountColumn ? (
                     <th className="py-2 pr-4 font-medium">Count</th>
                   ) : null}
@@ -302,6 +306,13 @@ export default async function ClusterDetailPage({ params }: Props) {
                         {unit.label ?? "—"}
                       </td>
                       <td className="py-3 pr-4">{unit.bedrooms}</td>
+                      {showBathsColumn ? (
+                        <td className="py-3 pr-4">
+                          <ConfidenceGate confidence={unit.confidence}>
+                            {unit.bathrooms != null ? unit.bathrooms : "—"}
+                          </ConfidenceGate>
+                        </td>
+                      ) : null}
                       {showCountColumn ? (
                         <td className="py-3 pr-4">
                           <ConfidenceGate confidence={unit.confidence}>

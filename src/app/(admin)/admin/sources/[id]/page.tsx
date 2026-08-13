@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 
 import { AdminForm } from "@/components/admin/AdminForm";
-import { FormField, TextAreaField } from "@/components/admin/fields";
+import { FormField, SelectField, TextAreaField } from "@/components/admin/fields";
 import { updateSource } from "@/lib/admin/actions";
+import { sourceKindValues } from "@/lib/schema";
 import { createClient } from "@/lib/supabase/server";
 
 type Props = { params: Promise<{ id: string }> };
@@ -25,7 +26,13 @@ export default async function AdminSourceEditPage({ params }: Props) {
 
       <AdminForm action={updateSource}>
         <input type="hidden" name="id" value={source.id} />
-        <FormField label="Kind" name="kind" defaultValue={source.kind} required />
+        <SelectField
+          label="Kind"
+          name="kind"
+          options={sourceKindValues}
+          defaultValue={source.kind}
+          required
+        />
         <FormField
           label="Label"
           name="label"
