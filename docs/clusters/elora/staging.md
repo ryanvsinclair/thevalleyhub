@@ -159,7 +159,7 @@
 
 **Promoted:** [x]
 **Date:** 2026-08-13
-**By:** Ray (authorized promote); agent applied live + docs. Amenities remain `draft` pending publish.
+**By:** Ray (authorized promote); agent applied live + docs. Amenities published 2026-08-13 (`draft` → `published`).
 
 ---
 

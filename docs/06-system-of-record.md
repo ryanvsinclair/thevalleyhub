@@ -118,7 +118,7 @@ media ←→ media_links (polymorphic subject, incl. unit_type / facade_style_de
 auth.users ──→ profiles (optional unit_id → units)
 ```
 
-**Row counts (live):** clusters 25 · unit_types 74 · units 1640 · plexes 226 · facade_style_descriptions 13 · places 106 (13 draft — Elora amenities only; remainder published) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 85 · media_links 85 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens + Eden + Nara + Talia + Elora deep intakes promoted. Live schema: **17** base tables / **72** RLS policies (after Doc 4 #12 / migration `0003`).
+**Row counts (live):** clusters 25 · unit_types 74 · units 1640 · plexes 226 · facade_style_descriptions 13 · places 106 (0 draft — all published) · questions 52 · communities 5 · comparisons 25 · status_log 3 · sources 7 · posts 0 · media 85 · media_links 85 · profiles 1 · redirects 0 · audit_log growing. Farm Gardens + Eden + Nara + Talia + Elora deep intakes promoted. Live schema: **17** base tables / **72** RLS policies (after Doc 4 #12 / migration `0003`).
 
 ### 3.2 Tables
 
@@ -461,11 +461,17 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-13 — Elora amenities published
+**Why:** Ray authorized publishing the 13 Batch 002 Elora on-site amenities.
+**Affects:** 13 Elora `places.state` `draft` → `published`; `docs/clusters/elora/{staging,reference}.md`; Doc 6 row counts.
+**Breaking:** No.
+**Still open:** plot size breakdown; revalidate `/clusters/elora` if ISR still shows the old amenities section.
+
 ### 2026-08-13 — Elora Batches 001–004 promoted
 **Why:** Ray authorized promote of staged Elora layouts/facades/images (001), draft amenities (002), payment/summary/body/price (003), and Doc 10 units/plexes (004).
-**Affects:** live Elora: 8 `unit_types`, 2 facade descriptions, 13 draft `places`, `price_from_aed`/`payment_plan`/`summary`/`body`, 73 `plexes`, 430 `units` (284×3BR / 146×4BR); `docs/clusters/elora/{staging,reference}.md`; `elora-floorplans/*`. Media uploaded same day: 13 Storage objects + `media`/`media_links`.
+**Affects:** live Elora: 8 `unit_types`, 2 facade descriptions, 13 `places` (later published same day), `price_from_aed`/`payment_plan`/`summary`/`body`, 73 `plexes`, 430 `units` (284×3BR / 146×4BR); `docs/clusters/elora/{staging,reference}.md`; `elora-floorplans/*`. Media uploaded same day: 13 Storage objects + `media`/`media_links`.
 **Breaking:** No.
-**Still open:** publish Elora amenities; plot size breakdown.
+**Still open:** plot size breakdown.
 
 ### 2026-08-13 — Publish leftover draft places
 **Why:** Ray authorized publishing all remaining `places` still in `draft` (Talia 7, Farm Gardens 19, Golden Beach strip 8, `masabih-masjid`).

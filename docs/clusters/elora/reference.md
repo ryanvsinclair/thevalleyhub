@@ -1,7 +1,7 @@
 # Elora — Reference
 
 **Slug:** `elora`
-**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / image depth from staging Batch 001 (2026-08-13); amenities from Batch 002 (draft); payment / summary / body / price from Batch 003; units / plexes / unit_count from Batch 004 (2026-08-13).
+**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / image depth from staging Batch 001 (2026-08-13); amenities from Batch 002, published 2026-08-13; payment / summary / body / price from Batch 003; units / plexes / unit_count from Batch 004 (2026-08-13).
 **Source:** Relocated from Doc 1 Annex C/D, then Batches 001–004 (Emaar floor-plan PDF + brochure + cluster map + factsheet + payment PDF + Doc 10 extract, source `a1000000-0000-4000-8000-000000000001`).
 
 ---
@@ -63,7 +63,7 @@ Copy from Emaar brochure pp. 23 / 24 (Batch 001). Confidence corroborated. Floor
 
 ## Amenities (`places`, cluster-scoped)
 
-13 **draft** `places` rows with `cluster_id` → elora (Batch 002). From `ELORA CLUSTER MAP.pdf` legend A–M. Categories per Annex L (#10). Not live on `/clusters/elora` until published.
+13 published `places` rows with `cluster_id` → elora (Batch 002; published 2026-08-13). From `ELORA CLUSTER MAP.pdf` legend A–M. Categories per Annex L (#10). Live on `/clusters/elora` On-site amenities.
 
 | name | category | subcategory |
 |---|---|---|
@@ -96,4 +96,4 @@ Batch 004 promoted: **430** `units` + **73** `plexes` (`32×4 · 13×6 · 28×8`
 
 ## Staging
 
-See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–004 promoted 2026-08-13; media uploaded 2026-08-13. Still open: publish Elora amenities; plot size breakdown.
+See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–004 promoted 2026-08-13; media uploaded and amenities published 2026-08-13. Still open: plot size breakdown.
