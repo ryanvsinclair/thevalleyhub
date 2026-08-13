@@ -347,7 +347,7 @@ Route groups `(public)` / `(admin)` do not appear in URLs.
 4. **Public page** reads via `lib/queries/*`; **ConfidenceGate** hides unverified numeric/spec fields.
 5. Annex J prohibitions enforced at seed/review (Gate 3/7 greps); not a DB constraint.
 
-**Published vs draft:** `state` enum; drafts invisible to anon. `masabih-masjid` draft for missing hours.
+**Published vs draft:** `state` enum; drafts invisible to anon. `masabih-masjid` published with null hours (Annex K open).
 
 ---
 
