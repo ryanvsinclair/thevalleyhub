@@ -263,7 +263,7 @@ Ran 2026-08-13: 8 draft Valley-wide `places` inserted. SQL: `talia-floorplans/ta
 **Source:** Local `/Users/mehdielghissassi/Desktop/clusters/TALIA/` — `TALIA FLOOR PLAN.pdf` (master arrays, Batch 001) + `TALIA CLUSTER MAP.pdf` (330 plot labels, style-fill orientation). Method: [`docs/10-cluster-extraction-playbook.md`](../../10-cluster-extraction-playbook.md). Intermediate artefacts in `talia-floorplans/` (`_phase1`…`_phase5`, `talia-plex-composition.csv`, `talia-plex-orientation.csv`). Read 2026-08-13.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** `unverified` for per-unit style/type/position and exact BUA (derived in `talia-units.csv`; `talia-units-detection.csv` logs orientation_margin / style_source=`key_plan`). Corroborated where it matches the live register: **330** plots, facades Pharo/Cyrus/Elio, BUA envelope 1862–2248 sqft. No published 3BR/4BR marketing split in the brochure to cross-check (only “3 & 4-Bedroom Townhouses”).
-**Status:** staged
+**Status:** promoted
 
 ### Proposed reference.md diff
 
@@ -294,7 +294,6 @@ Ran 2026-08-13: 8 draft Valley-wide `places` inserted. SQL: `talia-floorplans/ta
 
 ### Notes
 
-- **Do not promote until Ray authorizes.** No promotion SQL in this batch yet.
 - Phase gates (Doc 10): Phase 1 master arrays (4/6/8/10) · Phase 2 330/330 plots · Phase 3 gap threshold plateau 52.4–68.0 → 53 plexes, all legal sizes · Phase 4 style-fill orientation, legend+map refs, min margin **0.455** (NARA floor was 0.451) · Phase 5 layout assign · Phase 6 layout counts exact multiples of plex-type counts (all 14 OK).
 - `talia-units-detection.csv` is the detection log, not a promotion table.
 - `single_row`, price, plot size still unknown — not in this batch.
@@ -302,7 +301,9 @@ Ran 2026-08-13: 8 draft Valley-wide `places` inserted. SQL: `talia-floorplans/ta
 
 ### Promotion
 
-**Promoted:** [ ]
-**Date:**
-**By:**
+Ran 2026-08-13: `unit_count` backfilled on 14 `unit_types`; 53 `plexes` + 330 `units` inserted. Sanity: 224×3BR / 106×4BR. SQL: `talia-floorplans/talia-batch-005-units-promotion.sql`. Explicit revalidate of `/clusters/talia` (units/plexes have no revalidate trigger).
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: promote)
 
