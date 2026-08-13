@@ -461,6 +461,12 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-13 — Nara Batch 004 facade copy promoted
+**Why:** Brochure pp. 11 / 13 / 15 copy was extracted in the Batch 003 source pass but never staged, so the 001–003 promote left `facade_style_descriptions.description` null. Ray flagged it.
+**Affects:** three live Nara facade description rows; `docs/clusters/nara/{staging,reference}.md`; `nara-floorplans/nara-batch-004-facade-copy.sql`. Public `/clusters/nara` will show the paragraphs (images still pending Storage).
+**Breaking:** No.
+**Still open:** Upload 21 files to `media/nara/*`; payment plan; `summary`/`body`; plot sizes; pricing; publish amenities after taxonomy review.
+
 ### 2026-08-13 — Nara Batches 001–003 promoted
 **Why:** Ray authorized promote after bathrooms (Batch 002) and the 8 named legend amenities (Batch 003, Entrance / Wadi Drive dropped).
 **Affects:** live Nara: 16 `unit_types` (sum 372), 57 `plexes`, 372 `units`, 3 facade name rows, 8 draft `places`; `docs/clusters/nara/{staging,reference}.md`; `nara-floorplans/nara-batches-001-003-promotion.sql`. Public `/clusters/nara` shows the 16 unit types; amenities stay hidden until published. 21 images not yet in Storage.

@@ -206,3 +206,34 @@ Ran 2026-08-13: 16 `unit_types` + 57 `plexes` + 372 `units` + 3 facade name rows
 **Promoted:** [x]
 **Date:** 2026-08-13
 **By:** agent (Ray authorized: promote). 8 draft `places` live (`nara-community-centre` … `nara-mosque`). Entrance / Wadi Drive not inserted.
+
+---
+
+## Batch 004 — Nara facade brochure copy (2026-08-13)
+
+**Source:** `BROCHURE.pdf` pp. 11 (Aston), 13 (Palma), 15 (Charm). Files in `/Users/mehdielghissassi/Desktop/clusters/NARA/`. Re-read 2026-08-13 to confirm verbatim.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
+**Confidence:** corroborated (printed Emaar style pages)
+**Status:** promoted
+
+### Proposed reference.md diff
+
+- **`facade_style_descriptions.description`** — fills the three name-only rows from Batches 001–003. Verbatim body copy from each style page (line breaks collapsed to spaces). `/ GARDEN VIEW` and `/ ACCESS TO PARKS` sit on every style page as bullets, not part of this paragraph; not stored (no dedicated column; `unit_types.notes` only if Ray asks).
+
+  | style_name | description |
+  |---|---|
+  | Aston | Contemporary architecture and large windows provide an abundance of natural light and wonderful views of pleasant surroundings. ASTON gives you everything you could dream of in a family home. |
+  | Palma | The 3 and 4-bedroom townhouses of PALMA are modern with a stylishly minimalist design aesthetic, complemented by a large window that allows light to flood in. If you envision living the good life in a contemporary family villa, then PALMA is your dream home made a reality. |
+  | Charm | This limited collection of CHARM townhouses is certainly worthy of its name. The crisp contemporary architectural design and fresh white façades make these townhouses the epitome of charming. The modern design and surroundings of CHARM offer residents the promise of a wonderful lifestyle in the perfect setting. |
+
+### Notes
+
+- Extracted in the Batch 003 source pass and reported in chat, but not written into a staging batch — so the 001–003 promote left `description` null. This batch is that leftover.
+- Charm page 15 has a second sentence the earlier chat summary dropped (“The modern design and surroundings of CHARM…”). Stored in full from the PDF.
+- Payment plan, `summary`/`body`, and the location/valley maps are still not in a batch.
+
+### Promotion
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray asked why descriptions were null). Three live `facade_style_descriptions.description` rows updated.

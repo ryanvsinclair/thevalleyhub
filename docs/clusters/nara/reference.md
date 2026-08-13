@@ -1,8 +1,8 @@
 # Nara — Reference
 
 **Slug:** `nara`
-**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / unit depth from staging Batches 001–002 (2026-08-13); amenities from Batch 003 (2026-08-13).
-**Source:** Relocated from Doc 1 Annex C/D, then Batches 001–003 (Emaar floor-plan PNGs + `nara-units.csv` + brochure / sharp-map legend, source `a1000000-0000-4000-8000-000000000001`).
+**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Unit-type / facade / unit depth from staging Batches 001–002 (2026-08-13); amenities from Batch 003 (2026-08-13); facade copy from Batch 004 (2026-08-13).
+**Source:** Relocated from Doc 1 Annex C/D, then Batches 001–004 (Emaar floor-plan PNGs + `nara-units.csv` + brochure / sharp-map legend, source `a1000000-0000-4000-8000-000000000001`).
 
 ---
 
@@ -48,13 +48,13 @@ Style is layout-determining here (`unit_types.layout` = `{facade_style}-{label}`
 
 ## Facades
 
-| style_name | confidence |
-|---|---|
-| Aston | corroborated |
-| Palma | corroborated |
-| Charm | corroborated |
+Copy from Emaar brochure pp. 11 / 13 / 15 (Batch 004). Confidence corroborated. Promo images and floor plans are in `nara-floorplans/`; Storage copies under `media/nara/*` still need uploading before they show on `/clusters/nara`.
 
-Names only — brochure blurbs were not in a staged batch, so `facade_style_descriptions.description` is null. Promo images and floor plans are in `nara-floorplans/`; Storage copies under `media/nara/*` still need uploading before they show on `/clusters/nara`.
+| style_name | description |
+|---|---|
+| Aston | Contemporary architecture and large windows provide an abundance of natural light and wonderful views of pleasant surroundings. ASTON gives you everything you could dream of in a family home. |
+| Palma | The 3 and 4-bedroom townhouses of PALMA are modern with a stylishly minimalist design aesthetic, complemented by a large window that allows light to flood in. If you envision living the good life in a contemporary family villa, then PALMA is your dream home made a reality. |
+| Charm | This limited collection of CHARM townhouses is certainly worthy of its name. The crisp contemporary architectural design and fresh white façades make these townhouses the epitome of charming. The modern design and surroundings of CHARM offer residents the promise of a wonderful lifestyle in the perfect setting. |
 
 ## Amenities (`places`, cluster-scoped)
 
@@ -85,4 +85,4 @@ Legend pins **#9 Entrance** and **#10 Wadi Drive** are fabric/road, not `places`
 
 ## Staging
 
-See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–003 promoted 2026-08-13. Still open: Storage upload of 21 images; facade brochure copy; payment plan; `summary`/`body`; plot sizes; pricing.
+See [`staging.md`](./staging.md) for any facts pending promotion into this reference. Batches 001–004 promoted 2026-08-13. Still open: Storage upload of 21 images; payment plan; `summary`/`body`; plot sizes; pricing.
