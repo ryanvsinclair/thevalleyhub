@@ -461,6 +461,26 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-14 — Ray place enrichment pass (Training Room, Vet Town Square, mosque fix, Golden Beach closed)
+
+**Why:** Close remaining valley-wide Google ID / contact gaps; correct Masabih wrong Place ID; provisional Golden Beach closed status.
+
+**Affects:** live `places` rows for Training Room, Vet Clinic UAE Town Square, GEMS Winchester (office note, hours null), Monoprix website, Masabih Masjid (Valley Place ID + cleared synthesised hours), Golden Beach notes; `status_log` closed for Golden Beach (unverified, pending site visit). Place detail surfaces place-level operational status when present.
+
+**Breaking:** No.
+
+**Still open:** Phone-confirm Training Room weekend hours; Golden Beach drive-by to confirm closed; optional “hours unknown” notes on Golden Beach child amenity pins for Gate L2 literal 80% count.
+
+### 2026-08-14 — Compare Living cross-links (Doc 11 L-D)
+
+**Why:** Compare is editorial; depth comes from links to Living/place facts, not Google on Compare routes.
+
+**Affects:** `/compare/[slug]` — Living links on schools/amenities dimensions; auto-link seeded place names (plus JESS / Ranches Primary / Golden Beach aliases); honest-read left border; “Nearby in The Valley” strip (in-community hubs, no Golden Beach sub-pins). No new dimensions; no copy rewrites of competitor claims.
+
+**Breaking:** No.
+
+**Still open:** Ray §2 / Gate L2 data floor; optional Compare copy polish after Ray approval; Gate L5 school/salon sample after L2.
+
 ### 2026-08-14 — Living lists + WhatsOpenNow (Doc 11 L-C)
 
 **Why:** Living is the places hub; list rows needed open-now / drive / optional thumbs without live Google calls.

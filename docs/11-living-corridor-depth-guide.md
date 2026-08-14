@@ -13,15 +13,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   L-C Living lists + WhatsOpenNow polish (Gates L4/L5 code)
+LAST COMPLETED:   Ray-confirmed place enrichments (#1–6) + Golden Beach provisional closed
 SPEC ALIGNED:     Yes
-CURRENT TASK:     L-D Compare cross-links (§6); Ray §2 data-floor spot-check when ready
-NEXT UP:          Compare Living links (L-D); optional tsc/smoke; §2 hours floor deferred to Ray
-CONTEXT BLOCK:    L-D
+CURRENT TASK:     Phone-confirm Training Room weekend hours; optional Golden Beach site visit; commit L-D + this UI
+NEXT UP:          Gate L2 formal tick after amenity-pin hours-unknown notes (optional); Compare copy polish [R]
+CONTEXT BLOCK:    cleared
 BLOCKERS:         None
 OPEN QUESTIONS:   Google `sources` row deferred; public ratings = no
-ATTENTION NEEDED: §2 / Gate L2 data floor left for Ray; spot-check Living after deploy
-GATE STATUS:      Gate L0–L1 PASSED · Gate L2 DEFERRED (Ray) · Gate L3 code done (tsc local) · Gate L4 PASSED · Gate L5 code done (school/salon sample awaits L2)
+ATTENTION NEEDED: Training Room Sat–Sun 09:00–12:00 phone confirm; Golden Beach closed is provisional until drive-by
+GATE STATUS:      Gate L0–L1 PASSED · Gate L2 ~met on real businesses (48/55 gpid; amenity pins excluded) · L3–L4 · L5 partial · L6 PASSED
 ```
 
 **Rules for this block**
@@ -233,25 +233,25 @@ A step is done when its checkbox is ticked **here** and in **Appendix A**. Once 
 **Scope:** Compare is editorial community narrative — **not** a Google Places surface. Depth = better links to Living/places facts and clearer dimension presentation.
 
 ### 6.1 Cross-links **[A]**
-- [ ] On dimension `schools`, link to `/living/schools` (and specific place slugs only when the comparison text already names a seeded place)
-- [ ] On dimension `amenities` / corridor retail claims, link to relevant `/living/*` or `/places/[slug]` when those places exist and are published
-- [ ] Never invent a competitor fact to “balance” a row (Doc 3 §3.1)
+- [x] On dimension `schools`, link to `/living/schools` (and specific place slugs only when the comparison text already names a seeded place)
+- [x] On dimension `amenities` / corridor retail claims, link to relevant `/living/*` or `/places/[slug]` when those places exist and are published
+- [x] Never invent a competitor fact to “balance” a row (Doc 3 §3.1)
 
 ### 6.2 Presentation **[A]**
-- [ ] Keep dimensions: price · commute · schools · amenities · maturity
-- [ ] Improve scannability (clear Valley vs Other vs Honest read hierarchy — already present; tighten typography/spacing only if needed)
-- [ ] Optional: “Nearby in The Valley” strip of 3–5 `in_community` published places — names only + link (no Google)
+- [x] Keep dimensions: price · commute · schools · amenities · maturity
+- [x] Improve scannability (clear Valley vs Other vs Honest read hierarchy — already present; tighten typography/spacing only if needed)
+- [x] Optional: “Nearby in The Valley” strip of 3–5 `in_community` published places — names only + link (no Google)
 
 ### 6.3 Content ops **[A+R]**
-- [ ] Audit published `comparisons` rows for stale or thin copy against current Living inventory
+- [x] Audit published `comparisons` rows for stale or thin copy against current Living inventory — thin schools/amenities notes on DH2 / Tilal / Town Square / Villanova left as-is; no competitor rewrite without Ray
 - [ ] Stage factual updates via Doc 7 / appropriate staging path (communities are not per-cluster `staging.md` — use Doc 4 or a dedicated staging note if Ray prefers; default: admin edit with source/confidence)
 - [ ] Ray approves any non-trivial copy change to competitor claims **[R]**
 
 ### Gate L6 — Compare
 ```
-[ ] Compare detail pages link to Living where schools/amenities dimensions apply
-[ ] No Google API dependency on Compare routes
-[ ] No new comparison dimensions without a Doc 4 vocabulary proposal
+[x] Compare detail pages link to Living where schools/amenities dimensions apply
+[x] No Google API dependency on Compare routes
+[x] No new comparison dimensions without a Doc 4 vocabulary proposal
 ```
 
 ---
@@ -280,11 +280,11 @@ A step is done when its checkbox is ticked **here** and in **Appendix A**. Once 
 | Gate L4 | A | [x] |
 | 5.1 WhatsOpenNow | A | [x] |
 | Gate L5 | A | [~] awaits L2 sample |
-| 6.1 Compare cross-links | A | [ ] |
-| 6.2 Compare presentation | A | [ ] |
-| 6.3 Compare content audit | A+R | [ ] |
-| Gate L6 | A | [ ] |
-| Doc 6 updates per block | A | [x] L-A–L-C |
+| 6.1 Compare cross-links | A | [x] |
+| 6.2 Compare presentation | A | [x] |
+| 6.3 Compare content audit | A+R | [~] audit done; copy changes need Ray |
+| Gate L6 | A | [x] |
+| Doc 6 updates per block | A | [x] L-A–L-D |
 
 ---
 

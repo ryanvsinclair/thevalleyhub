@@ -9,6 +9,7 @@ import {
   listMediaForPlace,
   listPublishedPlaceSlugs,
 } from "@/lib/queries/places";
+import { getCurrentStatusForPlace } from "@/lib/queries/status";
 import { breadcrumbJsonLd, placeJsonLd } from "@/lib/seo/jsonld";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -37,11 +38,12 @@ export default async function PlaceDetailPage({ params }: Props) {
   const place = await getPublishedPlaceBySlug(slug);
   if (!place) notFound();
 
-  const [media, parent] = await Promise.all([
+  const [media, parent, placeStatus] = await Promise.all([
     listMediaForPlace(place.id),
     place.parent_place_id
       ? getPublishedPlaceById(place.parent_place_id)
       : Promise.resolve(null),
+    getCurrentStatusForPlace(place.id),
   ]);
 
   return (
@@ -56,7 +58,13 @@ export default async function PlaceDetailPage({ params }: Props) {
           placeJsonLd(place),
         ]}
       />
-      <PlaceDetail place={place} media={media} parent={parent} />
+      <PlaceDetail
+        place={place}
+        media={media}
+        parent={parent}
+        operationalStatus={placeStatus?.status ?? null}
+        operationalNote={placeStatus?.note ?? null}
+      />
     </>
   );
 }

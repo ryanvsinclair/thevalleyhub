@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { StatusPill } from "@/components/content/StatusPill";
 import { VerifiedBadge } from "@/components/content/VerifiedBadge";
 import { isOpenNow } from "@/lib/places/open-now";
 import {
@@ -15,6 +16,8 @@ type Props = {
   place: Place;
   media: LinkedMedia[];
   parent: ParentPlace | null;
+  operationalStatus?: string | null;
+  operationalNote?: string | null;
 };
 
 const DAY_ORDER = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
@@ -84,8 +87,15 @@ function websiteLabel(url: string) {
  * Single public template for every `/places/[slug]` page.
  * Omit sections when data is missing — never render empty frames.
  */
-export function PlaceDetail({ place, media, parent }: Props) {
-  const openNow = isOpenNow(place.hours);
+export function PlaceDetail({
+  place,
+  media,
+  parent,
+  operationalStatus = null,
+  operationalNote = null,
+}: Props) {
+  const closed = operationalStatus === "closed";
+  const openNow = !closed && isOpenNow(place.hours);
   const hasCoords = place.lat != null && place.lng != null;
   const hasContact =
     Boolean(place.address) ||
@@ -113,6 +123,9 @@ export function PlaceDetail({ place, media, parent }: Props) {
           {place.in_community ? (
             <span className="text-neutral-800">In community</span>
           ) : null}
+          {operationalStatus ? (
+            <StatusPill status={operationalStatus} />
+          ) : null}
           {openNow ? (
             <span className="text-xs font-medium tracking-wide text-emerald-800 uppercase">
               Open now
@@ -122,6 +135,11 @@ export function PlaceDetail({ place, media, parent }: Props) {
         </div>
         {place.summary ? (
           <p className="mt-4 max-w-2xl text-neutral-700">{place.summary}</p>
+        ) : null}
+        {closed && operationalNote ? (
+          <p className="mt-3 max-w-2xl text-sm text-neutral-600">
+            {operationalNote}
+          </p>
         ) : null}
       </header>
 

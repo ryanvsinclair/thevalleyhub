@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { JsonLd } from "@/components/seo/JsonLd";
+import { LIVING_INDEX_DISPLAY } from "@/lib/places/living-display";
 import {
   LIVING_CATEGORIES,
   listLivingCategoryStats,
@@ -34,10 +35,12 @@ const CATEGORY_BLURBS: Record<LivingCategory, string> = {
 };
 
 export default async function LivingIndexPage() {
-  const stats = await listLivingCategoryStats();
+  const needsStats =
+    LIVING_INDEX_DISPLAY.placeCount || LIVING_INDEX_DISPLAY.openNowCount;
+  const stats = needsStats ? await listLivingCategoryStats() : [];
   const byCategory = Object.fromEntries(
     stats.map((row) => [row.category, row]),
-  ) as Record<LivingCategory, (typeof stats)[number]>;
+  ) as Partial<Record<LivingCategory, (typeof stats)[number]>>;
 
   return (
     <div>
@@ -57,7 +60,15 @@ export default async function LivingIndexPage() {
 
       <ul className="mt-10 divide-y divide-neutral-200 border-t border-neutral-200">
         {LIVING_CATEGORIES.map((category) => {
-          const { count, openNow } = byCategory[category];
+          const row = byCategory[category];
+          const count = row?.count ?? 0;
+          const openNow = row?.openNow ?? 0;
+          const showBlurb = LIVING_INDEX_DISPLAY.blurb;
+          const showPlaceCount = LIVING_INDEX_DISPLAY.placeCount;
+          const showOpenNowCount =
+            LIVING_INDEX_DISPLAY.openNowCount && openNow > 0;
+          const showStats = showPlaceCount || showOpenNowCount;
+
           return (
             <li key={category} className="py-5">
               <Link
@@ -66,13 +77,20 @@ export default async function LivingIndexPage() {
               >
                 {CATEGORY_LABELS[category]}
               </Link>
-              <p className="mt-1 text-sm text-neutral-600">
-                {CATEGORY_BLURBS[category]}
-              </p>
-              <p className="mt-2 text-xs tracking-wide text-neutral-500 uppercase">
-                {count} {count === 1 ? "place" : "places"}
-                {openNow > 0 ? ` · ${openNow} open now` : null}
-              </p>
+              {showBlurb ? (
+                <p className="mt-1 text-sm text-neutral-600">
+                  {CATEGORY_BLURBS[category]}
+                </p>
+              ) : null}
+              {showStats ? (
+                <p className="mt-2 text-xs tracking-wide text-neutral-500 uppercase">
+                  {showPlaceCount
+                    ? `${count} ${count === 1 ? "place" : "places"}`
+                    : null}
+                  {showPlaceCount && showOpenNowCount ? " · " : null}
+                  {showOpenNowCount ? `${openNow} open now` : null}
+                </p>
+              ) : null}
             </li>
           );
         })}

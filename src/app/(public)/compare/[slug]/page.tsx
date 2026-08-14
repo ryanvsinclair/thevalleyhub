@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import {
+  ComparisonDimension,
+  NearbyInTheValley,
+} from "@/components/compare/ComparisonDimension";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
   getPublishedCommunityBySlug,
   listComparisonsForCommunity,
   listPublishedCommunitySlugs,
 } from "@/lib/queries/communities";
+import {
+  listInCommunityPlaces,
+  listPublishedPlaces,
+} from "@/lib/queries/places";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -35,7 +43,21 @@ export default async function CompareDetailPage({ params }: Props) {
   const community = await getPublishedCommunityBySlug(slug);
   if (!community) notFound();
 
-  const comparisons = await listComparisonsForCommunity(community.id);
+  const [comparisons, publishedPlaces, inCommunity] = await Promise.all([
+    listComparisonsForCommunity(community.id),
+    listPublishedPlaces(),
+    listInCommunityPlaces(),
+  ]);
+
+  const linkablePlaces = publishedPlaces.map((place) => ({
+    name: place.name,
+    slug: place.slug,
+  }));
+
+  // Prefer hub places over Golden Beach sub-pins for the strip.
+  const nearby = inCommunity
+    .filter((place) => !place.slug.startsWith("golden-beach-"))
+    .slice(0, 5);
 
   return (
     <article>
@@ -65,46 +87,17 @@ export default async function CompareDetailPage({ params }: Props) {
       ) : (
         <div className="mt-10 space-y-10">
           {comparisons.map((row) => (
-            <section key={row.id}>
-              <h2 className="text-lg font-semibold tracking-tight capitalize">
-                {row.dimension.replaceAll("_", " ")}
-              </h2>
-              <div className="mt-4 grid gap-6 text-sm sm:grid-cols-2">
-                {row.valley_advantage ? (
-                  <div>
-                    <h3 className="text-xs font-medium tracking-wide text-neutral-500 uppercase">
-                      The Valley
-                    </h3>
-                    <p className="mt-2 leading-relaxed text-neutral-800">
-                      {row.valley_advantage}
-                    </p>
-                  </div>
-                ) : null}
-                {row.other_advantage ? (
-                  <div>
-                    <h3 className="text-xs font-medium tracking-wide text-neutral-500 uppercase">
-                      {community.name}
-                    </h3>
-                    <p className="mt-2 leading-relaxed text-neutral-800">
-                      {row.other_advantage}
-                    </p>
-                  </div>
-                ) : null}
-              </div>
-              {row.honest_read ? (
-                <div className="mt-4 max-w-2xl">
-                  <h3 className="text-xs font-medium tracking-wide text-neutral-500 uppercase">
-                    Honest read
-                  </h3>
-                  <p className="mt-2 leading-relaxed text-neutral-800">
-                    {row.honest_read}
-                  </p>
-                </div>
-              ) : null}
-            </section>
+            <ComparisonDimension
+              key={row.id}
+              row={row}
+              communityName={community.name}
+              places={linkablePlaces}
+            />
           ))}
         </div>
       )}
+
+      <NearbyInTheValley places={nearby} />
     </article>
   );
 }

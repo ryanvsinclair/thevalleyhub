@@ -23,3 +23,18 @@ export async function listCurrentStatus() {
   if (error) throw error;
   return data ?? [];
 }
+
+/** Latest status_log row for a place (e.g. closed amenity). */
+export async function getCurrentStatusForPlace(placeId: string) {
+  const supabase = createAnonClient();
+  const { data, error } = await supabase
+    .from("current_status")
+    .select("*")
+    .eq("subject_type", "place")
+    .eq("subject_id", placeId)
+    .is("amenity_key", null)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data;
+}
