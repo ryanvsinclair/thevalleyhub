@@ -99,7 +99,7 @@
 
   Each: `confidence = corroborated`, `source_id` as above. Verbatim from `ELORA.pdf` pp. 23 / 24 (line breaks collapsed). Style intro on p. 22 (“two distinct architectural styles: Moon and Mysk”) corroborates names only.
 
-- **Images, 16 files in [`../../../elora-floorplans/`](../../../elora-floorplans/):** 8 floor plans (one per layout above), 2 facade exteriors (`elora-moon-facade.jpeg`, `elora-mysk-facade.jpeg`), 1 cluster map (`elora-cluster-map.jpeg`, 7355×3259 from `ELORA CLUSTER MAP.pdf`), 1 master plan (`elora-master-plan.jpeg`), 1 valley context (`elora-valley-context-map.png` from brochure p.7), 3 interior brochure stills (`elora-interior-a/b/c.jpeg`). Storage upload + `media` / `media_links` at promotion. Intermediate OCR artefacts under `elora-floorplans/_phase0_inventory.json`, `_floorplan_text.json`, `_bath_scan.json`, `_visual_check/`.
+- **Images, 16 files in [`floorplans/`](floorplans/):** 8 floor plans (one per layout above), 2 facade exteriors (`elora-moon-facade.jpeg`, `elora-mysk-facade.jpeg`), 1 cluster map (`elora-cluster-map.jpeg`, 7355×3259 from `ELORA CLUSTER MAP.pdf`), 1 master plan (`elora-master-plan.jpeg`), 1 valley context (`elora-valley-context-map.png` from brochure p.7), 3 interior brochure stills (`elora-interior-a/b/c.jpeg`). Storage upload + `media` / `media_links` at promotion. Intermediate OCR artefacts under `floorplans/_phase0_inventory.json`, `_floorplan_text.json`, `_bath_scan.json`, `_visual_check/`.
 
 ### Notes
 
@@ -190,7 +190,7 @@
 - **Factsheet vs payment PDF:** factsheet maps 4th instalment → 20% construction and 5th → 40%; the dedicated payment PDF maps 3rd → 20% and 4th → 40%, and leaves the 5th without a printed construction-% label. This batch follows **`ELORA PAYMENT.pdf`**.
 - Brochure pp. 26–29 Valley-wide destinations not used in `summary`/`body`.
 - p.3 / factsheet drive times skipped.
-- `elora-payment.png` and `elora-factsheet.png` exported under `elora-floorplans/` for provenance only (not required as public media).
+- `elora-payment.png` and `elora-factsheet.png` exported under `floorplans/` for provenance only (not required as public media).
 
 ### Promotion
 
@@ -202,7 +202,7 @@
 
 ## Batch 004 — Elora per-plot units + plexes (Doc 10 extract) (2026-08-13)
 
-**Source:** Local `/Users/mehdielghissassi/Desktop/clusters/ELORA/` — `ELORA FLOOR PLAN.pdf` (master arrays, Batch 001) + `ELORA CLUSTER MAP.pdf` (430 plot labels in raster; EasyOCR + sequential repair; style-fill orientation). Method: [`docs/10-cluster-extraction-playbook.md`](../../10-cluster-extraction-playbook.md). Intermediate artefacts in `elora-floorplans/` (`_phase1`…`_phase5`, `elora-plex-composition.csv`, `elora-plex-orientation.csv`). Read 2026-08-13.
+**Source:** Local `/Users/mehdielghissassi/Desktop/clusters/ELORA/` — `ELORA FLOOR PLAN.pdf` (master arrays, Batch 001) + `ELORA CLUSTER MAP.pdf` (430 plot labels in raster; EasyOCR + sequential repair; style-fill orientation). Method: [`docs/10-cluster-extraction-playbook.md`](../../10-cluster-extraction-playbook.md). Intermediate artefacts in `floorplans/` (`_phase1`…`_phase5`, `elora-plex-composition.csv`, `elora-plex-orientation.csv`). Read 2026-08-13.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** `unverified` for per-unit style/type/position and exact BUA (derived in `elora-units.csv`; `elora-units-detection.csv` logs orientation_margin / style_vote / array_key). Corroborated where it matches the live register + factsheet: **430** plots, facades Moon/Mysk, BUA envelope 2095–2608 sqft, bedroom split **284×3BR / 146×4BR**.
 **Status:** promoted
@@ -224,7 +224,7 @@
 
   Totals: Moon 146 · Mysk 284 = **430**. Bedroom split **284×3BR / 146×4BR** (matches factsheet).
 
-- **New `plexes` rows, `cluster_id = elora` (73 rows).** Sizes from floorplan key plans + site-plan split: **16×4 Moon (4-1) · 16×4 Mysk (4-2) · 13×6 · 28×8**. Full ranges/orientation in [`../../../elora-floorplans/elora-units.csv`](../../../elora-floorplans/elora-units.csv) (`plex_range` / `plex_size` / `street_side`).
+- **New `plexes` rows, `cluster_id = elora` (73 rows).** Sizes from floorplan key plans + site-plan split: **16×4 Moon (4-1) · 16×4 Mysk (4-2) · 13×6 · 28×8**. Full ranges/orientation in [`floorplans/elora-units.csv`](floorplans/elora-units.csv) (`plex_range` / `plex_size` / `street_side`).
 
 - **New `units` rows, `cluster_id = elora` (430 rows).** Same CSV: `unit_number` / `plot_number` (1–430 contiguous), `facade_style`, `layout`, `bua`, `th_position`. `confidence = unverified`. No mirror-pair plex types — every plot resolves from key plans + orientation (4-plex Moon vs Mysk from style-fill chrominance vote).
 

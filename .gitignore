@@ -49,8 +49,14 @@ _baseline-export/
 .venv-elora/
 
 # ephemeral Elora promote chunks (regenerable)
-elora-floorplans/_chunk_*.sql
-elora-floorplans/_chunks.json
-elora-floorplans/_units_batch_*.sql
-elora-floorplans/_units_batch_*.json
-elora-floorplans/_test_write.txt
+docs/clusters/elora/floorplans/_chunk_*.sql
+docs/clusters/elora/floorplans/_chunks.json
+docs/clusters/elora/floorplans/_units_batch_*.sql
+docs/clusters/elora/floorplans/_units_batch_*.json
+docs/clusters/elora/floorplans/_test_write.txt
+
+# ephemeral extraction scratch (not the archive)
+docs/clusters/*/floorplans/_extract/
+docs/clusters/*/floorplans/_visual_check/
+docs/clusters/*/floorplans/_map_candidates/
+docs/clusters/*/floorplans/_promote_*.sql

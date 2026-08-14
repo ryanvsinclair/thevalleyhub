@@ -12,7 +12,7 @@
 -- Run in order. Section 1 removes the 2 generic seed unit_types rows
 -- (supabase/seed/03_unit_types.sql) superseded by the 15 style-
 -- specific rows in Section 2. Sections 2-6 insert new rows.
--- Section 7 (media) requires the 22 images in eden-floorplans/ to
+-- Section 7 (media) requires the 22 images in docs/clusters/eden/floorplans/ to
 -- already be uploaded to the `media` storage bucket first.
 -- ============================================================
 
@@ -512,7 +512,7 @@ select id, 'May Bell',
 from clusters where slug = 'eden';
 
 -- ---------- 6. media + media_links: 15 floor plans + 1 cluster map + 6 style photos ----------
--- Upload eden-floorplans/*.png and *.jpg to the `media` storage bucket
+-- Upload docs/clusters/eden/floorplans/*.png and *.jpg to the `media` storage bucket
 -- under path prefix 'eden/' first (paths below assume that prefix).
 -- Floor plans link to their unit_types row (bedrooms + layout match,
 -- same join pattern as Section 4). Cluster map links to the cluster

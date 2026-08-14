@@ -88,7 +88,7 @@ This document describes what **exists**. Where the migration file and the live d
 2. `npm install` · `npm run dev` (use `env -u ADMIN_EMAIL` if empty shell var shadows).
 3. Linked Supabase project + seeds already applied remotely for production content.
 4. Install the docs guard: `git config core.hooksPath scripts` (SETUP.md "Docs guard"). Doc 3 §9 states this hook enforces Doc 1–3 ownership, but git never clones hooks, so it is inert in a fresh working copy until wired up. Found unset on 2026-08-08 — which is how an edit to Doc 2's version line reached `c9647d6`. Required **per clone**, not once per project. The guard filters on file path with no author check, so it blocks Ray too; owner edits use `DOCS_GUARD=off git commit` (Doc 4 #03). The agent never sets that variable and `--no-verify` stays forbidden.
-5. **Git LFS** (Doc 4 #17): `git lfs install` then pull — `*-floorplans/**/*.{png,jpg,jpeg,webp}` are LFS-tracked. Runtime still serves from Supabase Storage; repo copies are the source archive only.
+5. **Git LFS** (Doc 4 #17): `git lfs install` then pull — `docs/clusters/<slug>/floorplans/**/*.{png,jpg,jpeg,webp}` are LFS-tracked. Runtime still serves from Supabase Storage; repo copies are the source archive only.
 6. Apply pending migrations if behind: `0004_media_public_read_tighten` (Doc 4 #18) when not yet on the live project.
 
 ---
@@ -461,6 +461,16 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-14 — Cluster floorplan archives under `docs/clusters/<slug>/floorplans/`
+
+**Why:** Keep each cluster’s image/CSV/SQL archive beside its `staging.md` / `reference.md` instead of repo-root `*-floorplans/` folders.
+
+**Affects:** all seven `*-floorplans/` trees moved to `docs/clusters/{eden,elora,farm-gardens,lillia,nara,orania,talia}/floorplans/`; `.gitattributes` LFS paths; Docs 4/6/9/10 path notes; cluster staging/reference links. Scratch `_extract/` / `_visual_check/` / `_map_candidates/` gitignored.
+
+**Breaking:** Clones and agent prompts must use the new paths. Runtime media still Supabase Storage.
+
+**Still open:** Commit + push Lillia/Orania archive images via Git LFS (needs GitHub LFS upload quota); Autocomplete TS fix still local.
+
 ### 2026-08-14 — Doc 11 L-A start: admin Google Places Autocomplete
 
 **Why:** Doc 4 #20 APPROVED (Ray: begin the work). Block L-A ops pipeline.
@@ -477,7 +487,7 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ### 2026-08-13 — Elora Batches 001–004 promoted
 **Why:** Ray authorized promote of staged Elora layouts/facades/images (001), draft amenities (002), payment/summary/body/price (003), and Doc 10 units/plexes (004).
-**Affects:** live Elora: 8 `unit_types`, 2 facade descriptions, 13 `places` (later published same day), `price_from_aed`/`payment_plan`/`summary`/`body`, 73 `plexes`, 430 `units` (284×3BR / 146×4BR); `docs/clusters/elora/{staging,reference}.md`; `elora-floorplans/*`. Media uploaded same day: 13 Storage objects + `media`/`media_links`.
+**Affects:** live Elora: 8 `unit_types`, 2 facade descriptions, 13 `places` (later published same day), `price_from_aed`/`payment_plan`/`summary`/`body`, 73 `plexes`, 430 `units` (284×3BR / 146×4BR); `docs/clusters/elora/{staging,reference}.md`; `docs/clusters/elora/floorplans/*`. Media uploaded same day: 13 Storage objects + `media`/`media_links`.
 **Breaking:** No.
 **Still open:** plot size breakdown.
 
@@ -489,68 +499,68 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ### 2026-08-13 — Talia Batch 005 units / plexes / unit_count promoted
 **Why:** Ray authorized promote of the Doc 10 per-plot extract (staged Batch 005).
-**Affects:** live Talia: 53 `plexes`, 330 `units`, `unit_count` on 14 `unit_types` (224×3BR / 106×4BR); `docs/clusters/talia/{staging,reference}.md`; `talia-floorplans/talia-batch-005-units-promotion.sql` + `talia-units.csv`. Explicit revalidate `/clusters/talia`.
+**Affects:** live Talia: 53 `plexes`, 330 `units`, `unit_count` on 14 `unit_types` (224×3BR / 106×4BR); `docs/clusters/talia/{staging,reference}.md`; `docs/clusters/talia/floorplans/talia-batch-005-units-promotion.sql` + `talia-units.csv`. Explicit revalidate `/clusters/talia`.
 **Breaking:** No.
 **Still open:** publish Talia amenities; `single_row`; plot/pricing.
 
 ### 2026-08-13 — Talia Batches 001–003 promoted
 **Why:** Ray authorized promote of staged Talia layouts, amenities, payment/summary/body, and images.
-**Affects:** live Talia: 14 `unit_types`, 3 facade descriptions, 7 draft `places`, `payment_plan`/`summary`/`body`, 19 `media`+`media_links` under `talia/*`; `docs/clusters/talia/{staging,reference}.md`; `talia-floorplans/talia-batches-001-003-promotion.sql`. No units/plexes yet.
+**Affects:** live Talia: 14 `unit_types`, 3 facade descriptions, 7 draft `places`, `payment_plan`/`summary`/`body`, 19 `media`+`media_links` under `talia/*`; `docs/clusters/talia/{staging,reference}.md`; `docs/clusters/talia/floorplans/talia-batches-001-003-promotion.sql`. No units/plexes yet.
 **Breaking:** No.
 **Still open:** units/plexes/per-layout `unit_count` from colour map; publish Talia amenities; `single_row`; plot/pricing.
 
 ### 2026-08-13 — Golden Beach strip places seeded (from Talia map)
 **Why:** Ray asked to put the Talia-legend Golden Beach strip amenities (G–I, K–O) in as their own Valley-wide places with a note that they sit directly next to Talia.
-**Affects:** 8 draft `places` (`golden-beach` + 7 children); `docs/clusters/talia/staging.md` Batch 004; `talia-floorplans/talia-batch-004-golden-beach-places.sql`. Not Talia `cluster_id` rows; not published.
+**Affects:** 8 draft `places` (`golden-beach` + 7 children); `docs/clusters/talia/staging.md` Batch 004; `docs/clusters/talia/floorplans/talia-batch-004-golden-beach-places.sql`. Not Talia `cluster_id` rows; not published.
 **Breaking:** No.
 **Still open:** Publish when Ray wants; Town Centre / Sports Village / Kids’ Dale / Pavilion still not seeded as places.
 
 ### 2026-08-13 — Nara Batch 006 amenities published
 **Why:** Ray authorized bringing the 8 Batch 003 Nara amenities live.
-**Affects:** 8 Nara `places.state` `draft` → `published`; `docs/clusters/nara/{staging,reference}.md`; `nara-floorplans/nara-batch-006-publish-amenities.sql`. Public `/clusters/nara` On-site amenities section. `nara-mosque` also matches `/living/services`.
+**Affects:** 8 Nara `places.state` `draft` → `published`; `docs/clusters/nara/{staging,reference}.md`; `docs/clusters/nara/floorplans/nara-batch-006-publish-amenities.sql`. Public `/clusters/nara` On-site amenities section. `nara-mosque` also matches `/living/services`.
 **Breaking:** No.
 **Still open:** 3 brochure interiors (not staged); uncropped cluster maps; plot sizes; pricing. Places trigger does not revalidate `/clusters/nara`.
 
 ### 2026-08-13 — Nara Batch 005 payment / summary / body promoted
 **Why:** Ray authorized promote of the leftover brochure + payment PDF facts staged as Batch 005.
-**Affects:** live Nara `clusters.payment_plan`, `summary`, `body` (`positioning` unchanged); `docs/clusters/nara/{staging,reference}.md`; `nara-floorplans/nara-batch-005-promotion.sql`. Public `/clusters/nara` will show summary, body, and the 2021 construction schedule. Two map PNGs are in git LFS, not yet in Storage.
+**Affects:** live Nara `clusters.payment_plan`, `summary`, `body` (`positioning` unchanged); `docs/clusters/nara/{staging,reference}.md`; `docs/clusters/nara/floorplans/nara-batch-005-promotion.sql`. Public `/clusters/nara` will show summary, body, and the 2021 construction schedule. Two map PNGs are in git LFS, not yet in Storage.
 **Breaking:** No.
 **Still open:** Upload 23 files to `media/nara/*` (21 from Batch 001 + 2 maps); plot sizes; pricing; publish amenities after taxonomy review.
 
 ### 2026-08-13 — Nara Batch 004 facade copy promoted
 **Why:** Brochure pp. 11 / 13 / 15 copy was extracted in the Batch 003 source pass but never staged, so the 001–003 promote left `facade_style_descriptions.description` null. Ray flagged it.
-**Affects:** three live Nara facade description rows; `docs/clusters/nara/{staging,reference}.md`; `nara-floorplans/nara-batch-004-facade-copy.sql`. Public `/clusters/nara` will show the paragraphs (images still pending Storage).
+**Affects:** three live Nara facade description rows; `docs/clusters/nara/{staging,reference}.md`; `docs/clusters/nara/floorplans/nara-batch-004-facade-copy.sql`. Public `/clusters/nara` will show the paragraphs (images still pending Storage).
 **Breaking:** No.
 **Still open:** Upload 21 files to `media/nara/*`; payment plan; `summary`/`body`; plot sizes; pricing; publish amenities after taxonomy review.
 
 ### 2026-08-13 — Nara Batches 001–003 promoted
 **Why:** Ray authorized promote after bathrooms (Batch 002) and the 8 named legend amenities (Batch 003, Entrance / Wadi Drive dropped).
-**Affects:** live Nara: 16 `unit_types` (sum 372), 57 `plexes`, 372 `units`, 3 facade name rows, 8 draft `places`; `docs/clusters/nara/{staging,reference}.md`; `nara-floorplans/nara-batches-001-003-promotion.sql`. Public `/clusters/nara` shows the 16 unit types; amenities stay hidden until published. 21 images not yet in Storage.
+**Affects:** live Nara: 16 `unit_types` (sum 372), 57 `plexes`, 372 `units`, 3 facade name rows, 8 draft `places`; `docs/clusters/nara/{staging,reference}.md`; `docs/clusters/nara/floorplans/nara-batches-001-003-promotion.sql`. Public `/clusters/nara` shows the 16 unit types; amenities stay hidden until published. 21 images not yet in Storage.
 **Breaking:** No.
 **Still open:** Upload 21 files to `media/nara/*` then run promotion SQL §7 (`media` + `media_links`); facade brochure copy; payment plan; `summary`/`body`; plot sizes; pricing; publish amenities after taxonomy review.
 
 ### 2026-08-13 — Align remediations + Doc 9 + Nara staging onto one branch
 **Why:** Unblock the next cluster deep-dives: land approved #13–#19 with leftover review fixes, merge Doc 9 (PDF extraction guide), and restage the local Nara intake under LFS + Doc 7 instead of merging fat git blobs.
-**Affects:** `docs/schema-current.sql` (`plexes` added to GRANT, matching live `0003`); `scripts/` Git LFS hooks (`pre-push`, `post-checkout`, `post-commit`, `post-merge`) so `core.hooksPath=scripts` actually runs LFS; `src/lib/admin/actions.ts` (`updateCluster` revalidates `/clusters/[slug]`); README Doc 8/9 rows; `docs/09-cluster-pdf-extraction-guide.md`; `nara-floorplans/` as LFS pointers + `docs/clusters/nara/staging.md` Batch 001 (staged, not promoted).
+**Affects:** `docs/schema-current.sql` (`plexes` added to GRANT, matching live `0003`); `scripts/` Git LFS hooks (`pre-push`, `post-checkout`, `post-commit`, `post-merge`) so `core.hooksPath=scripts` actually runs LFS; `src/lib/admin/actions.ts` (`updateCluster` revalidates `/clusters/[slug]`); README Doc 8/9 rows; `docs/09-cluster-pdf-extraction-guide.md`; `docs/clusters/nara/floorplans/` as LFS pointers + `docs/clusters/nara/staging.md` Batch 001 (staged, not promoted).
 **Breaking:** Clones need `git lfs install` (or these hooks via `core.hooksPath=scripts`). Nara is **not** live — no `reference.md` edit, no promotion SQL, no Storage upload.
 **Still open:** Apply `0004` live `[R]`; Ray review of Nara Batch 001 before any promote; bathrooms still missing from admin/public unit-type UI; `notify_site_revalidate` still live-only (not in migrations).
 
 ### 2026-08-12 — Doc 4 #13–#19 implemented (codebase-review remediation)
-**Why:** Ray approved the full remediation bundle. Landed: middleware redirect map cache (120s); public `revalidate = 3600`; `next/image` + Storage `remotePatterns`; `docs/0001_init.sql` → `docs/schema-current.sql`; Git LFS forward-only for `*-floorplans` images (no history rewrite); migration `0004_media_public_read_tighten`; GitHub Actions CI (`tsc` + eslint); `.gitignore` env hardening from Phase 1.
+**Why:** Ray approved the full remediation bundle. Landed: middleware redirect map cache (120s); public `revalidate = 3600`; `next/image` + Storage `remotePatterns`; `docs/0001_init.sql` → `docs/schema-current.sql`; Git LFS forward-only for `docs/clusters/<slug>/floorplans` images (no history rewrite); migration `0004_media_public_read_tighten`; GitHub Actions CI (`tsc` + eslint); `.gitignore` env hardening from Phase 1.
 **Affects:** `src/middleware.ts`; `src/app/(public)/layout.tsx`; `src/app/(public)/clusters/[slug]/page.tsx`; `next.config.ts`; `docs/schema-current.sql`; `supabase/migrations/0004_*.sql`; `.gitattributes` + LFS pointers for floorplan images; `.github/workflows/ci.yml`; Doc 2 status; Doc 4 decisions; README.
 **Breaking:** Clones need `git lfs install` / LFS-aware pull for floorplan binaries. Migration `0004` must be applied live before anon media listing is restricted — until then live DB still uses `using (true)`.
 **Still open:** Apply `0004` to live Supabase `[R]`; confirm `notify_site_revalidate` URL/secret `[R]`; wire docs guard `hooksPath` per clone `[R]`; Farm Gardens draft amenities; SETUP §7 launch.
 **Second-review fixes (same day):** middleware no longer caches a failed load (serves last good map, logs, `.limit(2000)`); `images.remotePatterns` dropped the `*.supabase.co` wildcard that made `/_next/image` an open proxy and now fails fast if `NEXT_PUBLIC_SUPABASE_URL` is unset; `MediaFigure` takes per-call-site `sizes`, uses `fill` + `quality={90}`, and marks the first Plans image `priority`; migration `0004` is re-runnable (`drop policy if exists` on the staff policies) and mirrors `pub_posts`' `published_at` clause; `docs/schema-current.sql` header retitled; `.gitattributes` de-duplicated; CI pins Node via `.nvmrc`; `package-lock.json` restored from `main` after an npm 10 downgrade stripped 42 `libc` fields; Doc 2 §2 prose restored to its original wording with only the filename changed.
 
 ### 2026-08-12 — Codebase-review remediation Phase 0–2 (no src/ yet)
-**Why:** External review findings triaged under Doc 3 §11 / Doc 4. Phase 0 verified: `scripts/pre-commit` present and executable; this clone's `core.hooksPath` points at Cursor agent-hooks (docs guard inert until `git config core.hooksPath scripts`); `*-floorplans/` ~37MB on disk / pack ~35MB (largest blob ~5MB site plan); Supabase MCP `needsAuth` so live `notify_site_revalidate` check is `[R]`. Phase 1: `.gitignore` now ignores `.env.production` / `.env.development`. Phase 2: Doc 4 #13–#19 written then APPROVED same day.
+**Why:** External review findings triaged under Doc 3 §11 / Doc 4. Phase 0 verified: `scripts/pre-commit` present and executable; this clone's `core.hooksPath` points at Cursor agent-hooks (docs guard inert until `git config core.hooksPath scripts`); `docs/clusters/<slug>/floorplans/` ~37MB on disk / pack ~35MB (largest blob ~5MB site plan); Supabase MCP `needsAuth` so live `notify_site_revalidate` check is `[R]`. Phase 1: `.gitignore` now ignores `.env.production` / `.env.development`. Phase 2: Doc 4 #13–#19 written then APPROVED same day.
 **Affects:** `.gitignore`; `docs/04-proposals.md`; Doc 2 status block; this changelog.
 **Breaking:** No.
 **Still open:** Superseded by implementation entry above.
 
 ### 2026-08-10 — Eden Batch 003 amenities promoted
 **Why:** Ray authorized go-live for Eden cluster amenities from brochure page 15 (peach Eden boundary only).
-**Affects:** 4 published `places` (`eden-community-centre`, `eden-central-gardens`, `eden-food-trucks`, `eden-kiosks`); `docs/clusters/eden/{staging,reference}.md`; `eden-floorplans/eden-batch-003-amenities.sql`. Public `/clusters/eden` amenities section via existing Doc 8 published-cluster-places query.
+**Affects:** 4 published `places` (`eden-community-centre`, `eden-central-gardens`, `eden-food-trucks`, `eden-kiosks`); `docs/clusters/eden/{staging,reference}.md`; `docs/clusters/eden/floorplans/eden-batch-003-amenities.sql`. Public `/clusters/eden` amenities section via existing Doc 8 published-cluster-places query.
 **Breaking:** No.
 **Still open:** Eden payments/plot/pricing; Community Centre interior breakdown; Pavilion Valley-wide place row; 19 Farm Gardens draft amenities publish review; units/map app surfaces.
 
@@ -564,7 +574,7 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 **Why:** Extracting Eden's 15 floor-plan layouts (3 facade styles × 3-/4-bed, each layout-determining unlike Farm Gardens' cosmetic-only Horizon/Earth) required deriving all 362 physical units' style, bedroom type, exact layout, and exact per-unit floor area from the site plan and floor-plan PDFs — OCR'd plot positions, whole-plex and per-TH-position color/geometry cross-checks against the developer's own key-plan diagrams, and street-side orientation read directly off each of the 43 physical plex rows. That exposed the same class of schema gap Farm Gardens did: no way to represent a physical plex/building row, no per-unit floor-area column, no bathroom count anywhere, and no way for `unit_types` to carry a style discriminator without duplicating `units.facade_style`'s name and meaning. Each addressed by Doc 4 #12 (`plexes` table; `units.bua`/`plex_id`/`th_position`; `unit_types.bathrooms`; `unit_types.layout` repurposed as a populated-data convention, no schema change).
 
-**Affects:** `supabase/migrations/0003_eden_plexes_units.sql` (designed here; applied in the changelog entry above); `docs/0001_init.sql`; `docs/clusters/eden/staging.md` Batch 002; `eden-floorplans/*`.
+**Affects:** `supabase/migrations/0003_eden_plexes_units.sql` (designed here; applied in the changelog entry above); `docs/0001_init.sql`; `docs/clusters/eden/staging.md` Batch 002; `docs/clusters/eden/floorplans/*`.
 
 **Breaking:** No at design time — see apply/promote entry above for the live push.
 

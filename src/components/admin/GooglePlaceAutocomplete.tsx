@@ -14,15 +14,7 @@ type Props = {
 };
 
 function setNamedInput(form: HTMLFormElement, name: string, value: string) {
-  const el = form.elements.namedItem(name);
-  if (!el) return;
-  if (el instanceof RadioNodeList) {
-    const first = el[0];
-    if (first instanceof HTMLInputElement || first instanceof HTMLTextAreaElement) {
-      first.value = value;
-    }
-    return;
-  }
+  const el = form.querySelector(`[name="${CSS.escape(name)}"]`);
   if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
     el.value = value;
     el.dispatchEvent(new Event("input", { bubbles: true }));

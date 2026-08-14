@@ -106,7 +106,7 @@
 
   Each: `confidence = corroborated`, `source_id` as above. Verbatim from `TALIA.pdf` pp. 15 / 16 / 17 (line breaks collapsed). “Garden View” / “Pocket Parks” sit as bullets on every style page — not stored (no dedicated column; `unit_types.notes` only if Ray asks).
 
-- **Images, 18 files in [`../../../talia-floorplans/`](../../../talia-floorplans/):** 14 floor plans (one per layout above), 3 facade exteriors (`talia-pharo-facade.jpg`, `talia-cyrus-facade.jpg`, `talia-elio-facade.jpg`), 1 cluster map (`talia-cluster-map.jpg`). Plus optional `talia-valley-context-map.png` (brochure p.7) for later cluster media. Storage upload + `media` / `media_links` at promotion.
+- **Images, 18 files in [`floorplans/`](floorplans/):** 14 floor plans (one per layout above), 3 facade exteriors (`talia-pharo-facade.jpg`, `talia-cyrus-facade.jpg`, `talia-elio-facade.jpg`), 1 cluster map (`talia-cluster-map.jpg`). Plus optional `talia-valley-context-map.png` (brochure p.7) for later cluster media. Storage upload + `media` / `media_links` at promotion.
 
 ### Notes
 
@@ -121,7 +121,7 @@
 
 ### Promotion
 
-Ran 2026-08-13: 14 `unit_types` + 3 facade descriptions + 19 Storage files + `media`/`media_links`. No units/plexes. SQL: `talia-floorplans/talia-batches-001-003-promotion.sql`.
+Ran 2026-08-13: 14 `unit_types` + 3 facade descriptions + 19 Storage files + `media`/`media_links`. No units/plexes. SQL: `floorplans/talia-batches-001-003-promotion.sql`.
 
 **Promoted:** [x]
 **Date:** 2026-08-13
@@ -195,7 +195,7 @@ Ran 2026-08-13: 7 draft Talia `places` inserted with Batches 001–003 promote.
 
 - **`clusters.positioning`:** leave unchanged (brochure `summary`/`body` sit beside it; Doc 9).
 
-- **Image:** `talia-valley-context-map.png` already exported under `talia-floorplans/` (brochure p.7) for later cluster `media`.
+- **Image:** `talia-valley-context-map.png` already exported under `floorplans/` (brochure p.7) for later cluster `media`.
 
 ### Notes
 
@@ -250,7 +250,7 @@ Ran 2026-08-13: `payment_plan`, `summary`, and `body` written on live Talia `clu
 
 ### Promotion
 
-Ran 2026-08-13: 8 draft Valley-wide `places` inserted. SQL: `talia-floorplans/talia-batch-004-golden-beach-places.sql`.
+Ran 2026-08-13: 8 draft Valley-wide `places` inserted. SQL: `floorplans/talia-batch-004-golden-beach-places.sql`.
 
 **Promoted:** [x]
 **Date:** 2026-08-13
@@ -260,7 +260,7 @@ Ran 2026-08-13: 8 draft Valley-wide `places` inserted. SQL: `talia-floorplans/ta
 
 ## Batch 005 — Talia per-plot units + plexes (Doc 10 extract) (2026-08-13)
 
-**Source:** Local `/Users/mehdielghissassi/Desktop/clusters/TALIA/` — `TALIA FLOOR PLAN.pdf` (master arrays, Batch 001) + `TALIA CLUSTER MAP.pdf` (330 plot labels, style-fill orientation). Method: [`docs/10-cluster-extraction-playbook.md`](../../10-cluster-extraction-playbook.md). Intermediate artefacts in `talia-floorplans/` (`_phase1`…`_phase5`, `talia-plex-composition.csv`, `talia-plex-orientation.csv`). Read 2026-08-13.
+**Source:** Local `/Users/mehdielghissassi/Desktop/clusters/TALIA/` — `TALIA FLOOR PLAN.pdf` (master arrays, Batch 001) + `TALIA CLUSTER MAP.pdf` (330 plot labels, style-fill orientation). Method: [`docs/10-cluster-extraction-playbook.md`](../../10-cluster-extraction-playbook.md). Intermediate artefacts in `floorplans/` (`_phase1`…`_phase5`, `talia-plex-composition.csv`, `talia-plex-orientation.csv`). Read 2026-08-13.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** `unverified` for per-unit style/type/position and exact BUA (derived in `talia-units.csv`; `talia-units-detection.csv` logs orientation_margin / style_source=`key_plan`). Corroborated where it matches the live register: **330** plots, facades Pharo/Cyrus/Elio, BUA envelope 1862–2248 sqft. No published 3BR/4BR marketing split in the brochure to cross-check (only “3 & 4-Bedroom Townhouses”).
 **Status:** promoted
@@ -288,7 +288,7 @@ Ran 2026-08-13: 8 draft Valley-wide `places` inserted. SQL: `talia-floorplans/ta
 
   Totals: Cyrus 72 · Elio 102 · Pharo 156 = **330**. Bedroom split **224×3BR / 106×4BR**.
 
-- **New `plexes` rows, `cluster_id = talia` (53 rows).** Sizes from floorplan key plans only: **18×4 · 20×6 · 6×8 · 9×10**. Full ranges/orientation in [`../../../talia-floorplans/talia-units.csv`](../../../talia-floorplans/talia-units.csv) (`plex_range` / `plex_size` / `street_side`).
+- **New `plexes` rows, `cluster_id = talia` (53 rows).** Sizes from floorplan key plans only: **18×4 · 20×6 · 6×8 · 9×10**. Full ranges/orientation in [`floorplans/talia-units.csv`](floorplans/talia-units.csv) (`plex_range` / `plex_size` / `street_side`).
 
 - **New `units` rows, `cluster_id = talia` (330 rows).** Same CSV: `unit_number` / `plot_number` (1–330 contiguous), `facade_style`, `layout`, `bua`, `th_position`. `confidence = unverified`. No mirror-pair plex types on Talia — every plot resolves from key plans + orientation (no per-unit colour classifier needed).
 
@@ -301,7 +301,7 @@ Ran 2026-08-13: 8 draft Valley-wide `places` inserted. SQL: `talia-floorplans/ta
 
 ### Promotion
 
-Ran 2026-08-13: `unit_count` backfilled on 14 `unit_types`; 53 `plexes` + 330 `units` inserted. Sanity: 224×3BR / 106×4BR. SQL: `talia-floorplans/talia-batch-005-units-promotion.sql`. Explicit revalidate of `/clusters/talia` (units/plexes have no revalidate trigger).
+Ran 2026-08-13: `unit_count` backfilled on 14 `unit_types`; 53 `plexes` + 330 `units` inserted. Sanity: 224×3BR / 106×4BR. SQL: `floorplans/talia-batch-005-units-promotion.sql`. Explicit revalidate of `/clusters/talia` (units/plexes have no revalidate trigger).
 
 **Promoted:** [x]
 **Date:** 2026-08-13

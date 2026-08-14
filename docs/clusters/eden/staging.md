@@ -126,9 +126,9 @@ Eden's site plan (`EDEN FLOOR PLAN.pdf` pages 2/3/10/16 — one all-3-styles mas
 
   Totals: Spruce 190 (42×4BR, 148×3BR), Iris 126 (32×4BR, 94×3BR), May Bell 46 (12×4BR, 34×3BR) = 362. `maids_room = true` for all 15 rows (every layout's room list includes one). `ground_floor_bedroom` and `private_pool` not yet checked against the floor-plan room layouts — left null, not assumed false.
 
-- **New `plexes` rows, `cluster_id = eden` (43 rows)** — *depends on Doc 4 #12*. Full dataset in [`../../../eden-floorplans/eden-units.csv`](../../../eden-floorplans/eden-units.csv) (`plex_range`/`plex_size`/`street_side` columns, one row per unit — the promotion SQL dedupes to the 43 distinct plexes). Sizes: 21× 8-plex, 11× 10-plex, 6× 9-plex, 5× 6-plex.
+- **New `plexes` rows, `cluster_id = eden` (43 rows)** — *depends on Doc 4 #12*. Full dataset in [`floorplans/eden-units.csv`](floorplans/eden-units.csv) (`plex_range`/`plex_size`/`street_side` columns, one row per unit — the promotion SQL dedupes to the 43 distinct plexes). Sizes: 21× 8-plex, 11× 10-plex, 6× 9-plex, 5× 6-plex.
 
-- **New `units` rows, `cluster_id = eden` (362 rows)** — *depends on Doc 4 #12 (`units.bua`/`plex_id`/`th_position`)*. Full dataset in [`../../../eden-floorplans/eden-units.csv`](../../../eden-floorplans/eden-units.csv). Per row: `unit_number`/`plot_number` = printed plot number (OCR'd, reliable), `facade_style` = spruce/iris/may_bell, `bua` = exact per-TH-slot sqft, `plex_id`/`th_position` = derived per the method above. `confidence = unverified` for the whole row, same reasoning as Farm Gardens' units batch — reliably read plot numbers, but visually/geometrically classified style, type, and position, not independently field-verified.
+- **New `units` rows, `cluster_id = eden` (362 rows)** — *depends on Doc 4 #12 (`units.bua`/`plex_id`/`th_position`)*. Full dataset in [`floorplans/eden-units.csv`](floorplans/eden-units.csv). Per row: `unit_number`/`plot_number` = printed plot number (OCR'd, reliable), `facade_style` = spruce/iris/may_bell, `bua` = exact per-TH-slot sqft, `plex_id`/`th_position` = derived per the method above. `confidence = unverified` for the whole row, same reasoning as Farm Gardens' units batch — reliably read plot numbers, but visually/geometrically classified style, type, and position, not independently field-verified.
 
 - **New `facade_style_descriptions` rows, `cluster_id = eden` (3 rows):**
 
@@ -140,7 +140,7 @@ Eden's site plan (`EDEN FLOOR PLAN.pdf` pages 2/3/10/16 — one all-3-styles mas
 
   All three: `confidence = corroborated`, `source_id = a1000000-0000-4000-8000-000000000001`.
 
-- **Images, 22 files in `eden-floorplans/`** — 15 floor plans (one per `unit_types` row, ground + first floor combined, cropped clean of area table/key plan/legal boilerplate — spot-checked against a 3BR page, a 4BR page, and a page with corrupted text extraction, no cutoff in any), 1 cluster map (`eden-cluster-map.jpg`, all-3-styles site plan with legend), 6 style promo photos (facade + interior per style, from `EDEN .pdf` pages 17–22). All linked via the existing `media_links` mechanism — floor plans and cluster map to their `unit_types`/cluster subject, promo photos to their `facade_style_descriptions` row — no new mechanism needed (Doc 4 #08 already covers both subject types).
+- **Images, 22 files in `floorplans/`** — 15 floor plans (one per `unit_types` row, ground + first floor combined, cropped clean of area table/key plan/legal boilerplate — spot-checked against a 3BR page, a 4BR page, and a page with corrupted text extraction, no cutoff in any), 1 cluster map (`eden-cluster-map.jpg`, all-3-styles site plan with legend), 6 style promo photos (facade + interior per style, from `EDEN .pdf` pages 17–22). All linked via the existing `media_links` mechanism — floor plans and cluster map to their `unit_types`/cluster subject, promo photos to their `facade_style_descriptions` row — no new mechanism needed (Doc 4 #08 already covers both subject types).
 
 ### Notes
 
@@ -158,7 +158,7 @@ Eden's site plan (`EDEN FLOOR PLAN.pdf` pages 2/3/10/16 — one all-3-styles mas
 
 ## Batch 003 — Eden cluster amenities from site-plan legend (2026-08-10)
 
-**Source:** `EDEN .pdf` page 15 (combined Eden + Pavilion site-plan legend); cross-checked against local `eden-floorplans/eden-cluster-map.jpg`. Retrieval via brochure text extract 2026-08-10.
+**Source:** `EDEN .pdf` page 15 (combined Eden + Pavilion site-plan legend); cross-checked against local `floorplans/eden-cluster-map.jpg`. Retrieval via brochure text extract 2026-08-10.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar PDF)
 **Confidence:** corroborated
 **Status:** promoted
@@ -189,13 +189,13 @@ Eden's site plan (`EDEN FLOOR PLAN.pdf` pages 2/3/10/16 — one all-3-styles mas
 
 **Promoted:** [x]
 **Date:** 2026-08-10
-**By:** agent (Ray authorized: finalize amenities go-live). Promotion SQL `eden-floorplans/eden-batch-003-amenities.sql`; `reference.md` + Doc 6 updated.
+**By:** agent (Ray authorized: finalize amenities go-live). Promotion SQL `floorplans/eden-batch-003-amenities.sql`; `reference.md` + Doc 6 updated.
 
 ---
 
 ## Batch 004 — Ground-floor bedroom from floor plans (2026-08-13)
 
-**Source:** Live Eden floor-plan images in `eden-floorplans/` (15 layouts) — visual read of ground-floor room labels.
+**Source:** Live Eden floor-plan images in `floorplans/` (15 layouts) — visual read of ground-floor room labels.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** corroborated
 **Status:** promoted

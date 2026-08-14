@@ -1,6 +1,7 @@
 # Git LFS — cluster floorplan / brochure image archives (Doc 4 #17).
 # Forward-only: do not rewrite history. Runtime media is served from Supabase Storage.
-*-floorplans/**/*.png filter=lfs diff=lfs merge=lfs -text
-*-floorplans/**/*.jpg filter=lfs diff=lfs merge=lfs -text
-*-floorplans/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
-*-floorplans/**/*.webp filter=lfs diff=lfs merge=lfs -text
+# Paths live under docs/clusters/<slug>/floorplans/ (beside staging.md / reference.md).
+docs/clusters/*/floorplans/**/*.png filter=lfs diff=lfs merge=lfs -text
+docs/clusters/*/floorplans/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+docs/clusters/*/floorplans/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+docs/clusters/*/floorplans/**/*.webp filter=lfs diff=lfs merge=lfs -text

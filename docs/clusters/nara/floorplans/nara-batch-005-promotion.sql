@@ -1,6 +1,6 @@
 -- Nara Batch 005 promotion. Ray authorized 2026-08-13.
 -- Does not change clusters.positioning.
--- Maps: files are in nara-floorplans/; Storage upload + media/media_links
+-- Maps: files are in docs/clusters/nara/floorplans/; Storage upload + media/media_links
 -- still pending (no service-role key in the promote environment).
 
 update clusters

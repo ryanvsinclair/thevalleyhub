@@ -100,7 +100,7 @@
   Both: `confidence = corroborated`, `source_id = a1000000-0000-4000-8000-000000000001`.
 - **New `units` rows, `cluster_id = farm-gardens` (146 rows):** — *depends on Doc 4 #06 (`units` table), not yet migrated onto the live schema*
 
-  Full dataset (plot number, facade style, unit type) staged in `farm-gardens-floorplans/units_style_type.csv`. Per row: `unit_number`/`plot_number` = the printed plot number (read from the PDF text layer, reliable), `unit_type_id` → the farm-gardens 4BR or 5BR `unit_types` row (79 / 67 split, exact match to the factsheet), `facade_style` = Horizon or Earth (classified via mode roof-color against the legend swatches, validated with wide margins — min 69.9 — across all 146, with zero ambiguous cases). `lat`/`lng` left null pending future geocoding. `confidence = unverified` for the whole row — `unit_number`/`plot_number` are reliably read as printed text, but `unit_type_id` and `facade_style` are visually classified from a marketing render, not independently sourced, so the row takes the more conservative tier. Three borderline cases (plots 45, 50, 92) were individually confirmed by Ray against the source map and match the classifier exactly.
+  Full dataset (plot number, facade style, unit type) staged in `floorplans/units_style_type.csv`. Per row: `unit_number`/`plot_number` = the printed plot number (read from the PDF text layer, reliable), `unit_type_id` → the farm-gardens 4BR or 5BR `unit_types` row (79 / 67 split, exact match to the factsheet), `facade_style` = Horizon or Earth (classified via mode roof-color against the legend swatches, validated with wide margins — min 69.9 — across all 146, with zero ambiguous cases). `lat`/`lng` left null pending future geocoding. `confidence = unverified` for the whole row — `unit_number`/`plot_number` are reliably read as printed text, but `unit_type_id` and `facade_style` are visually classified from a marketing render, not independently sourced, so the row takes the more conservative tier. Three borderline cases (plots 45, 50, 92) were individually confirmed by Ray against the source map and match the classifier exactly.
 - **`summary`:** `"Farm Gardens is the original Valley's standalone villa cluster — 146 four- and five-bedroom homes on 8,000–10,000 sq ft plots, built around a working farm-to-table lifestyle with its own hydroponics greenhouse and community farming plots."`
 - **`body`:**
   > Farm Gardens sits at the top of the original Valley masterplan, on the Dubai–Al Ain Road. It's a 146-home, gated standalone-villa community built around a farm-style concept: residents can grow and harvest their own food in community garden plots, supported by full-time onsite farmers, a hydroponics greenhouse, and community farming allotments.
@@ -118,7 +118,7 @@
 - Drive-time distances from the factsheet intentionally left out per Ray's instruction.
 - `positioning` intentionally left unchanged per Ray's instruction.
 - 19 amenity `places` rows are **`state = draft`** until Ray reviews taxonomy and publishes them.
-- Local PNG copies remain in `farm-gardens-floorplans/`; canonical files are in the `media` storage bucket.
+- Local PNG copies remain in `floorplans/`; canonical files are in the `media` storage bucket.
 
 ### Promotion
 

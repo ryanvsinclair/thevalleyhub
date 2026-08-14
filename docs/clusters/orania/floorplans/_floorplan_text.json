@@ -1,0 +1,579 @@
+[
+  {
+    "page": 1,
+    "spaced_headers": [
+      "F L O O R  P L A N S"
+    ],
+    "bedroom_label": null,
+    "occurrences": [],
+    "bath_labels": 0,
+    "pwdr": 0,
+    "maid": false,
+    "store": false,
+    "gf_bed": false,
+    "mirrored": false,
+    "text": "F L O O R P L A N S"
+  },
+  {
+    "page": 2,
+    "spaced_headers": [
+      "R\nS\nO\nL\nI\nD\nK",
+      "M\nB O L D"
+    ],
+    "bedroom_label": [
+      "3",
+      "A"
+    ],
+    "occurrences": [
+      [
+        "6",
+        "2",
+        "1959.5"
+      ],
+      [
+        "6",
+        "4",
+        "1959.8"
+      ],
+      [
+        "10",
+        "2",
+        "1959.5"
+      ],
+      [
+        "10",
+        "6",
+        "1992.4"
+      ]
+    ],
+    "bath_labels": 3,
+    "pwdr": 1,
+    "maid": false,
+    "store": true,
+    "gf_bed": false,
+    "mirrored": false,
+    "text": "FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR S O L I D KEY PLAN STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 02 TH 02 TH 03 TH 03 TH 04 TH 04 TH 05 TH 05 TH 06 TH 06 TH 07 TH 08 6 PLEX 10 PLEX 8 PLEX TH 01 TH 02 TH 03 TH 04 TH 05 TH 06 TH 07 TH 08 TH 09 TH 10 FIRST FLOOR UNIT TOTAL AREA 3 BEDROOM I A 6 PLEX - TH 02 1959.5 SQFT 182.04 SQM 6 PLEX - TH 04 1959.8 SQFT 182.07 SQM 10 PLEX - TH 02 1959.5 SQFT 182.04 SQM 10 PLEX - TH 06 1992.4 SQFT MAID\u2019S ROOM 1.9X2.9M LIVING ROOM 4.3X3.3M TERRACE DINING ROOM 3.0X3.3M KITCHEN 5.1X2.2M STORE 1.1X1.2M BATH 1.2X1.9M PWDR. RM 1.5X1.7M MASTER BEDROOM 4.0X3.1M MASTER BATH 1.9X2.7M BEDROOM 2 3.2X3.1M BEDROOM 1 3.2X3.2M BALCONY 2.8X1.6M LAU. 0.7X2.2M BATH 2.8X3.0M PUMP ROOM WM GAS ELEC BIN BIN 185.10 SQM B O L D"
+  },
+  {
+    "page": 3,
+    "spaced_headers": [
+      "R\nS\nO\nL\nI\nD\nK",
+      "M\nB O L D"
+    ],
+    "bedroom_label": [
+      "3",
+      "B"
+    ],
+    "occurrences": [
+      [
+        "6",
+        "3",
+        "1959.8"
+      ],
+      [
+        "6",
+        "5",
+        "1959.5"
+      ],
+      [
+        "10",
+        "3",
+        "1959.7"
+      ],
+      [
+        "10",
+        "7",
+        "1959.0"
+      ]
+    ],
+    "bath_labels": 3,
+    "pwdr": 1,
+    "maid": false,
+    "store": true,
+    "gf_bed": false,
+    "mirrored": true,
+    "text": "UNIT TOTAL AREA 3 BEDROOM I B 6 PLEX - TH 03 1959.8 SQFT 182.07 SQM 6 PLEX - TH 05 1959.5 SQFT 182.04 SQM 10 PLEX - TH 03 1959.7 SQFT 182.06 SQM 10 PLEX - TH 07 1959.0 SQFT 182.00 SQM MIRRORED FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR S O L I D KEY PLAN STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 02 TH 02 TH 03 TH 03 TH 04 TH 04 TH 05 TH 05 TH 06 TH 06 TH 07 TH 08 6 PLEX 10 PLEX 8 PLEX TH 01 TH 02 TH 03 TH 04 TH 05 TH 06 TH 07 TH 08 TH 09 TH 10 FIRST FLOOR MAID\u2019S ROOM 1.9X2.9M LIVING ROOM 4.3X3.3M TERRACE DINING ROOM 3.0X3.3M KITCHEN 5.1X2.2M STORE 1.1X1.2M BATH 1.2X1.9M PWDR. RM 1.5X1.7M PUMP ROOM WM GAS ELEC BIN BIN MASTER BEDROOM 4.0X3.1M MASTER BATH 1.9X2.7M BEDROOM 2 3.2X3.1M BEDROOM 1 3.2X3.2M BALCONY 2.8X1.6M LAU. 0.7X2.2M BATH 2.8X3.0M B O L D"
+  },
+  {
+    "page": 4,
+    "spaced_headers": [
+      "R\nS\nO\nL\nI\nD\nK",
+      "S\nB O L D"
+    ],
+    "bedroom_label": [
+      "3",
+      "C"
+    ],
+    "occurrences": [
+      [
+        "8",
+        "2",
+        "1899.3"
+      ],
+      [
+        "8",
+        "4",
+        "1898.2"
+      ],
+      [
+        "8",
+        "6",
+        "1898.2"
+      ],
+      [
+        "10",
+        "4",
+        "1896.0"
+      ],
+      [
+        "10",
+        "8",
+        "1898.3"
+      ]
+    ],
+    "bath_labels": 3,
+    "pwdr": 1,
+    "maid": false,
+    "store": false,
+    "gf_bed": false,
+    "mirrored": false,
+    "text": "MASTER BEDROOM 4.0X3.2M MASTER BATH 2.8X1.7M BEDROOM 2 3.2X3.2M BEDROOM 1 3.2X3.1M BALCONY 2.8X1.6M BATH 2.0X2.4M TERRACE MAID\u2019S ROOM 2.2X2.6M BATH 2.1X1.5 PWDR. RM 1.1X1.9M LIVING ROOM 4.3X4.0M DINING ROOM 3.0X4.0M KITCHEN 2.2X3.5M LAU. 1.1 X 0.8 PUMP ROOM FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR S O L I D KEY PLAN STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 02 TH 02 TH 03 TH 03 TH 04 TH 04 TH 05 TH 05 TH 06 TH 06 TH 07 TH 08 6 PLEX 10 PLEX 8 PLEX TH 01 TH 02 TH 03 TH 04 TH 05 TH 06 TH 07 TH 08 TH 09 TH 10 UNIT TOTAL AREA 3 BEDROOM I C 8 PLEX - TH 02 1899.3 SQFT 176.45 SQM 8 PLEX - TH 04 1898.2 SQFT 176.35 SQM 8 PLEX - TH 06 1898.2 SQFT 176.35 SQM 10 PLEX - TH 04 1896.0 SQFT 176.14 SQM 10 PLEX - TH 08 1898.3 SQFT 176.36 SQM BIN BIN WM ELEC GAS B O L D"
+  },
+  {
+    "page": 5,
+    "spaced_headers": [
+      "R\nS\nO\nL\nI\nD\nK",
+      "S\nB O L D"
+    ],
+    "bedroom_label": [
+      "3",
+      "D"
+    ],
+    "occurrences": [
+      [
+        "10",
+        "5",
+        "1928.9"
+      ],
+      [
+        "10",
+        "9",
+        "1895.6"
+      ],
+      [
+        "8",
+        "3",
+        "1898.2"
+      ],
+      [
+        "8",
+        "5",
+        "1898.2"
+      ],
+      [
+        "8",
+        "7",
+        "1899.3"
+      ]
+    ],
+    "bath_labels": 3,
+    "pwdr": 1,
+    "maid": false,
+    "store": false,
+    "gf_bed": false,
+    "mirrored": true,
+    "text": "10 PLEX - TH 05 1928.9 SQFT 179.20 SQM 10 PLEX - TH 09 1895.6 SQFT 176.11 SQM FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR S O L I D KEY PLAN STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 02 TH 02 TH 03 TH 03 TH 04 TH 04 TH 05 TH 05 TH 06 TH 06 TH 07 TH 08 6 PLEX 10 PLEX 8 PLEX TH 01 TH 02 TH 03 TH 04 TH 05 TH 06 TH 07 TH 08 TH 09 TH 10 UNIT TOTAL AREA 3 BEDROOM I D 8 PLEX - TH 03 1898.2 SQFT 176.35 SQM 8 PLEX - TH 05 1898.2 SQFT 176.35 SQM 8 PLEX - TH 07 1899.3 SQFT 176.45 SQM MIRRORED MASTER BEDROOM 4.0X3.2M MASTER BATH 2.8X1.7M BEDROOM 2 3.2X3.2M BEDROOM 1 3.2X3.1M BALCONY 2.8X1.6M BATH 2.0X2.4M MAID\u2019S ROOM 2.2X2.6M BATH 2.1X1.5 PWDR. RM 1.1X1.9M TERRACE LIVING ROOM 4.3X4.0M DINING ROOM 3.0X4.0M KITCHEN 2.2X3.5M LAU. 1.1 X 0.8 BIN BIN WM ELEC PUMP ROOM GAS B O L D"
+  },
+  {
+    "page": 6,
+    "spaced_headers": [
+      "R\nS\nO\nL\nI\nD\nK",
+      "S\nB O L D"
+    ],
+    "bedroom_label": [
+      "4",
+      "A"
+    ],
+    "occurrences": [
+      [
+        "6",
+        "1",
+        "2284.4"
+      ],
+      [
+        "10",
+        "1",
+        "2284.3"
+      ]
+    ],
+    "bath_labels": 4,
+    "pwdr": 0,
+    "maid": false,
+    "store": false,
+    "gf_bed": true,
+    "mirrored": false,
+    "text": "FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR S O L I D KEY PLAN STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 02 TH 02 TH 03 TH 03 TH 04 TH 04 TH 05 TH 05 TH 06 TH 06 TH 07 TH 08 6 PLEX 10 PLEX 8 PLEX TH 01 TH 02 TH 03 TH 04 TH 05 TH 06 TH 07 TH 08 TH 09 TH 10 UNIT TOTAL AREA 6 PLEX - TH 01 2284.4 SQFT 212.23 SQM 4 BEDROOM I A 10 PLEX - TH 01 2284.3 SQFT 212.22 SQM MASTER BEDROOM 4.5X3.1M BEDROOM 1 3.2X3.1M BEDROOM 2 3.1X3.1M MASTER BATH 2.7X1.7M BATH 1.9X 2.7M BALCONY 3.2X2.1M BALCONY 3.6X1.5M BALCONY 2.8X1.6M LIVING ROOM 4.3X3.7M DINING ROOM 2.8X3.0M KITCHEN 1.8X4.0M GUEST BEDROOM 3.3X3.1M BATH 1.8X 2.6M BATH 1.8X 1.5M MAID\u2019S ROOM 3.2X1.8M LAU. 1.5X1.1M PUMP RM. TERRACE BIN BIN WM ELEC GAS B O L D"
+  },
+  {
+    "page": 7,
+    "spaced_headers": [
+      "R\nS\nO\nL\nI\nD\nK",
+      "M I B\nM",
+      "S\nB O L D"
+    ],
+    "bedroom_label": [
+      "4",
+      "B"
+    ],
+    "occurrences": [
+      [
+        "6",
+        "6",
+        "2284.4"
+      ],
+      [
+        "10",
+        "10",
+        "2284.3"
+      ]
+    ],
+    "bath_labels": 4,
+    "pwdr": 0,
+    "maid": false,
+    "store": false,
+    "gf_bed": true,
+    "mirrored": true,
+    "text": "FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR S O L I D KEY PLAN STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 02 TH 02 TH 03 TH 03 TH 04 TH 04 TH 05 TH 05 TH 06 TH 06 TH 07 TH 08 6 PLEX 10 PLEX 8 PLEX TH 01 TH 02 TH 03 TH 04 TH 05 TH 06 TH 07 TH 08 TH 09 TH 10 UNIT TOTAL AREA 6 PLEX - TH 06 2284.4 SQFT 212.23 SQM 4 BEDROOM I B MIRRORED 10 PLEX - TH 10 2284.3 SQFT 212.22 SQM MASTER BEDROOM 4.5X3.1M BEDROOM 1 3.2X3.1M BEDROOM 2 3.1X3.1M MASTER BATH 2.7X1.7M BATH 1.9X 2.7M BALCONY 3.2X2.1M BALCONY 3.6X1.5M BALCONY 2.8X1.6M LIVING ROOM 4.3X3.7M DINING ROOM 2.8X3.0M KITCHEN 1.8X4.0M GUEST BEDROOM 3.3X3.1M BATH 1.8X 2.6M BATH 1.8X 1.5M MAID\u2019S ROOM 3.2X1.8M LAU. 1.5X1.1M PUMP RM. TERRACE BIN BIN WM ELEC GAS B O L D"
+  },
+  {
+    "page": 8,
+    "spaced_headers": [
+      "R\nS\nO\nL\nI\nD\nK",
+      "S\nB O L D"
+    ],
+    "bedroom_label": [
+      "4",
+      "C"
+    ],
+    "occurrences": [
+      [
+        "8",
+        "1",
+        "2346.3"
+      ]
+    ],
+    "bath_labels": 4,
+    "pwdr": 0,
+    "maid": false,
+    "store": false,
+    "gf_bed": true,
+    "mirrored": false,
+    "text": "UNIT TOTAL AREA 4 BEDROOM I C 8 PLEX - TH 01 2346.3 SQFT 217.98 SQM FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR S O L I D KEY PLAN STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 02 TH 02 TH 03 TH 03 TH 04 TH 04 TH 05 TH 05 TH 06 TH 06 TH 07 TH 08 6 PLEX 10 PLEX 8 PLEX TH 01 TH 02 TH 03 TH 04 TH 05 TH 06 TH 07 TH 08 TH 09 TH 10 MASTER BEDROOM 4.3X3.4M MASTER BATH 3.0X1.6M BEDROOM 1 3.4X3.2M BEDROOM 2 3.4X3.2M BATH 3.0X1.8M LAU. 0.9X1.1M BALCONY 3.3X3.8M BALCONY 4.2X1.6M LIVING ROOM 4.3X3.7M DINING ROOM 3.5X2.1M GUEST BEDROOM 3.5X3.1M BATH 3.0X1.9M MAID\u2019S ROOM 3.0X1.8M KITCHEN 3.0X3.1M BATH 1.5X1.8M TERRACE PUMP RM. BIN BIN WM ELEC GAS B O L D"
+  },
+  {
+    "page": 9,
+    "spaced_headers": [
+      "R\nS\nO\nL\nI\nD\nK",
+      "S\nB O L D"
+    ],
+    "bedroom_label": [
+      "4",
+      "D"
+    ],
+    "occurrences": [
+      [
+        "8",
+        "8",
+        "2346.3"
+      ]
+    ],
+    "bath_labels": 4,
+    "pwdr": 0,
+    "maid": false,
+    "store": false,
+    "gf_bed": true,
+    "mirrored": true,
+    "text": "FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR S O L I D KEY PLAN STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 02 TH 02 TH 03 TH 03 TH 04 TH 04 TH 05 TH 05 TH 06 TH 06 TH 07 TH 08 6 PLEX 10 PLEX 8 PLEX TH 01 TH 02 TH 03 TH 04 TH 05 TH 06 TH 07 TH 08 TH 09 TH 10 UNIT TOTAL AREA 4 BEDROOM I D 8 PLEX - TH 08 2346.3 SQFT 217.98 SQM MIRRORED MASTER BEDROOM 4.3X3.4M MASTER BATH 3.0X1.6M BEDROOM 1 3.4X3.2M BEDROOM 2 3.4X3.2M BATH 3.0X1.8M LAU. 0.9X1.1M BALCONY 3.3X3.8M BALCONY 4.2X1.6M LIVING ROOM 4.3X3.7M DINING ROOM 3.5X2.1M GUEST BEDROOM 3.5X3.1M BATH 3.0X1.9M MAID\u2019S ROOM 3.0X1.8M KITCHEN 3.0X3.1M BATH 1.5X1.8M TERRACE PUMP RM. BIN BIN WM ELEC GAS B O L D"
+  },
+  {
+    "page": 10,
+    "spaced_headers": [
+      "R\nF\nR\nA\nM\nE\nS",
+      "N\nS L E E K"
+    ],
+    "bedroom_label": [
+      "3",
+      "A"
+    ],
+    "occurrences": [
+      [
+        "6",
+        "2",
+        "2009.2"
+      ],
+      [
+        "6",
+        "4",
+        "2010.0"
+      ],
+      [
+        "10",
+        "2",
+        "2009.2"
+      ],
+      [
+        "10",
+        "6",
+        "2043.8"
+      ]
+    ],
+    "bath_labels": 3,
+    "pwdr": 1,
+    "maid": false,
+    "store": true,
+    "gf_bed": false,
+    "mirrored": false,
+    "text": "FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR F R A M E STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 01 TH 02 TH 02 TH 02 TH 03 TH 03 TH 03 TH 04 TH 04 TH 04 TH 05 TH 05 TH 05 TH 06 TH 06 TH 06 TH 07 TH 07 TH 08 TH 08 TH 09 TH 10 6 PLEX 10 PLEX 8 PLEX KEY PLAN UNIT TOTAL AREA 3 BEDROOM I A 6 PLEX - TH 02 2009.2 SQFT 186.66 SQM 6 PLEX - TH 04 2010.0 SQFT 186.73 SQM 10 PLEX - TH 02 2009.2 SQFT 186.66 SQM 10 PLEX - TH 06 2043.8 SQFT 189.87 SQM MAID\u2019S ROOM 1.9X2.9M LIVING ROOM 4.3X3.3M TERRACE DINING ROOM 3.0X3.3M KITCHEN 5.1X2.2M STORE 1.1X1.2M BATH 1.2X1.9M PWDR. RM 1.5X1.7M MASTER BEDROOM 4.0X3.1M MASTER BATH 1.9X2.7M BEDROOM 2 3.2X3.1M BEDROOM 1 3.2X3.2M BALCONY 2.8X1.6M LAU. 0.7X2.2M BATH 2.8X3.0M PUMP ROOM WM GAS ELEC BIN BIN S L E E K"
+  },
+  {
+    "page": 11,
+    "spaced_headers": [
+      "R\nF\nR\nA\nM\nE\nS",
+      "M\nS L E E K"
+    ],
+    "bedroom_label": [
+      "3",
+      "B"
+    ],
+    "occurrences": [
+      [
+        "6",
+        "3",
+        "2010.0"
+      ],
+      [
+        "6",
+        "5",
+        "2009.2"
+      ],
+      [
+        "10",
+        "3",
+        "2011.1"
+      ],
+      [
+        "10",
+        "7",
+        "2010.5"
+      ]
+    ],
+    "bath_labels": 3,
+    "pwdr": 1,
+    "maid": false,
+    "store": true,
+    "gf_bed": false,
+    "mirrored": true,
+    "text": "FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR F R A M E STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 01 TH 02 TH 02 TH 02 TH 03 TH 03 TH 03 TH 04 TH 04 TH 04 TH 05 TH 05 TH 05 TH 06 TH 06 TH 06 TH 07 TH 07 TH 08 TH 08 TH 09 TH 10 6 PLEX 10 PLEX 8 PLEX KEY PLAN UNIT TOTAL AREA 3 BEDROOM I B 6 PLEX - TH 03 2010.0 SQFT 186.73 SQM 6 PLEX - TH 05 2009.2 SQFT 186.66 SQM 10 PLEX - TH 03 2011.1 SQFT 186.84 SQM 10 PLEX - TH 07 2010.5 SQFT 186.78 SQM MIRRORED MAID\u2019S ROOM 1.9X2.9M LIVING ROOM 4.3X3.3M TERRACE DINING ROOM 3.0X3.3M KITCHEN 5.1X2.2M STORE 1.1X1.2M BATH 1.2X1.9M PWDR. RM 1.5X1.7M PUMP ROOM WM GAS ELEC BIN BIN MASTER BEDROOM 4.0X3.1M MASTER BATH 1.9X2.7M BEDROOM 2 3.2X3.1M BEDROOM 1 3.2X3.2M BALCONY 2.8X1.6M LAU. 0.7X2.2M BATH 2.8X3.0M S L E E K"
+  },
+  {
+    "page": 12,
+    "spaced_headers": [
+      "R\nF\nR\nA\nM\nE\nS",
+      "S\nS L E E K"
+    ],
+    "bedroom_label": [
+      "3",
+      "C"
+    ],
+    "occurrences": [
+      [
+        "8",
+        "2",
+        "1906.4"
+      ],
+      [
+        "8",
+        "4",
+        "1905.9"
+      ],
+      [
+        "8",
+        "6",
+        "1905.9"
+      ],
+      [
+        "10",
+        "4",
+        "1903.7"
+      ],
+      [
+        "10",
+        "8",
+        "1903.2"
+      ]
+    ],
+    "bath_labels": 3,
+    "pwdr": 1,
+    "maid": false,
+    "store": false,
+    "gf_bed": false,
+    "mirrored": false,
+    "text": "FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR F R A M E STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 01 TH 02 TH 02 TH 02 TH 03 TH 03 TH 03 TH 04 TH 04 TH 04 TH 05 TH 05 TH 05 TH 06 TH 06 TH 06 TH 07 TH 07 TH 08 TH 08 TH 09 TH 10 6 PLEX 10 PLEX 8 PLEX KEY PLAN UNIT TOTAL AREA 3 BEDROOM I C 8 PLEX - TH 02 1906.4 SQFT 177.11 SQM 8 PLEX - TH 04 1905.9 SQFT 177.06 SQM 8 PLEX - TH 06 1905.9 SQFT 177.06 SQM 10 PLEX - TH 04 1903.7 SQFT 176.86 SQM 10 PLEX - TH 08 1903.2 SQFT 176.81 SQM MASTER BEDROOM 4.0X3.2M MASTER BATH 2.8X1.7M BEDROOM 2 3.2X3.2M BEDROOM 1 3.2X3.1M BALCONY 2.8X1.6M BATH 2.0X2.4M TERRACE MAID\u2019S ROOM 2.2X2.6M BATH 2.1X1.5 PWDR. RM 1.1X1.9M LIVING ROOM 4.3X4.0M DINING ROOM 3.0X4.0M KITCHEN 2.2X3.5M LAU. 1.1 X 0.8 PUMP ROOM BIN BIN WM ELEC GAS S L E E K"
+  },
+  {
+    "page": 13,
+    "spaced_headers": [
+      "R\nF\nR\nA\nM\nE\nS",
+      "S\nS L E E K"
+    ],
+    "bedroom_label": [
+      "3",
+      "D"
+    ],
+    "occurrences": [
+      [
+        "10",
+        "5",
+        "1938.2"
+      ],
+      [
+        "10",
+        "9",
+        "1903.0"
+      ],
+      [
+        "8",
+        "3",
+        "1905.9"
+      ],
+      [
+        "8",
+        "5",
+        "1905.9"
+      ],
+      [
+        "8",
+        "7",
+        "1907.2"
+      ]
+    ],
+    "bath_labels": 3,
+    "pwdr": 1,
+    "maid": false,
+    "store": false,
+    "gf_bed": false,
+    "mirrored": true,
+    "text": "10 PLEX - TH 05 1938.2 SQFT 180.06 SQM 10 PLEX - TH 09 1903.0 SQFT 176.79 SQM FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR F R A M E STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 01 TH 02 TH 02 TH 02 TH 03 TH 03 TH 03 TH 04 TH 04 TH 04 TH 05 TH 05 TH 05 TH 06 TH 06 TH 06 TH 07 TH 07 TH 08 TH 08 TH 09 TH 10 6 PLEX 10 PLEX 8 PLEX KEY PLAN UNIT TOTAL AREA 3 BEDROOM I D 8 PLEX - TH 03 1905.9 SQFT 177.06 SQM 8 PLEX - TH 05 1905.9 SQFT 177.06 SQM 8 PLEX - TH 07 1907.2 SQFT 177.18 SQM MIRRORED MASTER BEDROOM 4.0X3.2M MASTER BATH 2.8X1.7M BEDROOM 2 3.2X3.2M BEDROOM 1 3.2X3.1M BALCONY 2.8X1.6M BATH 2.0X2.4M MAID\u2019S ROOM 2.2X2.6M BATH 2.1X1.5 PWDR. RM 1.1X1.9M TERRACE LIVING ROOM 4.3X4.0M DINING ROOM 3.0X4.0M KITCHEN 2.2X3.5M LAU. 1.1 X 0.8 BIN BIN WM ELEC PUMP ROOM GAS S L E E K"
+  },
+  {
+    "page": 14,
+    "spaced_headers": [
+      "R\nF\nR\nA\nM\nE\nS",
+      "S\nS L E E K"
+    ],
+    "bedroom_label": [
+      "4",
+      "A"
+    ],
+    "occurrences": [
+      [
+        "6",
+        "1",
+        "2264.6"
+      ],
+      [
+        "10",
+        "1",
+        "2264.5"
+      ]
+    ],
+    "bath_labels": 4,
+    "pwdr": 0,
+    "maid": false,
+    "store": false,
+    "gf_bed": true,
+    "mirrored": false,
+    "text": "FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR F R A M E STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 01 TH 02 TH 02 TH 02 TH 03 TH 03 TH 03 TH 04 TH 04 TH 04 TH 05 TH 05 TH 05 TH 06 TH 06 TH 06 TH 07 TH 07 TH 08 TH 08 TH 09 TH 10 6 PLEX 10 PLEX 8 PLEX KEY PLAN UNIT TOTAL AREA 6 PLEX - TH 01 2264.6 SQFT 210.39 SQM 4 BEDROOM I A 10 PLEX - TH 01 2264.5 SQFT 210.38 SQM MASTER BEDROOM 4.5X3.1M BEDROOM 1 3.2X3.1M BEDROOM 2 3.1X3.1M MASTER BATH 2.7X1.7M BATH 1.9X 2.7M BALCONY 3.2X2.1M BALCONY 3.6X1.5M BALCONY 2.8X1.6M LIVING ROOM 4.3X3.7M DINING ROOM 2.8X3.0M KITCHEN 1.8X4.0M GUEST BEDROOM 3.3X3.1M BATH 1.8X 2.6M BATH 1.8X 1.5M MAID\u2019S ROOM 3.2X1.8M LAU. 1.5X1.1M PUMP RM. TERRACE BIN BIN WM ELEC GAS S L E E K"
+  },
+  {
+    "page": 15,
+    "spaced_headers": [
+      "R\nF\nR\nA\nM\nE\nS",
+      "M I B\nM",
+      "S\nS L E E K"
+    ],
+    "bedroom_label": [
+      "4",
+      "B"
+    ],
+    "occurrences": [
+      [
+        "6",
+        "6",
+        "2264.6"
+      ],
+      [
+        "10",
+        "10",
+        "2265.1"
+      ]
+    ],
+    "bath_labels": 4,
+    "pwdr": 0,
+    "maid": false,
+    "store": false,
+    "gf_bed": true,
+    "mirrored": true,
+    "text": "FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR F R A M E STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 01 TH 02 TH 02 TH 02 TH 03 TH 03 TH 03 TH 04 TH 04 TH 04 TH 05 TH 05 TH 05 TH 06 TH 06 TH 06 TH 07 TH 07 TH 08 TH 08 TH 09 TH 10 6 PLEX 10 PLEX 8 PLEX KEY PLAN UNIT TOTAL AREA 6 PLEX - TH 06 2264.6 SQFT 210.39 SQM 4 BEDROOM I B MIRRORED 10 PLEX - TH 10 2265.1 SQFT 210.43 SQM MASTER BEDROOM 4.5X3.1M BEDROOM 1 3.2X3.1M BEDROOM 2 3.1X3.1M MASTER BATH 2.7X1.7M BATH 1.9X 2.7M BALCONY 3.2X2.1M BALCONY 3.6X1.5M BALCONY 2.8X1.6M LIVING ROOM 4.3X3.7M DINING ROOM 2.8X3.0M KITCHEN 1.8X4.0M GUEST BEDROOM 3.3X3.1M BATH 1.8X 2.6M BATH 1.8X 1.5M MAID\u2019S ROOM 3.2X1.8M LAU. 1.5X1.1M PUMP RM. TERRACE BIN BIN WM ELEC GAS S L E E K"
+  },
+  {
+    "page": 16,
+    "spaced_headers": [
+      "R\nF\nR\nA\nM\nE\nS",
+      "S\nS L E E K"
+    ],
+    "bedroom_label": [
+      "4",
+      "C"
+    ],
+    "occurrences": [
+      [
+        "8",
+        "1",
+        "2344.7"
+      ]
+    ],
+    "bath_labels": 4,
+    "pwdr": 0,
+    "maid": false,
+    "store": false,
+    "gf_bed": true,
+    "mirrored": false,
+    "text": "FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR F R A M E STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 01 TH 02 TH 02 TH 02 TH 03 TH 03 TH 03 TH 04 TH 04 TH 04 TH 05 TH 05 TH 05 TH 06 TH 06 TH 06 TH 07 TH 07 TH 08 TH 08 TH 09 TH 10 6 PLEX 10 PLEX 8 PLEX KEY PLAN UNIT TOTAL AREA 4 BEDROOM I C 8 PLEX - TH 01 2344.7 SQFT 217.83 SQM MASTER BEDROOM 4.3X3.4M MASTER BATH 3.0X1.6M BEDROOM 1 3.4X3.2M BEDROOM 2 3.4X3.2M BATH 3.0X1.8M LAU. 0.9X1.1M BALCONY 3.3X3.8M BALCONY 4.2X1.6M LIVING ROOM 4.3X3.7M DINING ROOM 3.5X2.1M GUEST BEDROOM 3.5X3.1M BATH 3.0X1.9M MAID\u2019S ROOM 3.0X1.8M KITCHEN 3.0X3.1M BATH 1.5X1.8M TERRACE PUMP RM. BIN BIN WM ELEC GAS S L E E K"
+  },
+  {
+    "page": 17,
+    "spaced_headers": [
+      "R\nF\nR\nA\nM\nE\nS",
+      "S\nS L E E K"
+    ],
+    "bedroom_label": [
+      "4",
+      "D"
+    ],
+    "occurrences": [
+      [
+        "8",
+        "8",
+        "2345.7"
+      ]
+    ],
+    "bath_labels": 4,
+    "pwdr": 0,
+    "maid": false,
+    "store": false,
+    "gf_bed": true,
+    "mirrored": true,
+    "text": "FLOOR PLAN 1. All dimensions are in imperial and metric, and measured from core to core excluding construction tolerances. 2. All materials, dimensions, and drawings are approximate only. 3. Information is subject to change without notice, at developer\u2019s absolute discretion. 4. Actual area may vary from the stated area. 5. Drawings not to scale. 6. All images used are for illustrative purposes only and do not represent the actual size, features, specifications, fittings, and furnishings. 7. The developer reserves the right to make revisions / alterations, at it\u2019s absolute discretion, without any liability whatsoever. FIRST FLOOR GROUND FLOOR F R A M E STREET SIDE STREET SIDE STREET SIDE TH 01 TH 01 TH 01 TH 02 TH 02 TH 02 TH 03 TH 03 TH 03 TH 04 TH 04 TH 04 TH 05 TH 05 TH 05 TH 06 TH 06 TH 06 TH 07 TH 07 TH 08 TH 08 TH 09 TH 10 6 PLEX 10 PLEX 8 PLEX KEY PLAN UNIT TOTAL AREA 4 BEDROOM I D 8 PLEX - TH 08 2345.7 SQFT 217.92 SQM MIRRORED MASTER BEDROOM 4.3X3.4M MASTER BATH 3.0X1.6M BEDROOM 1 3.4X3.2M BEDROOM 2 3.4X3.2M BATH 3.0X1.8M LAU. 0.9X1.1M BALCONY 3.3X3.8M BALCONY 4.2X1.6M LIVING ROOM 4.3X3.7M DINING ROOM 3.5X2.1M GUEST BEDROOM 3.5X3.1M BATH 3.0X1.9M MAID\u2019S ROOM 3.0X1.8M KITCHEN 3.0X3.1M BATH 1.5X1.8M TERRACE PUMP RM. BIN BIN WM ELEC GAS S L E E K"
+  }
+]

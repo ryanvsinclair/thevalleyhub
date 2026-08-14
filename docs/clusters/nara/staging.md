@@ -47,7 +47,7 @@
 
 ## Batch 001 — Nara full unit derivation: 372 units, 16 layouts, 57 plexes, images (2026-08-11)
 
-**Source:** Local `nara-floorplans/` intake (floor-plan PNGs, facade JPGs, cluster maps, `nara-units.csv`). Originally landed on the local-only `nara-cluster-deep-dive` branch without a staging batch; restaged here so Doc 7 is the record. Not independently field-verified.
+**Source:** Local `floorplans/` intake (floor-plan PNGs, facade JPGs, cluster maps, `nara-units.csv`). Originally landed on the local-only `nara-cluster-deep-dive` branch without a staging batch; restaged here so Doc 7 is the record. Not independently field-verified.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** unverified for per-unit style/type/position and exact BUA (derived dataset in `nara-units.csv`; `nara-units-detection.csv` records plot-level style_source/orientation_margin/bua_sqm). Corroborated only where it matches the existing `reference.md` register: 372 units, facades Aston/Palma/Charm, 3BR starting size 1866, 4BR upper 2249.
 **Status:** promoted
@@ -77,11 +77,11 @@
 
   Totals: Palma 188 (22×4BR, 166×3BR), Aston 132 (66×4BR, 66×3BR), Charm 52 (26×4BR, 26×3BR) = 372. Bedroom split 258×3BR / 114×4BR.
 
-- **New `plexes` rows, `cluster_id = nara` (57 rows).** Full dataset in [`../../../nara-floorplans/nara-units.csv`](../../../nara-floorplans/nara-units.csv) (`plex_range` / `plex_size` / `street_side`).
+- **New `plexes` rows, `cluster_id = nara` (57 rows).** Full dataset in [`floorplans/nara-units.csv`](floorplans/nara-units.csv) (`plex_range` / `plex_size` / `street_side`).
 
 - **New `units` rows, `cluster_id = nara` (372 rows).** Same CSV: `unit_number` / `plot_number`, `facade_style`, `bua`, `plex` range, `th_position`. `confidence = unverified`.
 
-- **Images, 21 files in `nara-floorplans/`** — 16 floor plans (one per layout above), 3 facade photos (`nara-aston-facade.jpg`, `nara-palma-facade.jpg`, `nara-charm-facade.jpg`), 2 cluster maps (`nara-cluster-map.jpg`, `nara-cluster-map-fullres.jpg`). Runtime copies still need uploading to Supabase Storage on promotion; git holds LFS pointers only.
+- **Images, 21 files in `floorplans/`** — 16 floor plans (one per layout above), 3 facade photos (`nara-aston-facade.jpg`, `nara-palma-facade.jpg`, `nara-charm-facade.jpg`), 2 cluster maps (`nara-cluster-map.jpg`, `nara-cluster-map-fullres.jpg`). Runtime copies still need uploading to Supabase Storage on promotion; git holds LFS pointers only.
 
 ### Notes
 
@@ -102,7 +102,7 @@ Ran 2026-08-13: 16 `unit_types` + 57 `plexes` + 372 `units` + 3 facade name rows
 
 ## Batch 002 — Nara bathrooms, maid’s rooms, and readable cluster-map amenities (2026-08-13)
 
-**Source:** Existing `nara-floorplans/` intake — all 16 layout PNGs (bathrooms / maid’s / GF guest bedroom) and `nara-cluster-map.jpg` + `nara-cluster-map-fullres.jpg` (amenities legend). No Nara PDF / brochure folder is on disk in this workspace, so facade blurbs, payment plan, starting price, plot sizes, and `summary`/`body` were not available. Read 2026-08-13.
+**Source:** Existing `floorplans/` intake — all 16 layout PNGs (bathrooms / maid’s / GF guest bedroom) and `nara-cluster-map.jpg` + `nara-cluster-map-fullres.jpg` (amenities legend). No Nara PDF / brochure folder is on disk in this workspace, so facade blurbs, payment plan, starting price, plot sizes, and `summary`/`body` were not available. Read 2026-08-13.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** `corroborated` for `bathrooms` and `maids_room` — counted from the labelled rooms on each of the 16 layout PNGs (any `BATH` label including those printed “MASTER BATH” on the drawing, plus `PWDR. RM` / `MAID'S ROOM`). Stored only as `unit_types.bathrooms` (numeric) and `maids_room` — no master-bath field. Amenity names that OCR actually read off the cluster-map legend also `corroborated`. Does not change Batch 001 unit/plex/layout assignment.
 **Status:** promoted
@@ -242,7 +242,7 @@ Ran 2026-08-13: 16 `unit_types` + 57 `plexes` + 372 `units` + 3 facade name rows
 
 ## Batch 005 — Nara payment plan, summary/body, location maps (2026-08-13)
 
-**Source:** `PAYMENT PLANS.pdf` (InDesign 16.3, created 2021-08-02) and `BROCHURE.pdf` pp. 6–8 (intro copy), p.5 (location map), p.10 (Valley context map). Files in `/Users/mehdielghissassi/Desktop/clusters/NARA/`. Map PNGs from the existing export in `NARA-PACKAGE/media/maps/`, copied into `nara-floorplans/`. Read 2026-08-13.
+**Source:** `PAYMENT PLANS.pdf` (InDesign 16.3, created 2021-08-02) and `BROCHURE.pdf` pp. 6–8 (intro copy), p.5 (location map), p.10 (Valley context map). Files in `/Users/mehdielghissassi/Desktop/clusters/NARA/`. Map PNGs from the existing export in `NARA-PACKAGE/media/maps/`, copied into `floorplans/`. Read 2026-08-13.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** corroborated (printed Emaar PDFs). `summary` / `body` are brochure paragraphs collapsed to prose — Ray decides whether they go live; do not replace `positioning`.
 **Status:** promoted
@@ -262,7 +262,7 @@ Ran 2026-08-13: 16 `unit_types` + 57 `plexes` + 372 `units` + 3 facade name rows
 
 - **`clusters.positioning`:** leave unchanged (brochure `summary`/`body` sit beside it; Doc 9).
 
-- **Images, 2 files copied into `nara-floorplans/`** for later `media` / `media_links` on the Nara cluster row (`kind = document`): `nara-location-map.png` (brochure p.5), `nara-valley-context-map.png` (brochure p.10). Hub already has the two cropped cluster-map JPGs from Batch 001.
+- **Images, 2 files copied into `floorplans/`** for later `media` / `media_links` on the Nara cluster row (`kind = document`): `nara-location-map.png` (brochure p.5), `nara-valley-context-map.png` (brochure p.10). Hub already has the two cropped cluster-map JPGs from Batch 001.
 
 ### Notes
 
@@ -275,7 +275,7 @@ Ran 2026-08-13: 16 `unit_types` + 57 `plexes` + 372 `units` + 3 facade name rows
 
 ### Promotion
 
-Ran 2026-08-13: `payment_plan`, `summary`, and `body` written on the live Nara `clusters` row. `positioning` not touched. Location/valley maps are in `nara-floorplans/` but not in Storage (same gap as Batch 001 images).
+Ran 2026-08-13: `payment_plan`, `summary`, and `body` written on the live Nara `clusters` row. `positioning` not touched. Location/valley maps are in `floorplans/` but not in Storage (same gap as Batch 001 images).
 
 **Promoted:** [x]
 **Date:** 2026-08-13
@@ -302,7 +302,7 @@ Ran 2026-08-13: `payment_plan`, `summary`, and `body` written on the live Nara `
 
 ### Promotion
 
-Ran 2026-08-13: 8 Nara `places.state = published`. SQL: `nara-floorplans/nara-batch-006-publish-amenities.sql`. `/clusters/nara` revalidated.
+Ran 2026-08-13: 8 Nara `places.state = published`. SQL: `floorplans/nara-batch-006-publish-amenities.sql`. `/clusters/nara` revalidated.
 
 **Promoted:** [x]
 **Date:** 2026-08-13

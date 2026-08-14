@@ -631,7 +631,7 @@ Doc 3 §1: "every fact carries a source, a confidence level" — Annex L's whole
 
 ### Cost if approved
 
-Six words added to one line in Doc 1, plus the corresponding category values already corrected in `docs/clusters/farm-gardens/staging.md` and `farm-gardens-floorplans/farm-gardens-batch-001-promotion.sql`. This is the first cluster to need these categories — every future cluster's deep-dive reuses them rather than re-deriving a taxonomy.
+Six words added to one line in Doc 1, plus the corresponding category values already corrected in `docs/clusters/farm-gardens/staging.md` and `docs/clusters/farm-gardens/floorplans/farm-gardens-batch-001-promotion.sql`. This is the first cluster to need these categories — every future cluster's deep-dive reuses them rather than re-deriving a taxonomy.
 
 ### Cost if rejected
 
@@ -941,18 +941,18 @@ Broken links in docs until prose is updated in the same session as the rename.
 **Status:** APPROVED
 **Raised:** 2026-08-12
 **Category:** A — Future-proofing
-**Affects step:** Per-cluster deep-dive archives (`*-floorplans/`) · promotion workflow
+**Affects step:** Per-cluster deep-dive archives (`docs/clusters/<slug>/floorplans/`) · promotion workflow
 **Blocking:** No for current code — **Yes** before committing more cluster image packs
 
 ### What Doc 2 currently specifies
 
-No binary-storage policy. Practice so far: commit extracted PNGs/JPGs under `eden-floorplans/` and `farm-gardens-floorplans/`; runtime serves from Supabase Storage.
+No binary-storage policy. Practice so far: commit extracted PNGs/JPGs under `docs/clusters/eden/floorplans/` and `docs/clusters/farm-gardens/floorplans/`; runtime serves from Supabase Storage.
 
 ### What I propose instead
 
 Pick one before Nara (and later clusters) land more binaries:
 
-**(A) Git LFS** for `*-floorplans/**/*.{png,jpg,jpeg,webp}` — keeps paths stable for agents, stops fat blobs in normal git history going forward (existing history still heavy unless rewritten).
+**(A) Git LFS** for `docs/clusters/<slug>/floorplans/**/*.{png,jpg,jpeg,webp}` — keeps paths stable for agents, stops fat blobs in normal git history going forward (existing history still heavy unless rewritten).
 
 **(B) Out-of-band archive** (private bucket / Drive) — repo keeps CSV + promotion SQL only; Doc 9 / staging points at the archive. Cleanest git, slightly worse agent locality.
 
@@ -983,7 +983,7 @@ LFS needs every clone/CI to have LFS smudge; out-of-band needs discipline so pro
 ---
 **RAY'S DECISION:** APPROVED
 **Date:** 2026-08-12
-**Notes:** Option A — Git LFS going forward. Do NOT rewrite history. New tip may move current *-floorplans images to LFS pointers in a normal commit.
+**Notes:** Option A — Git LFS going forward. Do NOT rewrite history. New tip may move current `docs/clusters/<slug>/floorplans/` images to LFS pointers in a normal commit.
 
 ---
 

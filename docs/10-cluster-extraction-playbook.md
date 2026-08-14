@@ -326,7 +326,7 @@ docs/
   gap-analysis.md     what's present, what's missing, what's inferred
 ```
 
-For Valley Hub, land the CSVs under `{slug}-floorplans/` (same folder as staged images) and stage the Batch in `docs/clusters/<slug>/staging.md` per Doc 7 / Doc 9. Do not invent columns beyond what `src/types/database.ts` allows — put `style_source` and other provenance in the detection CSV / staging Notes.
+For Valley Hub, land the CSVs under `docs/clusters/<slug>/floorplans/` (same folder as staged images) and stage the Batch in `docs/clusters/<slug>/staging.md` per Doc 7 / Doc 9. Do not invent columns beyond what `src/types/database.ts` allows — put `style_source` and other provenance in the detection CSV / staging Notes.
 
 **Record provenance per field.** NARA's styles came from two different methods — key plans for 302 units, colour classification for 70. Carry a `style_source` column so the distinction survives into staging.
 

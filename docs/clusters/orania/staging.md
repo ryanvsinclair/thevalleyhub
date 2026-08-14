@@ -119,7 +119,7 @@
 
   Each: `confidence = corroborated`, `source_id` as above. Verbatim from `ORANIA.pdf` pp. 17 / 18 (line breaks collapsed).
 
-- **Images in [`../../../orania-floorplans/`](../../../orania-floorplans/):** 16 floor plans (one per layout above), 2 facade exteriors (`orania-bold-facade.jpeg`, `orania-sleek-facade.jpeg`), 1 cluster map (`orania-cluster-map.jpeg`, 2822×1646 embedded raster — note resolution), 1 page render (`orania-cluster-map-page.png`), 1 master plan (`orania-master-plan.jpeg`), 1 valley context (`orania-valley-context-map.png` from brochure p.8). Storage upload + `media` / `media_links` at promotion. Intermediate artefacts under `_phase0_inventory.json`, `_floorplan_text.json`, `_phase1_layouts.json`, `_visual_check/`.
+- **Images in [`floorplans/`](floorplans/):** 16 floor plans (one per layout above), 2 facade exteriors (`orania-bold-facade.jpeg`, `orania-sleek-facade.jpeg`), 1 cluster map (`orania-cluster-map.jpeg`, 2822×1646 embedded raster — note resolution), 1 page render (`orania-cluster-map-page.png`), 1 master plan (`orania-master-plan.jpeg`), 1 valley context (`orania-valley-context-map.png` from brochure p.8). Storage upload + `media` / `media_links` at promotion. Intermediate artefacts under `_phase0_inventory.json`, `_floorplan_text.json`, `_phase1_layouts.json`, `_visual_check/`.
 
 ### Notes
 
@@ -210,7 +210,7 @@
 
 - Factsheet payment table matches the dedicated payment PDF dates/percentages.
 - Factsheet drive times skipped.
-- `orania-payment.png` and `orania-factsheet.png` exported under `orania-floorplans/` for provenance only.
+- `orania-payment.png` and `orania-factsheet.png` exported under `floorplans/` for provenance only.
 
 ### Promotion
 
@@ -222,7 +222,7 @@
 
 ## Batch 004 — Orania per-plot units + plexes (Doc 10 extract) (2026-08-13)
 
-**Source:** Local `/Users/mehdielghissassi/Desktop/clusters/ORANIA/` — `ORANIA FLOOR PLAN.pdf` (master arrays, Batch 001) + `ORANIA CLUSTER MAP.pdf` (plot labels: PDF CenturyGothic text + tiled OCR for gaps; style-fill orientation). Method: [`docs/10-cluster-extraction-playbook.md`](../../10-cluster-extraction-playbook.md). Artefacts in [`../../../orania-floorplans/`](../../../orania-floorplans/) (`orania-units.csv`, `orania-plexes.csv`, `orania-plex-composition.csv`, `orania-units-detection.csv`, `_phase1`…`_phase5`). Read 2026-08-13.
+**Source:** Local `/Users/mehdielghissassi/Desktop/clusters/ORANIA/` — `ORANIA FLOOR PLAN.pdf` (master arrays, Batch 001) + `ORANIA CLUSTER MAP.pdf` (plot labels: PDF CenturyGothic text + tiled OCR for gaps; style-fill orientation). Method: [`docs/10-cluster-extraction-playbook.md`](../../10-cluster-extraction-playbook.md). Artefacts in [`floorplans/`](floorplans/) (`orania-units.csv`, `orania-plexes.csv`, `orania-plex-composition.csv`, `orania-units-detection.csv`, `_phase1`…`_phase5`). Read 2026-08-13.
 **Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
 **Confidence:** `unverified` for per-unit style/type/position and exact BUA (derived in `orania-units.csv`; detection log in `orania-units-detection.csv`). Corroborated where it matches the register + factsheet: **308** plots, facades Bold/Sleek, BUA envelope 1896–2346 sqft, bedroom split **236×3BR / 72×4BR**.
 **Status:** promoted
@@ -252,7 +252,7 @@
 
   Totals: Bold **156** · Sleek **152** = **308**. Bedroom split **236×3BR / 72×4BR** (matches factsheet).
 
-- **New `plexes` rows, `cluster_id = orania` (36 rows).** Sizes from floorplan key plans + site-plan gap split: **17×10 · 12×8 · 7×6** (no 4-plex). Style mix: Bold 9×10 / 6×8 / 3×6 · Sleek 8×10 / 6×8 / 4×6. Full ranges / `street_side` in [`../../../orania-floorplans/orania-plexes.csv`](../../../orania-floorplans/orania-plexes.csv).
+- **New `plexes` rows, `cluster_id = orania` (36 rows).** Sizes from floorplan key plans + site-plan gap split: **17×10 · 12×8 · 7×6** (no 4-plex). Style mix: Bold 9×10 / 6×8 / 3×6 · Sleek 8×10 / 6×8 / 4×6. Full ranges / `street_side` in [`floorplans/orania-plexes.csv`](floorplans/orania-plexes.csv).
 
 - **New `units` rows, `cluster_id = orania` (308 rows).** Same family of CSVs: `unit_number` / `plot_number` (1–308 contiguous), `facade_style`, `layout`, `bua`, `th_position`. `confidence = unverified`. No mirror-pair plex types — TH01→THn follows ascending plot number within each plex after style-fill orientation.
 
