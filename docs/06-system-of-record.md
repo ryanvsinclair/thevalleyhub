@@ -461,6 +461,16 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-14 — Migration 0004 live + Google Place Photo admin import + Doc 12
+
+**Why:** Media RLS tighten (#18) was still pending on live; Living/place galleries need photos; future product ideas need a parked list without expanding #20.
+
+**Affects:** Live migration `media_public_read_tighten` (`media_subject_is_published` + pub/staff media policies). Admin: Import Google photo on valley-wide `/admin/places/[id]`; Media page “Link to place”. Place detail shows media `credit`. Doc 4 #20 Status header → APPROVED. New `docs/12-next-product-candidates.md`. Farm Gardens 19 amenities already published (Batch 003) — Doc 2 ATTENTION cleared.
+
+**Breaking:** Anon can only read media linked to published subjects (intended).
+
+**Still open:** Batch photo import optional; Training Room weekend phone confirm; Golden Beach site visit; Doc 12 picks. `notify_site_revalidate` secret aligned to `.env.local` / Vercel Production (`9655…`) on 2026-08-14.
+
 ### 2026-08-14 — Ray place enrichment pass (Training Room, Vet Town Square, mosque fix, Golden Beach closed)
 
 **Why:** Close remaining valley-wide Google ID / contact gaps; correct Masabih wrong Place ID; provisional Golden Beach closed status.

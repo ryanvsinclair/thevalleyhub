@@ -39,6 +39,19 @@ type PlaceDetailsResult = {
       close?: { day?: number; time?: string };
     }>;
   };
+  photos?: Array<{
+    photo_reference?: string;
+    width?: number;
+    height?: number;
+    html_attributions?: string[];
+  }>;
+};
+
+export type GooglePlacePhoto = {
+  bytes: ArrayBuffer;
+  contentType: string;
+  attribution: string | null;
+  placeName: string | null;
 };
 
 function apiKey(): string | null {
@@ -164,6 +177,7 @@ export async function fetchGooglePlaceDetails(
       "international_phone_number",
       "website",
       "opening_hours",
+      "photos",
     ].join(","),
   );
 
@@ -204,4 +218,88 @@ export async function fetchGooglePlaceDetails(
   };
 
   return { fill };
+}
+
+/**
+ * Download the first Google Place Photo for a Place ID into Storage-ready bytes.
+ * Attribution string is required for public display credit.
+ */
+export async function fetchGooglePlacePrimaryPhoto(
+  placeId: string,
+  maxWidth = 1600,
+): Promise<{ photo: GooglePlacePhoto } | { error: string }> {
+  const key = apiKey();
+  if (!key) {
+    return {
+      error:
+        "GOOGLE_MAPS_API_KEY is not set. Add it to .env.local and Vercel (Places API enabled).",
+    };
+  }
+
+  const id = placeId.trim();
+  if (!id) return { error: "Missing place id" };
+
+  const detailsUrl = new URL(
+    "https://maps.googleapis.com/maps/api/place/details/json",
+  );
+  detailsUrl.searchParams.set("place_id", id);
+  detailsUrl.searchParams.set("key", key);
+  detailsUrl.searchParams.set("fields", "name,photos");
+
+  const detailsRes = await fetch(detailsUrl.toString(), { cache: "no-store" });
+  if (!detailsRes.ok) {
+    return { error: `Google Place Details HTTP ${detailsRes.status}` };
+  }
+
+  const detailsBody = (await detailsRes.json()) as {
+    status?: string;
+    error_message?: string;
+    result?: PlaceDetailsResult;
+  };
+
+  if (detailsBody.status !== "OK" || !detailsBody.result) {
+    return {
+      error: detailsBody.error_message
+        ? `${detailsBody.status}: ${detailsBody.error_message}`
+        : detailsBody.status ?? "No result",
+    };
+  }
+
+  const photoRef = detailsBody.result.photos?.[0]?.photo_reference;
+  if (!photoRef) {
+    return { error: "Google has no photos for this place." };
+  }
+
+  const attributionRaw =
+    detailsBody.result.photos?.[0]?.html_attributions?.[0] ?? null;
+  const attribution = attributionRaw
+    ? attributionRaw.replace(/<[^>]+>/g, "").trim() || "Google"
+    : "Google";
+
+  const photoUrl = new URL(
+    "https://maps.googleapis.com/maps/api/place/photo",
+  );
+  photoUrl.searchParams.set("maxwidth", String(maxWidth));
+  photoUrl.searchParams.set("photo_reference", photoRef);
+  photoUrl.searchParams.set("key", key);
+
+  const photoRes = await fetch(photoUrl.toString(), { cache: "no-store" });
+  if (!photoRes.ok) {
+    return { error: `Google Place Photo HTTP ${photoRes.status}` };
+  }
+
+  const contentType = photoRes.headers.get("content-type") ?? "image/jpeg";
+  const bytes = await photoRes.arrayBuffer();
+  if (bytes.byteLength === 0) {
+    return { error: "Google Place Photo returned empty body." };
+  }
+
+  return {
+    photo: {
+      bytes,
+      contentType,
+      attribution,
+      placeName: detailsBody.result.name ?? null,
+    },
+  };
 }

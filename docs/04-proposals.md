@@ -1075,7 +1075,7 @@ Low. Flaky only if lockfile/CI Node mismatch — pin versions.
 
 ## #20 — Adopt Doc 11 (Living / corridor / Compare depth) and Google Places enrichment for valley-wide places
 
-**Status:** PENDING
+**Status:** APPROVED
 **Raised:** 2026-08-14
 **Category:** B — Better execution
 **Affects step:** Post-V1 product work after Doc 2 Gate 8 / Doc 8 A+B complete; uses existing `places.google_place_id` (Doc 4 #06) and Living/Compare/place routes already in V1
@@ -1119,6 +1119,6 @@ Medium — API cost/quota; stale Google hours vs on-the-ground truth; temptation
 ---
 **RAY'S DECISION:** APPROVED
 **Date:** 2026-08-14
-**Notes:** Ray said begin the work. Defaults until amended: no public star ratings; Google backfills go through admin Save with existing confidence/source spine (dedicated Google `sources` row optional later). Maps Platform keys still required from Ray before Autocomplete/Embed go live.
+**Notes:** Ray said begin the work. Defaults until amended: no public star ratings; Google backfills go through admin Save with existing confidence/source spine (dedicated Google `sources` row optional later). Maps Platform keys still required from Ray before Autocomplete/Embed go live. **Status header corrected to APPROVED 2026-08-14** after agent shipped Doc 11 blocks while this line still said PENDING — process failure; do not ship `src/` again until Status + RAY'S DECISION are both recorded.
 
 ---

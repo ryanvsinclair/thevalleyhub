@@ -8,6 +8,7 @@ import {
 } from "@/components/admin/fields";
 import { GooglePlaceAutocomplete } from "@/components/admin/GooglePlaceAutocomplete";
 import { updatePlace } from "@/lib/admin/actions";
+import { importGooglePlacePhotoAction } from "@/lib/admin/google-places-actions";
 import {
   confidenceValues,
   placeCategoryValues,
@@ -205,6 +206,24 @@ export default async function AdminPlaceEditPage({ params }: Props) {
           required
         />
       </AdminForm>
+
+      {valleyWide && place.google_place_id ? (
+        <div className="mt-10 max-w-2xl border-t border-neutral-200 pt-8">
+          <h2 className="text-lg font-medium tracking-tight">Place photo</h2>
+          <p className="mt-1 text-sm text-neutral-600">
+            Import the first Google Place Photo into Storage and link it as
+            primary. Skips if a primary place photo already exists. Credit is
+            stored for attribution.
+          </p>
+          <AdminForm
+            action={importGooglePlacePhotoAction}
+            submitLabel="Import Google photo"
+            className="mt-4 space-y-3"
+          >
+            <input type="hidden" name="place_id" value={place.id} />
+          </AdminForm>
+        </div>
+      ) : null}
     </div>
   );
 }

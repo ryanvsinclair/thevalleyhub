@@ -21,6 +21,7 @@ export default async function AdminMediaPage() {
     { data: clusters },
     { data: unitTypes },
     { data: facades },
+    { data: places },
   ] = await Promise.all([
     supabase
       .from("media")
@@ -47,6 +48,14 @@ export default async function AdminMediaPage() {
       .select("id, style_name, cluster_id, clusters(name)")
       .order("sort_order")
       .limit(100),
+    supabase
+      .from("places")
+      .select("id, name, slug")
+      .is("deleted_at", null)
+      .eq("state", "published")
+      .is("cluster_id", null)
+      .order("name")
+      .limit(200),
   ]);
 
   const mediaOpts = (data ?? []).map((row) => ({
@@ -80,6 +89,11 @@ export default async function AdminMediaPage() {
       label: `facade · ${clusterName} · ${f.style_name}`,
     };
   });
+
+  const placeOpts = (places ?? []).map((p) => ({
+    value: p.id,
+    label: `place · ${p.name} (${p.slug})`,
+  }));
 
   return (
     <div>
@@ -123,7 +137,7 @@ export default async function AdminMediaPage() {
         <code className="text-xs">subject_type</code>.
       </p>
 
-      <div className="mt-4 grid gap-6 lg:grid-cols-3">
+      <div className="mt-4 grid gap-6 lg:grid-cols-2 xl:grid-cols-4">
         <AdminForm
           action={upsertMediaLink}
           submitLabel="Link to cluster"
@@ -151,6 +165,36 @@ export default async function AdminMediaPage() {
               { value: "true", label: "true" },
             ]}
             defaultValue="false"
+          />
+        </AdminForm>
+
+        <AdminForm
+          action={upsertMediaLink}
+          submitLabel="Link to place"
+          className="space-y-3 rounded-sm border border-neutral-200 bg-white p-4"
+        >
+          <SelectField
+            label="Media"
+            name="media_id"
+            options={mediaOpts}
+            required
+          />
+          <input type="hidden" name="subject_type" value="place" />
+          <SelectField
+            label="Valley-wide place"
+            name="subject_id"
+            options={placeOpts}
+            required
+          />
+          <FormField label="Sort order" name="sort_order" type="number" defaultValue={0} />
+          <SelectField
+            label="Primary"
+            name="is_primary"
+            options={[
+              { value: "false", label: "false" },
+              { value: "true", label: "true" },
+            ]}
+            defaultValue="true"
           />
         </AdminForm>
 

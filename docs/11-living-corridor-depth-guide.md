@@ -13,15 +13,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Ray-confirmed place enrichments (#1–6) + Golden Beach provisional closed
+LAST COMPLETED:   Migration 0004 live · #20 Status APPROVED · Google Place Photo admin import · Doc 12 parked
 SPEC ALIGNED:     Yes
-CURRENT TASK:     Phone-confirm Training Room weekend hours; optional Golden Beach site visit; commit L-D + this UI
-NEXT UP:          Gate L2 formal tick after amenity-pin hours-unknown notes (optional); Compare copy polish [R]
+CURRENT TASK:     Import photos for valley-wide places via admin (Ray/ops)
+NEXT UP:          Priority photo imports; Doc 12 when Ray picks a candidate
 CONTEXT BLOCK:    cleared
 BLOCKERS:         None
 OPEN QUESTIONS:   Google `sources` row deferred; public ratings = no
-ATTENTION NEEDED: Training Room Sat–Sun 09:00–12:00 phone confirm; Golden Beach closed is provisional until drive-by
-GATE STATUS:      Gate L0–L1 PASSED · Gate L2 ~met on real businesses (48/55 gpid; amenity pins excluded) · L3–L4 · L5 partial · L6 PASSED
+ATTENTION NEEDED: Training Room weekend phone confirm later; Golden Beach closed until site visit; Compare copy later
+GATE STATUS:      Gate L0–L1 PASSED · Gate L2 ~met · L3–L4 · L5 partial · L6 PASSED · photo import path live
 ```
 
 **Rules for this block**
@@ -164,7 +164,7 @@ A step is done when its checkbox is ticked **here** and in **Appendix A**. Once 
 ### 3.2 Photos **[A]**
 - [x] Load `media_links` where `subject_type = 'place'` (schema/RLS already allow)
 - [x] Render gallery when media exists
-- [ ] Optional later: Google Place Photos with attribution — only if Ray approves in #20 notes; default path is Storage `media` uploads via `/admin/media`
+- [x] Optional later: Google Place Photos with attribution — admin import path (Storage + credit); batch deferred to Doc 12 C6
 
 ### 3.3 Contact / hours polish **[A]**
 - [x] Ensure address, phone, website, hours blocks remain; add “Open now” chip when `hours` says open in Dubai time (reuse WhatsOpenNow logic)

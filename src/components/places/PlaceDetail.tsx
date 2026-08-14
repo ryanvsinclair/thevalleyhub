@@ -248,6 +248,9 @@ export function PlaceDetail({
                     {item.caption}
                   </figcaption>
                 ) : null}
+                {item.credit ? (
+                  <p className="mt-1 text-xs text-neutral-500">{item.credit}</p>
+                ) : null}
               </figure>
             ))}
           </div>

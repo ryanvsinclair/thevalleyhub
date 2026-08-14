@@ -10,15 +10,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   Doc 4 #13–#19 APPROVED and implemented in repo (2026-08-12). Migration 0004 pending live apply [R].
+LAST COMPLETED:   Doc 11 L-A–L-D shipped · migration 0004 applied live · #20 Status header APPROVED
 SPEC ALIGNED:     Yes
-CURRENT TASK:     None — remediation code on cursor/codebase-review-remediation-98d9. Doc 3 §11 in force.
-NEXT UP:          Apply migration 0004 live [R] · confirm notify_site_revalidate [R] · wire docs guard hooksPath [R]
-CONTEXT BLOCK:    C complete · Doc 8 D-A and D-B complete
-BLOCKERS:         None for approved remediation items (live 0004 apply is Ray)
+CURRENT TASK:     Place photo import (admin Google photo → Storage); Doc 12 parked for Ray
+NEXT UP:          Import Google photos for priority valley-wide places [R/admin] · Doc 12 pick when ready
+CONTEXT BLOCK:    C complete · Doc 8 D-A and D-B complete · Doc 11 agent blocks complete
+BLOCKERS:         None
 OPEN QUESTIONS:   None
-ATTENTION NEEDED: (1) Apply `0004_media_public_read_tighten` to live Supabase [R]. (2) Confirm notify_site_revalidate URL/secret on production [R]. (3) git config core.hooksPath scripts on every clone [R]. (4) 19 Farm Gardens amenity places still draft [R]. (5) SETUP.md §7 launch checklist [R].
-GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE — DOC 6 LIVE · Doc 8 A+B COMPLETE · #12–#19 APPROVED · #13–#19 IN REPO
+ATTENTION NEEDED: (1) Import place photos via admin place edit or Media link. (2) Phone-confirm Training Room weekend hours later. (3) Golden Beach closed until site visit. (4) SETUP.md §7 launch checklist [R]. (5) git config core.hooksPath scripts on every clone [R] — see Doc 6 note.
+GATE STATUS:      Gates 2–8 PASSED · V1 COMPLETE · Doc 8 A+B COMPLETE · Doc 11 L0–L6 (L2 data ops ongoing) · #20 APPROVED
 ```
 
 **Rules for this block**
