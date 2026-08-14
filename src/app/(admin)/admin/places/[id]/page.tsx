@@ -6,6 +6,7 @@ import {
   SelectField,
   TextAreaField,
 } from "@/components/admin/fields";
+import { GooglePlaceAutocomplete } from "@/components/admin/GooglePlaceAutocomplete";
 import { updatePlace } from "@/lib/admin/actions";
 import {
   confidenceValues,
@@ -36,6 +37,7 @@ export default async function AdminPlaceEditPage({ params }: Props) {
 
   const hoursDefault =
     place.hours == null ? "" : JSON.stringify(place.hours, null, 2);
+  const valleyWide = place.cluster_id == null;
 
   return (
     <div>
@@ -44,6 +46,13 @@ export default async function AdminPlaceEditPage({ params }: Props) {
 
       <AdminForm action={updatePlace}>
         <input type="hidden" name="id" value={place.id} />
+        <GooglePlaceAutocomplete enabled={valleyWide} />
+        {!valleyWide ? (
+          <p className="text-xs text-neutral-500">
+            Cluster-scoped amenity — Google Places lookup is disabled
+            (google_place_id must stay null).
+          </p>
+        ) : null}
         <FormField label="Slug" name="slug" defaultValue={place.slug} required />
         <FormField label="Name" name="name" defaultValue={place.name} required />
         <SelectField
@@ -81,6 +90,11 @@ export default async function AdminPlaceEditPage({ params }: Props) {
           label="Google Place ID"
           name="google_place_id"
           defaultValue={place.google_place_id}
+          hint={
+            valleyWide
+              ? "Filled by Google lookup above, or paste manually"
+              : "Must remain empty for cluster amenities"
+          }
         />
         <SelectField
           label="In community"

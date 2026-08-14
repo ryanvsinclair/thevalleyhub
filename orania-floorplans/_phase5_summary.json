@@ -1,0 +1,51 @@
+{
+  "units": 308,
+  "beds": {
+    "4": 72,
+    "3": 236
+  },
+  "styles": {
+    "bold": 156,
+    "sleek": 152
+  },
+  "plexes": 36,
+  "plex_sizes": {
+    "10": 17,
+    "8": 12,
+    "6": 7
+  },
+  "plex_by_style_size": {
+    "bold-10": 9,
+    "sleek-10": 8,
+    "bold-8": 6,
+    "sleek-8": 6,
+    "bold-6": 3,
+    "sleek-6": 4
+  },
+  "street_sides": {
+    "E": 9,
+    "N": 11,
+    "S": 11,
+    "W": 5
+  },
+  "min_orientation_margin": 0.20833333333333337,
+  "min_style_vote_frac": 0.8,
+  "layout_counts": {
+    "bold-4-bold-a": 12,
+    "bold-3-bold-a": 24,
+    "bold-3-bold-b": 24,
+    "bold-3-bold-c": 36,
+    "bold-3-bold-d": 36,
+    "bold-4-bold-b": 12,
+    "sleek-4-sleek-a": 12,
+    "sleek-3-sleek-a": 24,
+    "sleek-3-sleek-b": 24,
+    "sleek-3-sleek-c": 34,
+    "sleek-3-sleek-d": 34,
+    "sleek-4-sleek-b": 12,
+    "bold-4-bold-c": 6,
+    "bold-4-bold-d": 6,
+    "sleek-4-sleek-c": 6,
+    "sleek-4-sleek-d": 6
+  }
+}

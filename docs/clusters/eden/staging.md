@@ -190,3 +190,28 @@ Eden's site plan (`EDEN FLOOR PLAN.pdf` pages 2/3/10/16 — one all-3-styles mas
 **Promoted:** [x]
 **Date:** 2026-08-10
 **By:** agent (Ray authorized: finalize amenities go-live). Promotion SQL `eden-floorplans/eden-batch-003-amenities.sql`; `reference.md` + Doc 6 updated.
+
+---
+
+## Batch 004 — Ground-floor bedroom from floor plans (2026-08-13)
+
+**Source:** Live Eden floor-plan images in `eden-floorplans/` (15 layouts) — visual read of ground-floor room labels.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
+**Confidence:** corroborated
+**Status:** promoted
+
+### Proposed reference.md diff
+
+- **`unit_types.ground_floor_bedroom`:** all 8× 3BR → `false`; all 7× 4BR → `true` (were null).
+
+### Notes
+
+- 4BR plans label Guest Bedroom on GF; 3BR plans have living/kitchen/maid only on GF (maid does not count).
+
+### Promotion
+
+Ran 2026-08-13: 15 Eden `unit_types` rows updated as above.
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: yes — set from floorplan check)

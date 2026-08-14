@@ -1,0 +1,866 @@
+{
+  "layouts": [
+    {
+      "facade_style": "bold",
+      "bedrooms": 3,
+      "label": "A",
+      "layout": "bold-a",
+      "bua_min": 1959.5,
+      "bua_max": 1992.4,
+      "bathrooms": 3.5,
+      "maids_room": true,
+      "ground_floor_bedroom": false,
+      "page": 2,
+      "mirrored": false,
+      "occurrences": [
+        [
+          "6",
+          "2",
+          "1959.5"
+        ],
+        [
+          "6",
+          "4",
+          "1959.8"
+        ],
+        [
+          "10",
+          "2",
+          "1959.5"
+        ],
+        [
+          "10",
+          "6",
+          "1992.4"
+        ]
+      ],
+      "bua_min_rounded": 1960,
+      "bua_max_rounded": 1992
+    },
+    {
+      "facade_style": "bold",
+      "bedrooms": 3,
+      "label": "B",
+      "layout": "bold-b",
+      "bua_min": 1959.0,
+      "bua_max": 1959.8,
+      "bathrooms": 3.5,
+      "maids_room": true,
+      "ground_floor_bedroom": false,
+      "page": 3,
+      "mirrored": true,
+      "occurrences": [
+        [
+          "6",
+          "3",
+          "1959.8"
+        ],
+        [
+          "6",
+          "5",
+          "1959.5"
+        ],
+        [
+          "10",
+          "3",
+          "1959.7"
+        ],
+        [
+          "10",
+          "7",
+          "1959.0"
+        ]
+      ],
+      "bua_min_rounded": 1959,
+      "bua_max_rounded": 1960
+    },
+    {
+      "facade_style": "bold",
+      "bedrooms": 3,
+      "label": "C",
+      "layout": "bold-c",
+      "bua_min": 1896.0,
+      "bua_max": 1899.3,
+      "bathrooms": 3.5,
+      "maids_room": true,
+      "ground_floor_bedroom": false,
+      "page": 4,
+      "mirrored": false,
+      "occurrences": [
+        [
+          "8",
+          "2",
+          "1899.3"
+        ],
+        [
+          "8",
+          "4",
+          "1898.2"
+        ],
+        [
+          "8",
+          "6",
+          "1898.2"
+        ],
+        [
+          "10",
+          "4",
+          "1896.0"
+        ],
+        [
+          "10",
+          "8",
+          "1898.3"
+        ]
+      ],
+      "bua_min_rounded": 1896,
+      "bua_max_rounded": 1899
+    },
+    {
+      "facade_style": "bold",
+      "bedrooms": 3,
+      "label": "D",
+      "layout": "bold-d",
+      "bua_min": 1895.6,
+      "bua_max": 1928.9,
+      "bathrooms": 3.5,
+      "maids_room": true,
+      "ground_floor_bedroom": false,
+      "page": 5,
+      "mirrored": true,
+      "occurrences": [
+        [
+          "10",
+          "5",
+          "1928.9"
+        ],
+        [
+          "10",
+          "9",
+          "1895.6"
+        ],
+        [
+          "8",
+          "3",
+          "1898.2"
+        ],
+        [
+          "8",
+          "5",
+          "1898.2"
+        ],
+        [
+          "8",
+          "7",
+          "1899.3"
+        ]
+      ],
+      "bua_min_rounded": 1896,
+      "bua_max_rounded": 1929
+    },
+    {
+      "facade_style": "bold",
+      "bedrooms": 4,
+      "label": "A",
+      "layout": "bold-a",
+      "bua_min": 2284.3,
+      "bua_max": 2284.4,
+      "bathrooms": 4.0,
+      "maids_room": true,
+      "ground_floor_bedroom": true,
+      "page": 6,
+      "mirrored": false,
+      "occurrences": [
+        [
+          "6",
+          "1",
+          "2284.4"
+        ],
+        [
+          "10",
+          "1",
+          "2284.3"
+        ]
+      ],
+      "bua_min_rounded": 2284,
+      "bua_max_rounded": 2284
+    },
+    {
+      "facade_style": "bold",
+      "bedrooms": 4,
+      "label": "B",
+      "layout": "bold-b",
+      "bua_min": 2284.3,
+      "bua_max": 2284.4,
+      "bathrooms": 4.0,
+      "maids_room": true,
+      "ground_floor_bedroom": true,
+      "page": 7,
+      "mirrored": true,
+      "occurrences": [
+        [
+          "6",
+          "6",
+          "2284.4"
+        ],
+        [
+          "10",
+          "10",
+          "2284.3"
+        ]
+      ],
+      "bua_min_rounded": 2284,
+      "bua_max_rounded": 2284
+    },
+    {
+      "facade_style": "bold",
+      "bedrooms": 4,
+      "label": "C",
+      "layout": "bold-c",
+      "bua_min": 2346.3,
+      "bua_max": 2346.3,
+      "bathrooms": 4.0,
+      "maids_room": true,
+      "ground_floor_bedroom": true,
+      "page": 8,
+      "mirrored": false,
+      "occurrences": [
+        [
+          "8",
+          "1",
+          "2346.3"
+        ]
+      ],
+      "bua_min_rounded": 2346,
+      "bua_max_rounded": 2346
+    },
+    {
+      "facade_style": "bold",
+      "bedrooms": 4,
+      "label": "D",
+      "layout": "bold-d",
+      "bua_min": 2346.3,
+      "bua_max": 2346.3,
+      "bathrooms": 4.0,
+      "maids_room": true,
+      "ground_floor_bedroom": true,
+      "page": 9,
+      "mirrored": true,
+      "occurrences": [
+        [
+          "8",
+          "8",
+          "2346.3"
+        ]
+      ],
+      "bua_min_rounded": 2346,
+      "bua_max_rounded": 2346
+    },
+    {
+      "facade_style": "sleek",
+      "bedrooms": 3,
+      "label": "A",
+      "layout": "sleek-a",
+      "bua_min": 2009.2,
+      "bua_max": 2043.8,
+      "bathrooms": 3.5,
+      "maids_room": true,
+      "ground_floor_bedroom": false,
+      "page": 10,
+      "mirrored": false,
+      "occurrences": [
+        [
+          "6",
+          "2",
+          "2009.2"
+        ],
+        [
+          "6",
+          "4",
+          "2010.0"
+        ],
+        [
+          "10",
+          "2",
+          "2009.2"
+        ],
+        [
+          "10",
+          "6",
+          "2043.8"
+        ]
+      ],
+      "bua_min_rounded": 2009,
+      "bua_max_rounded": 2044
+    },
+    {
+      "facade_style": "sleek",
+      "bedrooms": 3,
+      "label": "B",
+      "layout": "sleek-b",
+      "bua_min": 2009.2,
+      "bua_max": 2011.1,
+      "bathrooms": 3.5,
+      "maids_room": true,
+      "ground_floor_bedroom": false,
+      "page": 11,
+      "mirrored": true,
+      "occurrences": [
+        [
+          "6",
+          "3",
+          "2010.0"
+        ],
+        [
+          "6",
+          "5",
+          "2009.2"
+        ],
+        [
+          "10",
+          "3",
+          "2011.1"
+        ],
+        [
+          "10",
+          "7",
+          "2010.5"
+        ]
+      ],
+      "bua_min_rounded": 2009,
+      "bua_max_rounded": 2011
+    },
+    {
+      "facade_style": "sleek",
+      "bedrooms": 3,
+      "label": "C",
+      "layout": "sleek-c",
+      "bua_min": 1903.2,
+      "bua_max": 1906.4,
+      "bathrooms": 3.5,
+      "maids_room": true,
+      "ground_floor_bedroom": false,
+      "page": 12,
+      "mirrored": false,
+      "occurrences": [
+        [
+          "8",
+          "2",
+          "1906.4"
+        ],
+        [
+          "8",
+          "4",
+          "1905.9"
+        ],
+        [
+          "8",
+          "6",
+          "1905.9"
+        ],
+        [
+          "10",
+          "4",
+          "1903.7"
+        ],
+        [
+          "10",
+          "8",
+          "1903.2"
+        ]
+      ],
+      "bua_min_rounded": 1903,
+      "bua_max_rounded": 1906
+    },
+    {
+      "facade_style": "sleek",
+      "bedrooms": 3,
+      "label": "D",
+      "layout": "sleek-d",
+      "bua_min": 1903.0,
+      "bua_max": 1938.2,
+      "bathrooms": 3.5,
+      "maids_room": true,
+      "ground_floor_bedroom": false,
+      "page": 13,
+      "mirrored": true,
+      "occurrences": [
+        [
+          "10",
+          "5",
+          "1938.2"
+        ],
+        [
+          "10",
+          "9",
+          "1903.0"
+        ],
+        [
+          "8",
+          "3",
+          "1905.9"
+        ],
+        [
+          "8",
+          "5",
+          "1905.9"
+        ],
+        [
+          "8",
+          "7",
+          "1907.2"
+        ]
+      ],
+      "bua_min_rounded": 1903,
+      "bua_max_rounded": 1938
+    },
+    {
+      "facade_style": "sleek",
+      "bedrooms": 4,
+      "label": "A",
+      "layout": "sleek-a",
+      "bua_min": 2264.5,
+      "bua_max": 2264.6,
+      "bathrooms": 4.0,
+      "maids_room": true,
+      "ground_floor_bedroom": true,
+      "page": 14,
+      "mirrored": false,
+      "occurrences": [
+        [
+          "6",
+          "1",
+          "2264.6"
+        ],
+        [
+          "10",
+          "1",
+          "2264.5"
+        ]
+      ],
+      "bua_min_rounded": 2264,
+      "bua_max_rounded": 2265
+    },
+    {
+      "facade_style": "sleek",
+      "bedrooms": 4,
+      "label": "B",
+      "layout": "sleek-b",
+      "bua_min": 2264.6,
+      "bua_max": 2265.1,
+      "bathrooms": 4.0,
+      "maids_room": true,
+      "ground_floor_bedroom": true,
+      "page": 15,
+      "mirrored": true,
+      "occurrences": [
+        [
+          "6",
+          "6",
+          "2264.6"
+        ],
+        [
+          "10",
+          "10",
+          "2265.1"
+        ]
+      ],
+      "bua_min_rounded": 2265,
+      "bua_max_rounded": 2265
+    },
+    {
+      "facade_style": "sleek",
+      "bedrooms": 4,
+      "label": "C",
+      "layout": "sleek-c",
+      "bua_min": 2344.7,
+      "bua_max": 2344.7,
+      "bathrooms": 4.0,
+      "maids_room": true,
+      "ground_floor_bedroom": true,
+      "page": 16,
+      "mirrored": false,
+      "occurrences": [
+        [
+          "8",
+          "1",
+          "2344.7"
+        ]
+      ],
+      "bua_min_rounded": 2345,
+      "bua_max_rounded": 2345
+    },
+    {
+      "facade_style": "sleek",
+      "bedrooms": 4,
+      "label": "D",
+      "layout": "sleek-d",
+      "bua_min": 2345.7,
+      "bua_max": 2345.7,
+      "bathrooms": 4.0,
+      "maids_room": true,
+      "ground_floor_bedroom": true,
+      "page": 17,
+      "mirrored": true,
+      "occurrences": [
+        [
+          "8",
+          "8",
+          "2345.7"
+        ]
+      ],
+      "bua_min_rounded": 2346,
+      "bua_max_rounded": 2346
+    }
+  ],
+  "arrays": {
+    "bold-6": {
+      "2": {
+        "layout": "bold-a",
+        "bedrooms": 3,
+        "label": "A",
+        "bua": 1959.5,
+        "page": 2
+      },
+      "4": {
+        "layout": "bold-a",
+        "bedrooms": 3,
+        "label": "A",
+        "bua": 1959.8,
+        "page": 2
+      },
+      "3": {
+        "layout": "bold-b",
+        "bedrooms": 3,
+        "label": "B",
+        "bua": 1959.8,
+        "page": 3
+      },
+      "5": {
+        "layout": "bold-b",
+        "bedrooms": 3,
+        "label": "B",
+        "bua": 1959.5,
+        "page": 3
+      },
+      "1": {
+        "layout": "bold-a",
+        "bedrooms": 4,
+        "label": "A",
+        "bua": 2284.4,
+        "page": 6
+      },
+      "6": {
+        "layout": "bold-b",
+        "bedrooms": 4,
+        "label": "B",
+        "bua": 2284.4,
+        "page": 7
+      }
+    },
+    "bold-10": {
+      "2": {
+        "layout": "bold-a",
+        "bedrooms": 3,
+        "label": "A",
+        "bua": 1959.5,
+        "page": 2
+      },
+      "6": {
+        "layout": "bold-a",
+        "bedrooms": 3,
+        "label": "A",
+        "bua": 1992.4,
+        "page": 2
+      },
+      "3": {
+        "layout": "bold-b",
+        "bedrooms": 3,
+        "label": "B",
+        "bua": 1959.7,
+        "page": 3
+      },
+      "7": {
+        "layout": "bold-b",
+        "bedrooms": 3,
+        "label": "B",
+        "bua": 1959.0,
+        "page": 3
+      },
+      "4": {
+        "layout": "bold-c",
+        "bedrooms": 3,
+        "label": "C",
+        "bua": 1896.0,
+        "page": 4
+      },
+      "8": {
+        "layout": "bold-c",
+        "bedrooms": 3,
+        "label": "C",
+        "bua": 1898.3,
+        "page": 4
+      },
+      "5": {
+        "layout": "bold-d",
+        "bedrooms": 3,
+        "label": "D",
+        "bua": 1928.9,
+        "page": 5
+      },
+      "9": {
+        "layout": "bold-d",
+        "bedrooms": 3,
+        "label": "D",
+        "bua": 1895.6,
+        "page": 5
+      },
+      "1": {
+        "layout": "bold-a",
+        "bedrooms": 4,
+        "label": "A",
+        "bua": 2284.3,
+        "page": 6
+      },
+      "10": {
+        "layout": "bold-b",
+        "bedrooms": 4,
+        "label": "B",
+        "bua": 2284.3,
+        "page": 7
+      }
+    },
+    "bold-8": {
+      "2": {
+        "layout": "bold-c",
+        "bedrooms": 3,
+        "label": "C",
+        "bua": 1899.3,
+        "page": 4
+      },
+      "4": {
+        "layout": "bold-c",
+        "bedrooms": 3,
+        "label": "C",
+        "bua": 1898.2,
+        "page": 4
+      },
+      "6": {
+        "layout": "bold-c",
+        "bedrooms": 3,
+        "label": "C",
+        "bua": 1898.2,
+        "page": 4
+      },
+      "3": {
+        "layout": "bold-d",
+        "bedrooms": 3,
+        "label": "D",
+        "bua": 1898.2,
+        "page": 5
+      },
+      "5": {
+        "layout": "bold-d",
+        "bedrooms": 3,
+        "label": "D",
+        "bua": 1898.2,
+        "page": 5
+      },
+      "7": {
+        "layout": "bold-d",
+        "bedrooms": 3,
+        "label": "D",
+        "bua": 1899.3,
+        "page": 5
+      },
+      "1": {
+        "layout": "bold-c",
+        "bedrooms": 4,
+        "label": "C",
+        "bua": 2346.3,
+        "page": 8
+      },
+      "8": {
+        "layout": "bold-d",
+        "bedrooms": 4,
+        "label": "D",
+        "bua": 2346.3,
+        "page": 9
+      }
+    },
+    "sleek-6": {
+      "2": {
+        "layout": "sleek-a",
+        "bedrooms": 3,
+        "label": "A",
+        "bua": 2009.2,
+        "page": 10
+      },
+      "4": {
+        "layout": "sleek-a",
+        "bedrooms": 3,
+        "label": "A",
+        "bua": 2010.0,
+        "page": 10
+      },
+      "3": {
+        "layout": "sleek-b",
+        "bedrooms": 3,
+        "label": "B",
+        "bua": 2010.0,
+        "page": 11
+      },
+      "5": {
+        "layout": "sleek-b",
+        "bedrooms": 3,
+        "label": "B",
+        "bua": 2009.2,
+        "page": 11
+      },
+      "1": {
+        "layout": "sleek-a",
+        "bedrooms": 4,
+        "label": "A",
+        "bua": 2264.6,
+        "page": 14
+      },
+      "6": {
+        "layout": "sleek-b",
+        "bedrooms": 4,
+        "label": "B",
+        "bua": 2264.6,
+        "page": 15
+      }
+    },
+    "sleek-10": {
+      "2": {
+        "layout": "sleek-a",
+        "bedrooms": 3,
+        "label": "A",
+        "bua": 2009.2,
+        "page": 10
+      },
+      "6": {
+        "layout": "sleek-a",
+        "bedrooms": 3,
+        "label": "A",
+        "bua": 2043.8,
+        "page": 10
+      },
+      "3": {
+        "layout": "sleek-b",
+        "bedrooms": 3,
+        "label": "B",
+        "bua": 2011.1,
+        "page": 11
+      },
+      "7": {
+        "layout": "sleek-b",
+        "bedrooms": 3,
+        "label": "B",
+        "bua": 2010.5,
+        "page": 11
+      },
+      "4": {
+        "layout": "sleek-c",
+        "bedrooms": 3,
+        "label": "C",
+        "bua": 1903.7,
+        "page": 12
+      },
+      "8": {
+        "layout": "sleek-c",
+        "bedrooms": 3,
+        "label": "C",
+        "bua": 1903.2,
+        "page": 12
+      },
+      "5": {
+        "layout": "sleek-d",
+        "bedrooms": 3,
+        "label": "D",
+        "bua": 1938.2,
+        "page": 13
+      },
+      "9": {
+        "layout": "sleek-d",
+        "bedrooms": 3,
+        "label": "D",
+        "bua": 1903.0,
+        "page": 13
+      },
+      "1": {
+        "layout": "sleek-a",
+        "bedrooms": 4,
+        "label": "A",
+        "bua": 2264.5,
+        "page": 14
+      },
+      "10": {
+        "layout": "sleek-b",
+        "bedrooms": 4,
+        "label": "B",
+        "bua": 2265.1,
+        "page": 15
+      }
+    },
+    "sleek-8": {
+      "2": {
+        "layout": "sleek-c",
+        "bedrooms": 3,
+        "label": "C",
+        "bua": 1906.4,
+        "page": 12
+      },
+      "4": {
+        "layout": "sleek-c",
+        "bedrooms": 3,
+        "label": "C",
+        "bua": 1905.9,
+        "page": 12
+      },
+      "6": {
+        "layout": "sleek-c",
+        "bedrooms": 3,
+        "label": "C",
+        "bua": 1905.9,
+        "page": 12
+      },
+      "3": {
+        "layout": "sleek-d",
+        "bedrooms": 3,
+        "label": "D",
+        "bua": 1905.9,
+        "page": 13
+      },
+      "5": {
+        "layout": "sleek-d",
+        "bedrooms": 3,
+        "label": "D",
+        "bua": 1905.9,
+        "page": 13
+      },
+      "7": {
+        "layout": "sleek-d",
+        "bedrooms": 3,
+        "label": "D",
+        "bua": 1907.2,
+        "page": 13
+      },
+      "1": {
+        "layout": "sleek-c",
+        "bedrooms": 4,
+        "label": "C",
+        "bua": 2344.7,
+        "page": 16
+      },
+      "8": {
+        "layout": "sleek-d",
+        "bedrooms": 4,
+        "label": "D",
+        "bua": 2345.7,
+        "page": 17
+      }
+    }
+  }
+}

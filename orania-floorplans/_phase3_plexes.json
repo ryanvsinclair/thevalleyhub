@@ -1,0 +1,190 @@
+{
+  "thresh": 55.0,
+  "plexes": [
+    {
+      "start": 1,
+      "end": 10,
+      "size": 10
+    },
+    {
+      "start": 11,
+      "end": 20,
+      "size": 10
+    },
+    {
+      "start": 21,
+      "end": 28,
+      "size": 8
+    },
+    {
+      "start": 29,
+      "end": 36,
+      "size": 8
+    },
+    {
+      "start": 37,
+      "end": 42,
+      "size": 6
+    },
+    {
+      "start": 43,
+      "end": 50,
+      "size": 8
+    },
+    {
+      "start": 51,
+      "end": 58,
+      "size": 8
+    },
+    {
+      "start": 59,
+      "end": 66,
+      "size": 8
+    },
+    {
+      "start": 67,
+      "end": 74,
+      "size": 8
+    },
+    {
+      "start": 75,
+      "end": 80,
+      "size": 6
+    },
+    {
+      "start": 81,
+      "end": 90,
+      "size": 10
+    },
+    {
+      "start": 91,
+      "end": 100,
+      "size": 10
+    },
+    {
+      "start": 101,
+      "end": 110,
+      "size": 10
+    },
+    {
+      "start": 111,
+      "end": 120,
+      "size": 10
+    },
+    {
+      "start": 121,
+      "end": 130,
+      "size": 10
+    },
+    {
+      "start": 131,
+      "end": 140,
+      "size": 10
+    },
+    {
+      "start": 141,
+      "end": 150,
+      "size": 10
+    },
+    {
+      "start": 151,
+      "end": 160,
+      "size": 10
+    },
+    {
+      "start": 161,
+      "end": 170,
+      "size": 10
+    },
+    {
+      "start": 171,
+      "end": 180,
+      "size": 10
+    },
+    {
+      "start": 181,
+      "end": 190,
+      "size": 10
+    },
+    {
+      "start": 191,
+      "end": 196,
+      "size": 6
+    },
+    {
+      "start": 197,
+      "end": 202,
+      "size": 6
+    },
+    {
+      "start": 203,
+      "end": 210,
+      "size": 8
+    },
+    {
+      "start": 211,
+      "end": 216,
+      "size": 6
+    },
+    {
+      "start": 217,
+      "end": 222,
+      "size": 6
+    },
+    {
+      "start": 223,
+      "end": 228,
+      "size": 6
+    },
+    {
+      "start": 229,
+      "end": 236,
+      "size": 8
+    },
+    {
+      "start": 237,
+      "end": 244,
+      "size": 8
+    },
+    {
+      "start": 245,
+      "end": 254,
+      "size": 10
+    },
+    {
+      "start": 255,
+      "end": 262,
+      "size": 8
+    },
+    {
+      "start": 263,
+      "end": 272,
+      "size": 10
+    },
+    {
+      "start": 273,
+      "end": 282,
+      "size": 10
+    },
+    {
+      "start": 283,
+      "end": 290,
+      "size": 8
+    },
+    {
+      "start": 291,
+      "end": 300,
+      "size": 10
+    },
+    {
+      "start": 301,
+      "end": 308,
+      "size": 8
+    }
+  ],
+  "sizes": {
+    "10": 17,
+    "8": 12,
+    "6": 7
+  }
+}

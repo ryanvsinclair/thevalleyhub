@@ -1,0 +1,668 @@
+-- Lillia Batch 001 promotion. Ray authorized 2026-08-14.
+-- 4 unit_types, 2 facades, 14 draft places, payment/summary/body,
+-- unit_count, plex_config, 64 plexes, 406 units. Media § after Storage upload.
+
+do $$ begin
+  if (select count(*) from plexes p join clusters c on c.id=p.cluster_id where c.slug='lillia') > 0
+     or (select count(*) from units u join clusters c on c.id=u.cluster_id where c.slug='lillia') > 0 then
+    raise exception 'Lillia units/plexes already present';
+  end if;
+end $$;
+
+delete from unit_types where cluster_id = (select id from clusters where slug = 'lillia');
+
+insert into unit_types (
+  cluster_id, bedrooms, label, layout, bua_min, bua_max, unit_count,
+  bathrooms, maids_room, ground_floor_bedroom, confidence, source_id, sort_order
+)
+select c.id, v.bedrooms, v.label, v.layout, v.bua_min, v.bua_max, v.unit_count,
+       v.bathrooms, v.maids_room, v.gf_bed, 'corroborated',
+       'a1000000-0000-4000-8000-000000000001'::uuid, v.sort_order
+from clusters c
+join (values
+  (3, 'A', 'jade-a', 2132, 2158, 142, 3.5, true, false, 10),
+  (3, 'B', 'pearl-b', 2182, 2190, 136, 3.5, true, false, 20),
+  (4, 'A', 'jade-a', 2973, 2988, 64, 4.0, true, true, 30),
+  (4, 'B', 'pearl-b', 2777, 2792, 64, 4.0, true, true, 40)
+) as v(bedrooms, label, layout, bua_min, bua_max, unit_count, bathrooms, maids_room, gf_bed, sort_order) on true
+where c.slug = 'lillia';
+
+insert into facade_style_descriptions (
+  cluster_id, style_name, description, sort_order, confidence, source_id
+)
+select c.id, v.style_name, v.description, v.sort_order, 'corroborated',
+       'a1000000-0000-4000-8000-000000000001'::uuid
+from clusters c
+join (values
+  ('Jade', $jade$Graceful Elegance in Curves: Harmoniously blending linear forms with elegant curves, this design style embodies both warmth and fluidity, echoing the natural rhythms of nature’s ebb and flow.$jade$, 10),
+  ('Pearl', $pearl$The Linear Marvel: This design is a tribute to modern artistry, with its precise, straight lines. Its edgy and sleek design embodies both strength and contemporary elegance.$pearl$, 20)
+) as v(style_name, description, sort_order) on true
+where c.slug = 'lillia';
+
+insert into places (
+  slug, name, category, subcategory, cluster_id, in_community,
+  confidence, source_id, state, sort_order
+)
+select
+  v.slug, v.name, v.category, v.subcategory,
+  (select id from clusters where slug = 'lillia'),
+  true, 'corroborated', 'a1000000-0000-4000-8000-000000000001'::uuid, 'draft', v.sort_order
+from (values
+  ('lillia-entry-feature', 'Entry Feature', 'gathering', 'entry', 1),
+  ('lillia-flexible-lawn', 'Flexible Lawn', 'gathering', 'lawn', 2),
+  ('lillia-shaded-playground-toddlers', 'Shaded Playground – Toddlers', 'family', 'playground', 3),
+  ('lillia-picnic-tables', 'Picnic Tables', 'gathering', 'picnic', 4),
+  ('lillia-community-centre', 'Community Centre', 'gathering', 'community-centre', 5),
+  ('lillia-picnic-lawn', 'Picnic Lawn', 'gathering', 'picnic', 6),
+  ('lillia-guard-house', 'Guard House', 'gathering', 'gatehouse', 7),
+  ('lillia-informal-half-basketball', 'Informal Half Basketball', 'recreation', 'basketball', 8),
+  ('lillia-multi-use-games-court', 'Multi-Use Games Court', 'recreation', 'multi-use-court', 9),
+  ('lillia-outdoor-fitness', 'Outdoor Fitness', 'recreation', 'fitness-station', 10),
+  ('lillia-splash-pad', 'Splash Pad', 'family', 'splash-pad', 11),
+  ('lillia-kids-play-area', 'Kids Play Area', 'family', 'kids-play', 12),
+  ('lillia-bbq-picnic-area', 'BBQ / Picnic Area', 'gathering', 'bbq', 13),
+  ('lillia-dog-park', 'Dog Park', 'family', 'dog-park', 14)
+) as v(slug, name, category, subcategory, sort_order);
+
+update clusters set
+  unit_count = 406,
+  facade_styles = array['Jade','Pearl'],
+  single_row = true,
+  plex_config = '64 · 4/6/8',
+  payment_plan = $pay$10% Down Payment (On Booking) · 10% 1st Instalment (May 2024) · 10% 2nd Instalment (Sep 2024) · 10% 3rd Instalment (Jan 2025) · 10% 4th Instalment (May 2025, 30% construction) · 10% 5th Instalment (Oct 2025, 50% construction) · 15% 6th Instalment (Mar 2026, 70% construction) · 15% 7th Instalment (Aug 2026, 90% construction) · 10% 8th Instalment (Jan 2027, 100% construction)$pay$,
+  summary = $sum$Lillia is a gated single-row townhouse cluster in The Valley — 406 Jade and Pearl homes (3- and 4-bedroom) arranged in 4-, 6- and 8-plexes beside The Valley Park and Golden Beach.$sum$,
+  body = $body$Located in The Valley, Lillia is a gated community that goes beyond being a simple commitment to sustainability and an ode to nature’s inspiration. A harmonious blend of opulence and serenity, brought to life by verdant landscaping and impeccable amenities.\n\nLillia offers a selection tailored to different preferences, featuring both 3-bedroom and 4-bedroom townhouses in two architectural styles — Jade and Pearl. Three-bedroom homes sit as middle units; four-bedroom homes are the corners, with a ground-floor bedroom and a larger L-shaped garden. Residents also enjoy access to The Valley Park, Golden Beach, and The Valley’s shared amenities.$body$,
+  confidence = 'corroborated',
+  source_id = 'a1000000-0000-4000-8000-000000000001'::uuid
+where slug = 'lillia';
+-- handover_target left at 2027-03-31 (payment final instalment Jan 2027 — Ray to resolve)
+
+insert into plexes (cluster_id, plex_size, street_side, range_start, range_end, confidence, source_id)
+select c.id, v.plex_size, v.street_side, v.range_start, v.range_end,
+       'unverified', 'a1000000-0000-4000-8000-000000000001'::uuid
+from clusters c
+join (values
+  (1, 8, 8, 'down'),
+  (9, 14, 6, 'down'),
+  (15, 20, 6, 'down'),
+  (21, 28, 8, 'down'),
+  (29, 32, 4, 'right'),
+  (33, 40, 8, 'right'),
+  (41, 48, 8, 'right'),
+  (49, 56, 8, 'left'),
+  (57, 64, 8, 'left'),
+  (65, 68, 4, 'up'),
+  (69, 76, 8, 'right'),
+  (77, 84, 8, 'right'),
+  (85, 88, 4, 'left'),
+  (89, 94, 6, 'left'),
+  (95, 98, 4, 'left'),
+  (99, 102, 4, 'right'),
+  (103, 108, 6, 'right'),
+  (109, 112, 4, 'right'),
+  (113, 116, 4, 'down'),
+  (117, 124, 8, 'up'),
+  (125, 132, 8, 'up'),
+  (133, 136, 4, 'up'),
+  (137, 144, 8, 'up'),
+  (145, 152, 8, 'left'),
+  (153, 160, 8, 'left'),
+  (161, 164, 4, 'up'),
+  (165, 172, 8, 'right'),
+  (173, 180, 8, 'right'),
+  (181, 188, 8, 'down'),
+  (189, 192, 4, 'up'),
+  (193, 196, 4, 'up'),
+  (197, 200, 4, 'down'),
+  (201, 208, 8, 'left'),
+  (209, 212, 4, 'up'),
+  (213, 216, 4, 'up'),
+  (217, 224, 8, 'right'),
+  (225, 232, 8, 'left'),
+  (233, 240, 8, 'left'),
+  (241, 244, 4, 'up'),
+  (245, 252, 8, 'right'),
+  (253, 260, 8, 'right'),
+  (261, 266, 6, 'up'),
+  (267, 272, 6, 'up'),
+  (273, 280, 8, 'up'),
+  (281, 286, 6, 'up'),
+  (287, 290, 4, 'down'),
+  (291, 294, 4, 'left'),
+  (295, 300, 6, 'left'),
+  (301, 304, 4, 'left'),
+  (305, 308, 4, 'right'),
+  (309, 314, 6, 'right'),
+  (315, 318, 4, 'right'),
+  (319, 326, 8, 'left'),
+  (327, 334, 8, 'left'),
+  (335, 338, 4, 'up'),
+  (339, 346, 8, 'right'),
+  (347, 354, 8, 'right'),
+  (355, 360, 6, 'left'),
+  (361, 368, 8, 'left'),
+  (369, 374, 6, 'left'),
+  (375, 382, 8, 'down'),
+  (383, 390, 8, 'down'),
+  (391, 398, 8, 'down'),
+  (399, 406, 8, 'down')
+) as v(range_start, range_end, plex_size, street_side) on true
+where c.slug = 'lillia';
+
+insert into units (
+  cluster_id, unit_type_id, unit_number, plot_number, facade_style, bua,
+  plex_id, th_position, confidence, source_id
+)
+select
+  c.id,
+  ut.id,
+  v.unit_number::text,
+  v.plot_number,
+  v.facade_style,
+  v.bua,
+  p.id,
+  v.th_position,
+  'unverified',
+  'a1000000-0000-4000-8000-000000000001'::uuid
+from clusters c
+join (values
+  (1, 1, 'jade', 4, 'jade-a', 2976.11, 1, 8, 8, 'down', 8),
+  (2, 2, 'jade', 3, 'jade-a', 2158.38, 1, 8, 8, 'down', 7),
+  (3, 3, 'jade', 3, 'jade-a', 2149.77, 1, 8, 8, 'down', 6),
+  (4, 4, 'jade', 3, 'jade-a', 2150.2, 1, 8, 8, 'down', 5),
+  (5, 5, 'jade', 3, 'jade-a', 2150.2, 1, 8, 8, 'down', 4),
+  (6, 6, 'jade', 3, 'jade-a', 2149.77, 1, 8, 8, 'down', 3),
+  (7, 7, 'jade', 3, 'jade-a', 2158.38, 1, 8, 8, 'down', 2),
+  (8, 8, 'jade', 4, 'jade-a', 2976.11, 1, 8, 8, 'down', 1),
+  (9, 9, 'pearl', 4, 'pearl-b', 2777.09, 9, 14, 6, 'down', 6),
+  (10, 10, 'pearl', 3, 'pearl-b', 2190.35, 9, 14, 6, 'down', 5),
+  (11, 11, 'pearl', 3, 'pearl-b', 2181.73, 9, 14, 6, 'down', 4),
+  (12, 12, 'pearl', 3, 'pearl-b', 2181.73, 9, 14, 6, 'down', 3),
+  (13, 13, 'pearl', 3, 'pearl-b', 2190.35, 9, 14, 6, 'down', 2),
+  (14, 14, 'pearl', 4, 'pearl-b', 2777.09, 9, 14, 6, 'down', 1),
+  (15, 15, 'jade', 4, 'jade-a', 2973.42, 15, 20, 6, 'down', 6),
+  (16, 16, 'jade', 3, 'jade-a', 2158.48, 15, 20, 6, 'down', 5),
+  (17, 17, 'jade', 3, 'jade-a', 2149.98, 15, 20, 6, 'down', 4),
+  (18, 18, 'jade', 3, 'jade-a', 2149.98, 15, 20, 6, 'down', 3),
+  (19, 19, 'jade', 3, 'jade-a', 2158.48, 15, 20, 6, 'down', 2),
+  (20, 20, 'jade', 4, 'jade-a', 2973.42, 15, 20, 6, 'down', 1),
+  (21, 21, 'pearl', 4, 'pearl-b', 2779.78, 21, 28, 8, 'down', 8),
+  (22, 22, 'pearl', 3, 'pearl-b', 2190.24, 21, 28, 8, 'down', 7),
+  (23, 23, 'pearl', 3, 'pearl-b', 2181.84, 21, 28, 8, 'down', 6),
+  (24, 24, 'pearl', 3, 'pearl-b', 2181.84, 21, 28, 8, 'down', 5),
+  (25, 25, 'pearl', 3, 'pearl-b', 2181.84, 21, 28, 8, 'down', 4),
+  (26, 26, 'pearl', 3, 'pearl-b', 2181.84, 21, 28, 8, 'down', 3),
+  (27, 27, 'pearl', 3, 'pearl-b', 2190.24, 21, 28, 8, 'down', 2),
+  (28, 28, 'pearl', 4, 'pearl-b', 2779.78, 21, 28, 8, 'down', 1),
+  (29, 29, 'jade', 4, 'jade-a', 2987.95, 29, 32, 4, 'right', 4),
+  (30, 30, 'jade', 3, 'jade-a', 2131.9, 29, 32, 4, 'right', 3),
+  (31, 31, 'jade', 3, 'jade-a', 2131.9, 29, 32, 4, 'right', 2),
+  (32, 32, 'jade', 4, 'jade-a', 2987.95, 29, 32, 4, 'right', 1),
+  (33, 33, 'pearl', 4, 'pearl-b', 2779.78, 33, 40, 8, 'right', 8),
+  (34, 34, 'pearl', 3, 'pearl-b', 2190.24, 33, 40, 8, 'right', 7),
+  (35, 35, 'pearl', 3, 'pearl-b', 2181.84, 33, 40, 8, 'right', 6),
+  (36, 36, 'pearl', 3, 'pearl-b', 2181.84, 33, 40, 8, 'right', 5),
+  (37, 37, 'pearl', 3, 'pearl-b', 2181.84, 33, 40, 8, 'right', 4),
+  (38, 38, 'pearl', 3, 'pearl-b', 2181.84, 33, 40, 8, 'right', 3),
+  (39, 39, 'pearl', 3, 'pearl-b', 2190.24, 33, 40, 8, 'right', 2),
+  (40, 40, 'pearl', 4, 'pearl-b', 2779.78, 33, 40, 8, 'right', 1),
+  (41, 41, 'jade', 4, 'jade-a', 2976.11, 41, 48, 8, 'right', 8),
+  (42, 42, 'jade', 3, 'jade-a', 2158.38, 41, 48, 8, 'right', 7),
+  (43, 43, 'jade', 3, 'jade-a', 2149.77, 41, 48, 8, 'right', 6),
+  (44, 44, 'jade', 3, 'jade-a', 2150.2, 41, 48, 8, 'right', 5),
+  (45, 45, 'jade', 3, 'jade-a', 2150.2, 41, 48, 8, 'right', 4),
+  (46, 46, 'jade', 3, 'jade-a', 2149.77, 41, 48, 8, 'right', 3),
+  (47, 47, 'jade', 3, 'jade-a', 2158.38, 41, 48, 8, 'right', 2),
+  (48, 48, 'jade', 4, 'jade-a', 2976.11, 41, 48, 8, 'right', 1),
+  (49, 49, 'pearl', 4, 'pearl-b', 2779.78, 49, 56, 8, 'left', 8),
+  (50, 50, 'pearl', 3, 'pearl-b', 2190.24, 49, 56, 8, 'left', 7),
+  (51, 51, 'pearl', 3, 'pearl-b', 2181.84, 49, 56, 8, 'left', 6),
+  (52, 52, 'pearl', 3, 'pearl-b', 2181.84, 49, 56, 8, 'left', 5),
+  (53, 53, 'pearl', 3, 'pearl-b', 2181.84, 49, 56, 8, 'left', 4),
+  (54, 54, 'pearl', 3, 'pearl-b', 2181.84, 49, 56, 8, 'left', 3),
+  (55, 55, 'pearl', 3, 'pearl-b', 2190.24, 49, 56, 8, 'left', 2),
+  (56, 56, 'pearl', 4, 'pearl-b', 2779.78, 49, 56, 8, 'left', 1),
+  (57, 57, 'jade', 4, 'jade-a', 2976.11, 57, 64, 8, 'left', 8),
+  (58, 58, 'jade', 3, 'jade-a', 2158.38, 57, 64, 8, 'left', 7),
+  (59, 59, 'jade', 3, 'jade-a', 2149.77, 57, 64, 8, 'left', 6),
+  (60, 60, 'jade', 3, 'jade-a', 2150.2, 57, 64, 8, 'left', 5),
+  (61, 61, 'jade', 3, 'jade-a', 2150.2, 57, 64, 8, 'left', 4),
+  (62, 62, 'jade', 3, 'jade-a', 2149.77, 57, 64, 8, 'left', 3),
+  (63, 63, 'jade', 3, 'jade-a', 2158.38, 57, 64, 8, 'left', 2),
+  (64, 64, 'jade', 4, 'jade-a', 2976.11, 57, 64, 8, 'left', 1),
+  (65, 65, 'pearl', 4, 'pearl-b', 2791.62, 65, 68, 4, 'up', 4),
+  (66, 66, 'pearl', 3, 'pearl-b', 2184.96, 65, 68, 4, 'up', 3),
+  (67, 67, 'pearl', 3, 'pearl-b', 2184.86, 65, 68, 4, 'up', 2),
+  (68, 68, 'pearl', 4, 'pearl-b', 2791.62, 65, 68, 4, 'up', 1),
+  (69, 69, 'pearl', 4, 'pearl-b', 2779.78, 69, 76, 8, 'right', 8),
+  (70, 70, 'pearl', 3, 'pearl-b', 2190.24, 69, 76, 8, 'right', 7),
+  (71, 71, 'pearl', 3, 'pearl-b', 2181.84, 69, 76, 8, 'right', 6),
+  (72, 72, 'pearl', 3, 'pearl-b', 2181.84, 69, 76, 8, 'right', 5),
+  (73, 73, 'pearl', 3, 'pearl-b', 2181.84, 69, 76, 8, 'right', 4),
+  (74, 74, 'pearl', 3, 'pearl-b', 2181.84, 69, 76, 8, 'right', 3),
+  (75, 75, 'pearl', 3, 'pearl-b', 2190.24, 69, 76, 8, 'right', 2),
+  (76, 76, 'pearl', 4, 'pearl-b', 2779.78, 69, 76, 8, 'right', 1),
+  (77, 77, 'jade', 4, 'jade-a', 2976.11, 77, 84, 8, 'right', 8),
+  (78, 78, 'jade', 3, 'jade-a', 2158.38, 77, 84, 8, 'right', 7),
+  (79, 79, 'jade', 3, 'jade-a', 2149.77, 77, 84, 8, 'right', 6),
+  (80, 80, 'jade', 3, 'jade-a', 2150.2, 77, 84, 8, 'right', 5),
+  (81, 81, 'jade', 3, 'jade-a', 2150.2, 77, 84, 8, 'right', 4),
+  (82, 82, 'jade', 3, 'jade-a', 2149.77, 77, 84, 8, 'right', 3),
+  (83, 83, 'jade', 3, 'jade-a', 2158.38, 77, 84, 8, 'right', 2),
+  (84, 84, 'jade', 4, 'jade-a', 2976.11, 77, 84, 8, 'right', 1),
+  (85, 85, 'pearl', 4, 'pearl-b', 2791.62, 85, 88, 4, 'left', 4),
+  (86, 86, 'pearl', 3, 'pearl-b', 2184.96, 85, 88, 4, 'left', 3),
+  (87, 87, 'pearl', 3, 'pearl-b', 2184.86, 85, 88, 4, 'left', 2),
+  (88, 88, 'pearl', 4, 'pearl-b', 2791.62, 85, 88, 4, 'left', 1),
+  (89, 89, 'jade', 4, 'jade-a', 2973.42, 89, 94, 6, 'left', 6),
+  (90, 90, 'jade', 3, 'jade-a', 2158.48, 89, 94, 6, 'left', 5),
+  (91, 91, 'jade', 3, 'jade-a', 2149.98, 89, 94, 6, 'left', 4),
+  (92, 92, 'jade', 3, 'jade-a', 2149.98, 89, 94, 6, 'left', 3),
+  (93, 93, 'jade', 3, 'jade-a', 2158.48, 89, 94, 6, 'left', 2),
+  (94, 94, 'jade', 4, 'jade-a', 2973.42, 89, 94, 6, 'left', 1),
+  (95, 95, 'pearl', 4, 'pearl-b', 2791.62, 95, 98, 4, 'left', 4),
+  (96, 96, 'pearl', 3, 'pearl-b', 2184.96, 95, 98, 4, 'left', 3),
+  (97, 97, 'pearl', 3, 'pearl-b', 2184.86, 95, 98, 4, 'left', 2),
+  (98, 98, 'pearl', 4, 'pearl-b', 2791.62, 95, 98, 4, 'left', 1),
+  (99, 99, 'jade', 4, 'jade-a', 2987.95, 99, 102, 4, 'right', 4),
+  (100, 100, 'jade', 3, 'jade-a', 2131.9, 99, 102, 4, 'right', 3),
+  (101, 101, 'jade', 3, 'jade-a', 2131.9, 99, 102, 4, 'right', 2),
+  (102, 102, 'jade', 4, 'jade-a', 2987.95, 99, 102, 4, 'right', 1),
+  (103, 103, 'pearl', 4, 'pearl-b', 2777.09, 103, 108, 6, 'right', 6),
+  (104, 104, 'pearl', 3, 'pearl-b', 2190.35, 103, 108, 6, 'right', 5),
+  (105, 105, 'pearl', 3, 'pearl-b', 2181.73, 103, 108, 6, 'right', 4),
+  (106, 106, 'pearl', 3, 'pearl-b', 2181.73, 103, 108, 6, 'right', 3),
+  (107, 107, 'pearl', 3, 'pearl-b', 2190.35, 103, 108, 6, 'right', 2),
+  (108, 108, 'pearl', 4, 'pearl-b', 2777.09, 103, 108, 6, 'right', 1),
+  (109, 109, 'jade', 4, 'jade-a', 2987.95, 109, 112, 4, 'right', 4),
+  (110, 110, 'jade', 3, 'jade-a', 2131.9, 109, 112, 4, 'right', 3),
+  (111, 111, 'jade', 3, 'jade-a', 2131.9, 109, 112, 4, 'right', 2),
+  (112, 112, 'jade', 4, 'jade-a', 2987.95, 109, 112, 4, 'right', 1),
+  (113, 113, 'pearl', 4, 'pearl-b', 2791.62, 113, 116, 4, 'down', 4),
+  (114, 114, 'pearl', 3, 'pearl-b', 2184.96, 113, 116, 4, 'down', 3),
+  (115, 115, 'pearl', 3, 'pearl-b', 2184.86, 113, 116, 4, 'down', 2),
+  (116, 116, 'pearl', 4, 'pearl-b', 2791.62, 113, 116, 4, 'down', 1),
+  (117, 117, 'pearl', 4, 'pearl-b', 2779.78, 117, 124, 8, 'up', 8),
+  (118, 118, 'pearl', 3, 'pearl-b', 2190.24, 117, 124, 8, 'up', 7),
+  (119, 119, 'pearl', 3, 'pearl-b', 2181.84, 117, 124, 8, 'up', 6),
+  (120, 120, 'pearl', 3, 'pearl-b', 2181.84, 117, 124, 8, 'up', 5),
+  (121, 121, 'pearl', 3, 'pearl-b', 2181.84, 117, 124, 8, 'up', 4),
+  (122, 122, 'pearl', 3, 'pearl-b', 2181.84, 117, 124, 8, 'up', 3),
+  (123, 123, 'pearl', 3, 'pearl-b', 2190.24, 117, 124, 8, 'up', 2),
+  (124, 124, 'pearl', 4, 'pearl-b', 2779.78, 117, 124, 8, 'up', 1),
+  (125, 125, 'jade', 4, 'jade-a', 2976.11, 125, 132, 8, 'up', 8),
+  (126, 126, 'jade', 3, 'jade-a', 2158.38, 125, 132, 8, 'up', 7),
+  (127, 127, 'jade', 3, 'jade-a', 2149.77, 125, 132, 8, 'up', 6),
+  (128, 128, 'jade', 3, 'jade-a', 2150.2, 125, 132, 8, 'up', 5),
+  (129, 129, 'jade', 3, 'jade-a', 2150.2, 125, 132, 8, 'up', 4),
+  (130, 130, 'jade', 3, 'jade-a', 2149.77, 125, 132, 8, 'up', 3),
+  (131, 131, 'jade', 3, 'jade-a', 2158.38, 125, 132, 8, 'up', 2),
+  (132, 132, 'jade', 4, 'jade-a', 2976.11, 125, 132, 8, 'up', 1),
+  (133, 133, 'pearl', 4, 'pearl-b', 2791.62, 133, 136, 4, 'up', 4),
+  (134, 134, 'pearl', 3, 'pearl-b', 2184.96, 133, 136, 4, 'up', 3),
+  (135, 135, 'pearl', 3, 'pearl-b', 2184.86, 133, 136, 4, 'up', 2),
+  (136, 136, 'pearl', 4, 'pearl-b', 2791.62, 133, 136, 4, 'up', 1),
+  (137, 137, 'jade', 4, 'jade-a', 2976.11, 137, 144, 8, 'up', 8),
+  (138, 138, 'jade', 3, 'jade-a', 2158.38, 137, 144, 8, 'up', 7),
+  (139, 139, 'jade', 3, 'jade-a', 2149.77, 137, 144, 8, 'up', 6),
+  (140, 140, 'jade', 3, 'jade-a', 2150.2, 137, 144, 8, 'up', 5),
+  (141, 141, 'jade', 3, 'jade-a', 2150.2, 137, 144, 8, 'up', 4),
+  (142, 142, 'jade', 3, 'jade-a', 2149.77, 137, 144, 8, 'up', 3),
+  (143, 143, 'jade', 3, 'jade-a', 2158.38, 137, 144, 8, 'up', 2),
+  (144, 144, 'jade', 4, 'jade-a', 2976.11, 137, 144, 8, 'up', 1),
+  (145, 145, 'pearl', 4, 'pearl-b', 2779.78, 145, 152, 8, 'left', 8),
+  (146, 146, 'pearl', 3, 'pearl-b', 2190.24, 145, 152, 8, 'left', 7),
+  (147, 147, 'pearl', 3, 'pearl-b', 2181.84, 145, 152, 8, 'left', 6),
+  (148, 148, 'pearl', 3, 'pearl-b', 2181.84, 145, 152, 8, 'left', 5),
+  (149, 149, 'pearl', 3, 'pearl-b', 2181.84, 145, 152, 8, 'left', 4),
+  (150, 150, 'pearl', 3, 'pearl-b', 2181.84, 145, 152, 8, 'left', 3),
+  (151, 151, 'pearl', 3, 'pearl-b', 2190.24, 145, 152, 8, 'left', 2),
+  (152, 152, 'pearl', 4, 'pearl-b', 2779.78, 145, 152, 8, 'left', 1),
+  (153, 153, 'jade', 4, 'jade-a', 2976.11, 153, 160, 8, 'left', 8),
+  (154, 154, 'jade', 3, 'jade-a', 2158.38, 153, 160, 8, 'left', 7),
+  (155, 155, 'jade', 3, 'jade-a', 2149.77, 153, 160, 8, 'left', 6),
+  (156, 156, 'jade', 3, 'jade-a', 2150.2, 153, 160, 8, 'left', 5),
+  (157, 157, 'jade', 3, 'jade-a', 2150.2, 153, 160, 8, 'left', 4),
+  (158, 158, 'jade', 3, 'jade-a', 2149.77, 153, 160, 8, 'left', 3),
+  (159, 159, 'jade', 3, 'jade-a', 2158.38, 153, 160, 8, 'left', 2),
+  (160, 160, 'jade', 4, 'jade-a', 2976.11, 153, 160, 8, 'left', 1),
+  (161, 161, 'jade', 4, 'jade-a', 2987.95, 161, 164, 4, 'up', 4),
+  (162, 162, 'jade', 3, 'jade-a', 2131.9, 161, 164, 4, 'up', 3),
+  (163, 163, 'jade', 3, 'jade-a', 2131.9, 161, 164, 4, 'up', 2),
+  (164, 164, 'jade', 4, 'jade-a', 2987.95, 161, 164, 4, 'up', 1),
+  (165, 165, 'pearl', 4, 'pearl-b', 2779.78, 165, 172, 8, 'right', 8),
+  (166, 166, 'pearl', 3, 'pearl-b', 2190.24, 165, 172, 8, 'right', 7),
+  (167, 167, 'pearl', 3, 'pearl-b', 2181.84, 165, 172, 8, 'right', 6),
+  (168, 168, 'pearl', 3, 'pearl-b', 2181.84, 165, 172, 8, 'right', 5),
+  (169, 169, 'pearl', 3, 'pearl-b', 2181.84, 165, 172, 8, 'right', 4),
+  (170, 170, 'pearl', 3, 'pearl-b', 2181.84, 165, 172, 8, 'right', 3),
+  (171, 171, 'pearl', 3, 'pearl-b', 2190.24, 165, 172, 8, 'right', 2),
+  (172, 172, 'pearl', 4, 'pearl-b', 2779.78, 165, 172, 8, 'right', 1),
+  (173, 173, 'jade', 4, 'jade-a', 2976.11, 173, 180, 8, 'right', 8),
+  (174, 174, 'jade', 3, 'jade-a', 2158.38, 173, 180, 8, 'right', 7),
+  (175, 175, 'jade', 3, 'jade-a', 2149.77, 173, 180, 8, 'right', 6),
+  (176, 176, 'jade', 3, 'jade-a', 2150.2, 173, 180, 8, 'right', 5),
+  (177, 177, 'jade', 3, 'jade-a', 2150.2, 173, 180, 8, 'right', 4),
+  (178, 178, 'jade', 3, 'jade-a', 2149.77, 173, 180, 8, 'right', 3),
+  (179, 179, 'jade', 3, 'jade-a', 2158.38, 173, 180, 8, 'right', 2),
+  (180, 180, 'jade', 4, 'jade-a', 2976.11, 173, 180, 8, 'right', 1),
+  (181, 181, 'jade', 4, 'jade-a', 2976.11, 181, 188, 8, 'down', 8),
+  (182, 182, 'jade', 3, 'jade-a', 2158.38, 181, 188, 8, 'down', 7),
+  (183, 183, 'jade', 3, 'jade-a', 2149.77, 181, 188, 8, 'down', 6),
+  (184, 184, 'jade', 3, 'jade-a', 2150.2, 181, 188, 8, 'down', 5),
+  (185, 185, 'jade', 3, 'jade-a', 2150.2, 181, 188, 8, 'down', 4),
+  (186, 186, 'jade', 3, 'jade-a', 2149.77, 181, 188, 8, 'down', 3),
+  (187, 187, 'jade', 3, 'jade-a', 2158.38, 181, 188, 8, 'down', 2),
+  (188, 188, 'jade', 4, 'jade-a', 2976.11, 181, 188, 8, 'down', 1),
+  (189, 189, 'jade', 4, 'jade-a', 2987.95, 189, 192, 4, 'up', 4),
+  (190, 190, 'jade', 3, 'jade-a', 2131.9, 189, 192, 4, 'up', 3),
+  (191, 191, 'jade', 3, 'jade-a', 2131.9, 189, 192, 4, 'up', 2),
+  (192, 192, 'jade', 4, 'jade-a', 2987.95, 189, 192, 4, 'up', 1),
+  (193, 193, 'pearl', 4, 'pearl-b', 2791.62, 193, 196, 4, 'up', 4),
+  (194, 194, 'pearl', 3, 'pearl-b', 2184.96, 193, 196, 4, 'up', 3),
+  (195, 195, 'pearl', 3, 'pearl-b', 2184.86, 193, 196, 4, 'up', 2),
+  (196, 196, 'pearl', 4, 'pearl-b', 2791.62, 193, 196, 4, 'up', 1),
+  (197, 197, 'pearl', 4, 'pearl-b', 2791.62, 197, 200, 4, 'down', 4),
+  (198, 198, 'pearl', 3, 'pearl-b', 2184.96, 197, 200, 4, 'down', 3),
+  (199, 199, 'pearl', 3, 'pearl-b', 2184.86, 197, 200, 4, 'down', 2),
+  (200, 200, 'pearl', 4, 'pearl-b', 2791.62, 197, 200, 4, 'down', 1),
+  (201, 201, 'jade', 4, 'jade-a', 2976.11, 201, 208, 8, 'left', 8),
+  (202, 202, 'jade', 3, 'jade-a', 2158.38, 201, 208, 8, 'left', 7),
+  (203, 203, 'jade', 3, 'jade-a', 2149.77, 201, 208, 8, 'left', 6),
+  (204, 204, 'jade', 3, 'jade-a', 2150.2, 201, 208, 8, 'left', 5),
+  (205, 205, 'jade', 3, 'jade-a', 2150.2, 201, 208, 8, 'left', 4),
+  (206, 206, 'jade', 3, 'jade-a', 2149.77, 201, 208, 8, 'left', 3),
+  (207, 207, 'jade', 3, 'jade-a', 2158.38, 201, 208, 8, 'left', 2),
+  (208, 208, 'jade', 4, 'jade-a', 2976.11, 201, 208, 8, 'left', 1),
+  (209, 209, 'pearl', 4, 'pearl-b', 2791.62, 209, 212, 4, 'up', 4),
+  (210, 210, 'pearl', 3, 'pearl-b', 2184.96, 209, 212, 4, 'up', 3),
+  (211, 211, 'pearl', 3, 'pearl-b', 2184.86, 209, 212, 4, 'up', 2),
+  (212, 212, 'pearl', 4, 'pearl-b', 2791.62, 209, 212, 4, 'up', 1),
+  (213, 213, 'jade', 4, 'jade-a', 2987.95, 213, 216, 4, 'up', 4),
+  (214, 214, 'jade', 3, 'jade-a', 2131.9, 213, 216, 4, 'up', 3),
+  (215, 215, 'jade', 3, 'jade-a', 2131.9, 213, 216, 4, 'up', 2),
+  (216, 216, 'jade', 4, 'jade-a', 2987.95, 213, 216, 4, 'up', 1),
+  (217, 217, 'pearl', 4, 'pearl-b', 2779.78, 217, 224, 8, 'right', 8),
+  (218, 218, 'pearl', 3, 'pearl-b', 2190.24, 217, 224, 8, 'right', 7),
+  (219, 219, 'pearl', 3, 'pearl-b', 2181.84, 217, 224, 8, 'right', 6),
+  (220, 220, 'pearl', 3, 'pearl-b', 2181.84, 217, 224, 8, 'right', 5),
+  (221, 221, 'pearl', 3, 'pearl-b', 2181.84, 217, 224, 8, 'right', 4),
+  (222, 222, 'pearl', 3, 'pearl-b', 2181.84, 217, 224, 8, 'right', 3),
+  (223, 223, 'pearl', 3, 'pearl-b', 2190.24, 217, 224, 8, 'right', 2),
+  (224, 224, 'pearl', 4, 'pearl-b', 2779.78, 217, 224, 8, 'right', 1),
+  (225, 225, 'pearl', 4, 'pearl-b', 2779.78, 225, 232, 8, 'left', 8),
+  (226, 226, 'pearl', 3, 'pearl-b', 2190.24, 225, 232, 8, 'left', 7),
+  (227, 227, 'pearl', 3, 'pearl-b', 2181.84, 225, 232, 8, 'left', 6),
+  (228, 228, 'pearl', 3, 'pearl-b', 2181.84, 225, 232, 8, 'left', 5),
+  (229, 229, 'pearl', 3, 'pearl-b', 2181.84, 225, 232, 8, 'left', 4),
+  (230, 230, 'pearl', 3, 'pearl-b', 2181.84, 225, 232, 8, 'left', 3),
+  (231, 231, 'pearl', 3, 'pearl-b', 2190.24, 225, 232, 8, 'left', 2),
+  (232, 232, 'pearl', 4, 'pearl-b', 2779.78, 225, 232, 8, 'left', 1),
+  (233, 233, 'jade', 4, 'jade-a', 2976.11, 233, 240, 8, 'left', 8),
+  (234, 234, 'jade', 3, 'jade-a', 2158.38, 233, 240, 8, 'left', 7),
+  (235, 235, 'jade', 3, 'jade-a', 2149.77, 233, 240, 8, 'left', 6),
+  (236, 236, 'jade', 3, 'jade-a', 2150.2, 233, 240, 8, 'left', 5),
+  (237, 237, 'jade', 3, 'jade-a', 2150.2, 233, 240, 8, 'left', 4),
+  (238, 238, 'jade', 3, 'jade-a', 2149.77, 233, 240, 8, 'left', 3),
+  (239, 239, 'jade', 3, 'jade-a', 2158.38, 233, 240, 8, 'left', 2),
+  (240, 240, 'jade', 4, 'jade-a', 2976.11, 233, 240, 8, 'left', 1),
+  (241, 241, 'pearl', 4, 'pearl-b', 2791.62, 241, 244, 4, 'up', 4),
+  (242, 242, 'pearl', 3, 'pearl-b', 2184.96, 241, 244, 4, 'up', 3),
+  (243, 243, 'pearl', 3, 'pearl-b', 2184.86, 241, 244, 4, 'up', 2),
+  (244, 244, 'pearl', 4, 'pearl-b', 2791.62, 241, 244, 4, 'up', 1),
+  (245, 245, 'pearl', 4, 'pearl-b', 2779.78, 245, 252, 8, 'right', 8),
+  (246, 246, 'pearl', 3, 'pearl-b', 2190.24, 245, 252, 8, 'right', 7),
+  (247, 247, 'pearl', 3, 'pearl-b', 2181.84, 245, 252, 8, 'right', 6),
+  (248, 248, 'pearl', 3, 'pearl-b', 2181.84, 245, 252, 8, 'right', 5),
+  (249, 249, 'pearl', 3, 'pearl-b', 2181.84, 245, 252, 8, 'right', 4),
+  (250, 250, 'pearl', 3, 'pearl-b', 2181.84, 245, 252, 8, 'right', 3),
+  (251, 251, 'pearl', 3, 'pearl-b', 2190.24, 245, 252, 8, 'right', 2),
+  (252, 252, 'pearl', 4, 'pearl-b', 2779.78, 245, 252, 8, 'right', 1),
+  (253, 253, 'jade', 4, 'jade-a', 2976.11, 253, 260, 8, 'right', 8),
+  (254, 254, 'jade', 3, 'jade-a', 2158.38, 253, 260, 8, 'right', 7),
+  (255, 255, 'jade', 3, 'jade-a', 2149.77, 253, 260, 8, 'right', 6),
+  (256, 256, 'jade', 3, 'jade-a', 2150.2, 253, 260, 8, 'right', 5),
+  (257, 257, 'jade', 3, 'jade-a', 2150.2, 253, 260, 8, 'right', 4),
+  (258, 258, 'jade', 3, 'jade-a', 2149.77, 253, 260, 8, 'right', 3),
+  (259, 259, 'jade', 3, 'jade-a', 2158.38, 253, 260, 8, 'right', 2),
+  (260, 260, 'jade', 4, 'jade-a', 2976.11, 253, 260, 8, 'right', 1),
+  (261, 261, 'pearl', 4, 'pearl-b', 2777.09, 261, 266, 6, 'up', 6),
+  (262, 262, 'pearl', 3, 'pearl-b', 2190.35, 261, 266, 6, 'up', 5),
+  (263, 263, 'pearl', 3, 'pearl-b', 2181.73, 261, 266, 6, 'up', 4),
+  (264, 264, 'pearl', 3, 'pearl-b', 2181.73, 261, 266, 6, 'up', 3),
+  (265, 265, 'pearl', 3, 'pearl-b', 2190.35, 261, 266, 6, 'up', 2),
+  (266, 266, 'pearl', 4, 'pearl-b', 2777.09, 261, 266, 6, 'up', 1),
+  (267, 267, 'jade', 4, 'jade-a', 2973.42, 267, 272, 6, 'up', 6),
+  (268, 268, 'jade', 3, 'jade-a', 2158.48, 267, 272, 6, 'up', 5),
+  (269, 269, 'jade', 3, 'jade-a', 2149.98, 267, 272, 6, 'up', 4),
+  (270, 270, 'jade', 3, 'jade-a', 2149.98, 267, 272, 6, 'up', 3),
+  (271, 271, 'jade', 3, 'jade-a', 2158.48, 267, 272, 6, 'up', 2),
+  (272, 272, 'jade', 4, 'jade-a', 2973.42, 267, 272, 6, 'up', 1),
+  (273, 273, 'pearl', 4, 'pearl-b', 2779.78, 273, 280, 8, 'up', 8),
+  (274, 274, 'pearl', 3, 'pearl-b', 2190.24, 273, 280, 8, 'up', 7),
+  (275, 275, 'pearl', 3, 'pearl-b', 2181.84, 273, 280, 8, 'up', 6),
+  (276, 276, 'pearl', 3, 'pearl-b', 2181.84, 273, 280, 8, 'up', 5),
+  (277, 277, 'pearl', 3, 'pearl-b', 2181.84, 273, 280, 8, 'up', 4),
+  (278, 278, 'pearl', 3, 'pearl-b', 2181.84, 273, 280, 8, 'up', 3),
+  (279, 279, 'pearl', 3, 'pearl-b', 2190.24, 273, 280, 8, 'up', 2),
+  (280, 280, 'pearl', 4, 'pearl-b', 2779.78, 273, 280, 8, 'up', 1),
+  (281, 281, 'jade', 4, 'jade-a', 2973.42, 281, 286, 6, 'up', 6),
+  (282, 282, 'jade', 3, 'jade-a', 2158.48, 281, 286, 6, 'up', 5),
+  (283, 283, 'jade', 3, 'jade-a', 2149.98, 281, 286, 6, 'up', 4),
+  (284, 284, 'jade', 3, 'jade-a', 2149.98, 281, 286, 6, 'up', 3),
+  (285, 285, 'jade', 3, 'jade-a', 2158.48, 281, 286, 6, 'up', 2),
+  (286, 286, 'jade', 4, 'jade-a', 2973.42, 281, 286, 6, 'up', 1),
+  (287, 287, 'jade', 4, 'jade-a', 2987.95, 287, 290, 4, 'down', 4),
+  (288, 288, 'jade', 3, 'jade-a', 2131.9, 287, 290, 4, 'down', 3),
+  (289, 289, 'jade', 3, 'jade-a', 2131.9, 287, 290, 4, 'down', 2),
+  (290, 290, 'jade', 4, 'jade-a', 2987.95, 287, 290, 4, 'down', 1),
+  (291, 291, 'pearl', 4, 'pearl-b', 2791.62, 291, 294, 4, 'left', 4),
+  (292, 292, 'pearl', 3, 'pearl-b', 2184.96, 291, 294, 4, 'left', 3),
+  (293, 293, 'pearl', 3, 'pearl-b', 2184.86, 291, 294, 4, 'left', 2),
+  (294, 294, 'pearl', 4, 'pearl-b', 2791.62, 291, 294, 4, 'left', 1),
+  (295, 295, 'jade', 4, 'jade-a', 2973.42, 295, 300, 6, 'left', 6),
+  (296, 296, 'jade', 3, 'jade-a', 2158.48, 295, 300, 6, 'left', 5),
+  (297, 297, 'jade', 3, 'jade-a', 2149.98, 295, 300, 6, 'left', 4),
+  (298, 298, 'jade', 3, 'jade-a', 2149.98, 295, 300, 6, 'left', 3),
+  (299, 299, 'jade', 3, 'jade-a', 2158.48, 295, 300, 6, 'left', 2),
+  (300, 300, 'jade', 4, 'jade-a', 2973.42, 295, 300, 6, 'left', 1),
+  (301, 301, 'pearl', 4, 'pearl-b', 2791.62, 301, 304, 4, 'left', 4),
+  (302, 302, 'pearl', 3, 'pearl-b', 2184.96, 301, 304, 4, 'left', 3),
+  (303, 303, 'pearl', 3, 'pearl-b', 2184.86, 301, 304, 4, 'left', 2),
+  (304, 304, 'pearl', 4, 'pearl-b', 2791.62, 301, 304, 4, 'left', 1),
+  (305, 305, 'jade', 4, 'jade-a', 2987.95, 305, 308, 4, 'right', 4),
+  (306, 306, 'jade', 3, 'jade-a', 2131.9, 305, 308, 4, 'right', 3),
+  (307, 307, 'jade', 3, 'jade-a', 2131.9, 305, 308, 4, 'right', 2),
+  (308, 308, 'jade', 4, 'jade-a', 2987.95, 305, 308, 4, 'right', 1),
+  (309, 309, 'pearl', 4, 'pearl-b', 2777.09, 309, 314, 6, 'right', 6),
+  (310, 310, 'pearl', 3, 'pearl-b', 2190.35, 309, 314, 6, 'right', 5),
+  (311, 311, 'pearl', 3, 'pearl-b', 2181.73, 309, 314, 6, 'right', 4),
+  (312, 312, 'pearl', 3, 'pearl-b', 2181.73, 309, 314, 6, 'right', 3),
+  (313, 313, 'pearl', 3, 'pearl-b', 2190.35, 309, 314, 6, 'right', 2),
+  (314, 314, 'pearl', 4, 'pearl-b', 2777.09, 309, 314, 6, 'right', 1),
+  (315, 315, 'jade', 4, 'jade-a', 2987.95, 315, 318, 4, 'right', 4),
+  (316, 316, 'jade', 3, 'jade-a', 2131.9, 315, 318, 4, 'right', 3),
+  (317, 317, 'jade', 3, 'jade-a', 2131.9, 315, 318, 4, 'right', 2),
+  (318, 318, 'jade', 4, 'jade-a', 2987.95, 315, 318, 4, 'right', 1),
+  (319, 319, 'pearl', 4, 'pearl-b', 2779.78, 319, 326, 8, 'left', 8),
+  (320, 320, 'pearl', 3, 'pearl-b', 2190.24, 319, 326, 8, 'left', 7),
+  (321, 321, 'pearl', 3, 'pearl-b', 2181.84, 319, 326, 8, 'left', 6),
+  (322, 322, 'pearl', 3, 'pearl-b', 2181.84, 319, 326, 8, 'left', 5),
+  (323, 323, 'pearl', 3, 'pearl-b', 2181.84, 319, 326, 8, 'left', 4),
+  (324, 324, 'pearl', 3, 'pearl-b', 2181.84, 319, 326, 8, 'left', 3),
+  (325, 325, 'pearl', 3, 'pearl-b', 2190.24, 319, 326, 8, 'left', 2),
+  (326, 326, 'pearl', 4, 'pearl-b', 2779.78, 319, 326, 8, 'left', 1),
+  (327, 327, 'jade', 4, 'jade-a', 2976.11, 327, 334, 8, 'left', 8),
+  (328, 328, 'jade', 3, 'jade-a', 2158.38, 327, 334, 8, 'left', 7),
+  (329, 329, 'jade', 3, 'jade-a', 2149.77, 327, 334, 8, 'left', 6),
+  (330, 330, 'jade', 3, 'jade-a', 2150.2, 327, 334, 8, 'left', 5),
+  (331, 331, 'jade', 3, 'jade-a', 2150.2, 327, 334, 8, 'left', 4),
+  (332, 332, 'jade', 3, 'jade-a', 2149.77, 327, 334, 8, 'left', 3),
+  (333, 333, 'jade', 3, 'jade-a', 2158.38, 327, 334, 8, 'left', 2),
+  (334, 334, 'jade', 4, 'jade-a', 2976.11, 327, 334, 8, 'left', 1),
+  (335, 335, 'jade', 4, 'jade-a', 2987.95, 335, 338, 4, 'up', 4),
+  (336, 336, 'jade', 3, 'jade-a', 2131.9, 335, 338, 4, 'up', 3),
+  (337, 337, 'jade', 3, 'jade-a', 2131.9, 335, 338, 4, 'up', 2),
+  (338, 338, 'jade', 4, 'jade-a', 2987.95, 335, 338, 4, 'up', 1),
+  (339, 339, 'pearl', 4, 'pearl-b', 2779.78, 339, 346, 8, 'right', 8),
+  (340, 340, 'pearl', 3, 'pearl-b', 2190.24, 339, 346, 8, 'right', 7),
+  (341, 341, 'pearl', 3, 'pearl-b', 2181.84, 339, 346, 8, 'right', 6),
+  (342, 342, 'pearl', 3, 'pearl-b', 2181.84, 339, 346, 8, 'right', 5),
+  (343, 343, 'pearl', 3, 'pearl-b', 2181.84, 339, 346, 8, 'right', 4),
+  (344, 344, 'pearl', 3, 'pearl-b', 2181.84, 339, 346, 8, 'right', 3),
+  (345, 345, 'pearl', 3, 'pearl-b', 2190.24, 339, 346, 8, 'right', 2),
+  (346, 346, 'pearl', 4, 'pearl-b', 2779.78, 339, 346, 8, 'right', 1),
+  (347, 347, 'jade', 4, 'jade-a', 2976.11, 347, 354, 8, 'right', 8),
+  (348, 348, 'jade', 3, 'jade-a', 2158.38, 347, 354, 8, 'right', 7),
+  (349, 349, 'jade', 3, 'jade-a', 2149.77, 347, 354, 8, 'right', 6),
+  (350, 350, 'jade', 3, 'jade-a', 2150.2, 347, 354, 8, 'right', 5),
+  (351, 351, 'jade', 3, 'jade-a', 2150.2, 347, 354, 8, 'right', 4),
+  (352, 352, 'jade', 3, 'jade-a', 2149.77, 347, 354, 8, 'right', 3),
+  (353, 353, 'jade', 3, 'jade-a', 2158.38, 347, 354, 8, 'right', 2),
+  (354, 354, 'jade', 4, 'jade-a', 2976.11, 347, 354, 8, 'right', 1),
+  (355, 355, 'pearl', 4, 'pearl-b', 2777.09, 355, 360, 6, 'left', 6),
+  (356, 356, 'pearl', 3, 'pearl-b', 2190.35, 355, 360, 6, 'left', 5),
+  (357, 357, 'pearl', 3, 'pearl-b', 2181.73, 355, 360, 6, 'left', 4),
+  (358, 358, 'pearl', 3, 'pearl-b', 2181.73, 355, 360, 6, 'left', 3),
+  (359, 359, 'pearl', 3, 'pearl-b', 2190.35, 355, 360, 6, 'left', 2),
+  (360, 360, 'pearl', 4, 'pearl-b', 2777.09, 355, 360, 6, 'left', 1),
+  (361, 361, 'jade', 4, 'jade-a', 2976.11, 361, 368, 8, 'left', 8),
+  (362, 362, 'jade', 3, 'jade-a', 2158.38, 361, 368, 8, 'left', 7),
+  (363, 363, 'jade', 3, 'jade-a', 2149.77, 361, 368, 8, 'left', 6),
+  (364, 364, 'jade', 3, 'jade-a', 2150.2, 361, 368, 8, 'left', 5),
+  (365, 365, 'jade', 3, 'jade-a', 2150.2, 361, 368, 8, 'left', 4),
+  (366, 366, 'jade', 3, 'jade-a', 2149.77, 361, 368, 8, 'left', 3),
+  (367, 367, 'jade', 3, 'jade-a', 2158.38, 361, 368, 8, 'left', 2),
+  (368, 368, 'jade', 4, 'jade-a', 2976.11, 361, 368, 8, 'left', 1),
+  (369, 369, 'pearl', 4, 'pearl-b', 2777.09, 369, 374, 6, 'left', 6),
+  (370, 370, 'pearl', 3, 'pearl-b', 2190.35, 369, 374, 6, 'left', 5),
+  (371, 371, 'pearl', 3, 'pearl-b', 2181.73, 369, 374, 6, 'left', 4),
+  (372, 372, 'pearl', 3, 'pearl-b', 2181.73, 369, 374, 6, 'left', 3),
+  (373, 373, 'pearl', 3, 'pearl-b', 2190.35, 369, 374, 6, 'left', 2),
+  (374, 374, 'pearl', 4, 'pearl-b', 2777.09, 369, 374, 6, 'left', 1),
+  (375, 375, 'jade', 4, 'jade-a', 2976.11, 375, 382, 8, 'down', 8),
+  (376, 376, 'jade', 3, 'jade-a', 2158.38, 375, 382, 8, 'down', 7),
+  (377, 377, 'jade', 3, 'jade-a', 2149.77, 375, 382, 8, 'down', 6),
+  (378, 378, 'jade', 3, 'jade-a', 2150.2, 375, 382, 8, 'down', 5),
+  (379, 379, 'jade', 3, 'jade-a', 2150.2, 375, 382, 8, 'down', 4),
+  (380, 380, 'jade', 3, 'jade-a', 2149.77, 375, 382, 8, 'down', 3),
+  (381, 381, 'jade', 3, 'jade-a', 2158.38, 375, 382, 8, 'down', 2),
+  (382, 382, 'jade', 4, 'jade-a', 2976.11, 375, 382, 8, 'down', 1),
+  (383, 383, 'pearl', 4, 'pearl-b', 2779.78, 383, 390, 8, 'down', 8),
+  (384, 384, 'pearl', 3, 'pearl-b', 2190.24, 383, 390, 8, 'down', 7),
+  (385, 385, 'pearl', 3, 'pearl-b', 2181.84, 383, 390, 8, 'down', 6),
+  (386, 386, 'pearl', 3, 'pearl-b', 2181.84, 383, 390, 8, 'down', 5),
+  (387, 387, 'pearl', 3, 'pearl-b', 2181.84, 383, 390, 8, 'down', 4),
+  (388, 388, 'pearl', 3, 'pearl-b', 2181.84, 383, 390, 8, 'down', 3),
+  (389, 389, 'pearl', 3, 'pearl-b', 2190.24, 383, 390, 8, 'down', 2),
+  (390, 390, 'pearl', 4, 'pearl-b', 2779.78, 383, 390, 8, 'down', 1),
+  (391, 391, 'jade', 4, 'jade-a', 2976.11, 391, 398, 8, 'down', 8),
+  (392, 392, 'jade', 3, 'jade-a', 2158.38, 391, 398, 8, 'down', 7),
+  (393, 393, 'jade', 3, 'jade-a', 2149.77, 391, 398, 8, 'down', 6),
+  (394, 394, 'jade', 3, 'jade-a', 2150.2, 391, 398, 8, 'down', 5),
+  (395, 395, 'jade', 3, 'jade-a', 2150.2, 391, 398, 8, 'down', 4),
+  (396, 396, 'jade', 3, 'jade-a', 2149.77, 391, 398, 8, 'down', 3),
+  (397, 397, 'jade', 3, 'jade-a', 2158.38, 391, 398, 8, 'down', 2),
+  (398, 398, 'jade', 4, 'jade-a', 2976.11, 391, 398, 8, 'down', 1),
+  (399, 399, 'pearl', 4, 'pearl-b', 2779.78, 399, 406, 8, 'down', 8),
+  (400, 400, 'pearl', 3, 'pearl-b', 2190.24, 399, 406, 8, 'down', 7),
+  (401, 401, 'pearl', 3, 'pearl-b', 2181.84, 399, 406, 8, 'down', 6),
+  (402, 402, 'pearl', 3, 'pearl-b', 2181.84, 399, 406, 8, 'down', 5),
+  (403, 403, 'pearl', 3, 'pearl-b', 2181.84, 399, 406, 8, 'down', 4),
+  (404, 404, 'pearl', 3, 'pearl-b', 2181.84, 399, 406, 8, 'down', 3),
+  (405, 405, 'pearl', 3, 'pearl-b', 2190.24, 399, 406, 8, 'down', 2),
+  (406, 406, 'pearl', 4, 'pearl-b', 2779.78, 399, 406, 8, 'down', 1)
+) as v(plot_number, unit_number, facade_style, bedrooms, layout, bua, range_start, range_end, plex_size, street_side, th_position) on true
+join unit_types ut on ut.cluster_id = c.id and ut.layout = v.layout and ut.bedrooms = v.bedrooms
+join plexes p on p.cluster_id = c.id and p.range_start = v.range_start and p.range_end = v.range_end
+where c.slug = 'lillia';
+
+-- MEDIA: run after storage upload to media/lillia/*
+insert into media (storage_path, kind, alt_text, caption, credit) values
+  ('lillia/lillia-jade-3br-a.png', 'floorplan', 'Lillia Jade 3BR-A floor plan', 'Jade 3BR-A', 'Emaar Properties'),
+  ('lillia/lillia-jade-3br-a-mirrored.png', 'floorplan', 'Lillia Jade 3BR-A mirrored floor plan', 'Jade 3BR-A mirrored', 'Emaar Properties'),
+  ('lillia/lillia-pearl-3br-b.png', 'floorplan', 'Lillia Pearl 3BR-B floor plan', 'Pearl 3BR-B', 'Emaar Properties'),
+  ('lillia/lillia-pearl-3br-b-mirrored.png', 'floorplan', 'Lillia Pearl 3BR-B mirrored floor plan', 'Pearl 3BR-B mirrored', 'Emaar Properties'),
+  ('lillia/lillia-jade-4br-a.png', 'floorplan', 'Lillia Jade 4BR-A floor plan', 'Jade 4BR-A', 'Emaar Properties'),
+  ('lillia/lillia-jade-4br-a-mirrored.png', 'floorplan', 'Lillia Jade 4BR-A mirrored floor plan', 'Jade 4BR-A mirrored', 'Emaar Properties'),
+  ('lillia/lillia-pearl-4br-b.png', 'floorplan', 'Lillia Pearl 4BR-B floor plan', 'Pearl 4BR-B', 'Emaar Properties'),
+  ('lillia/lillia-pearl-4br-b-mirrored.png', 'floorplan', 'Lillia Pearl 4BR-B mirrored floor plan', 'Pearl 4BR-B mirrored', 'Emaar Properties'),
+  ('lillia/lillia-jade-facade.jpg', 'photo', 'Lillia Jade facade exterior', 'Jade facade', 'Emaar Properties'),
+  ('lillia/lillia-pearl-facade.jpg', 'photo', 'Lillia Pearl facade exterior', 'Pearl facade', 'Emaar Properties'),
+  ('lillia/lillia-cluster-map.jpeg', 'photo', 'Lillia cluster site plan', 'Lillia cluster map', 'Emaar Properties');
+
+insert into media_links (media_id, subject_type, subject_id, is_primary, sort_order)
+select m.id, 'unit_type', ut.id, true, 1
+from media m
+join unit_types ut on ut.cluster_id = (select id from clusters where slug='lillia')
+  and ut.layout = 'jade-a' and ut.bedrooms = 3
+where m.storage_path = 'lillia/lillia-jade-3br-a.png';
+
+insert into media_links (media_id, subject_type, subject_id, is_primary, sort_order)
+select m.id, 'unit_type', ut.id, false, 2
+from media m
+join unit_types ut on ut.cluster_id = (select id from clusters where slug='lillia')
+  and ut.layout = 'jade-a' and ut.bedrooms = 3
+where m.storage_path = 'lillia/lillia-jade-3br-a-mirrored.png';
+
+insert into media_links (media_id, subject_type, subject_id, is_primary, sort_order)
+select m.id, 'unit_type', ut.id, true, 1
+from media m
+join unit_types ut on ut.cluster_id = (select id from clusters where slug='lillia')
+  and ut.layout = 'pearl-b' and ut.bedrooms = 3
+where m.storage_path = 'lillia/lillia-pearl-3br-b.png';
+
+insert into media_links (media_id, subject_type, subject_id, is_primary, sort_order)
+select m.id, 'unit_type', ut.id, false, 2
+from media m
+join unit_types ut on ut.cluster_id = (select id from clusters where slug='lillia')
+  and ut.layout = 'pearl-b' and ut.bedrooms = 3
+where m.storage_path = 'lillia/lillia-pearl-3br-b-mirrored.png';
+
+insert into media_links (media_id, subject_type, subject_id, is_primary, sort_order)
+select m.id, 'unit_type', ut.id, true, 1
+from media m
+join unit_types ut on ut.cluster_id = (select id from clusters where slug='lillia')
+  and ut.layout = 'jade-a' and ut.bedrooms = 4
+where m.storage_path = 'lillia/lillia-jade-4br-a.png';
+
+insert into media_links (media_id, subject_type, subject_id, is_primary, sort_order)
+select m.id, 'unit_type', ut.id, false, 2
+from media m
+join unit_types ut on ut.cluster_id = (select id from clusters where slug='lillia')
+  and ut.layout = 'jade-a' and ut.bedrooms = 4
+where m.storage_path = 'lillia/lillia-jade-4br-a-mirrored.png';
+
+insert into media_links (media_id, subject_type, subject_id, is_primary, sort_order)
+select m.id, 'unit_type', ut.id, true, 1
+from media m
+join unit_types ut on ut.cluster_id = (select id from clusters where slug='lillia')
+  and ut.layout = 'pearl-b' and ut.bedrooms = 4
+where m.storage_path = 'lillia/lillia-pearl-4br-b.png';
+
+insert into media_links (media_id, subject_type, subject_id, is_primary, sort_order)
+select m.id, 'unit_type', ut.id, false, 2
+from media m
+join unit_types ut on ut.cluster_id = (select id from clusters where slug='lillia')
+  and ut.layout = 'pearl-b' and ut.bedrooms = 4
+where m.storage_path = 'lillia/lillia-pearl-4br-b-mirrored.png';
+
+insert into media_links (media_id, subject_type, subject_id, is_primary, sort_order)
+select m.id, 'facade_style_description', f.id, true, 1
+from media m
+join facade_style_descriptions f on f.cluster_id = (select id from clusters where slug='lillia')
+  and f.style_name = 'Jade'
+where m.storage_path = 'lillia/lillia-jade-facade.jpg';
+
+insert into media_links (media_id, subject_type, subject_id, is_primary, sort_order)
+select m.id, 'facade_style_description', f.id, true, 1
+from media m
+join facade_style_descriptions f on f.cluster_id = (select id from clusters where slug='lillia')
+  and f.style_name = 'Pearl'
+where m.storage_path = 'lillia/lillia-pearl-facade.jpg';
+
+insert into media_links (media_id, subject_type, subject_id, is_primary, sort_order)
+select m.id, 'cluster', c.id, true, 1
+from media m
+join clusters c on c.slug = 'lillia'
+where m.storage_path = 'lillia/lillia-cluster-map.jpeg';

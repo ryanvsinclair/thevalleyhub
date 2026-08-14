@@ -123,6 +123,13 @@ export async function updatePlace(
   const parsed = parseForm(placeUpdate, formData);
   if ("error" in parsed) return { error: parsed.error };
 
+  if (parsed.data.cluster_id && parsed.data.google_place_id) {
+    return {
+      error:
+        "Cluster-scoped amenities cannot have a google_place_id (Doc 11).",
+    };
+  }
+
   const { supabase } = await requireSessionClient();
   const { error } = await supabase
     .from("places")

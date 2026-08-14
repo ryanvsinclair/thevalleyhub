@@ -1,0 +1,650 @@
+[
+  {
+    "start": 1,
+    "end": 10,
+    "size": 10,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "down",
+    "margin": 0.3,
+    "sc_pos": 0.75,
+    "sc_neg": 0.45,
+    "pitch": 46.14422607421875,
+    "street_vec": [
+      0.018347629283413533,
+      0.9998316680820218
+    ],
+    "back_sign": 1,
+    "street_side_compass": "E"
+  },
+  {
+    "start": 11,
+    "end": 20,
+    "size": 10,
+    "style": "sleek",
+    "vote_frac": 0.8,
+    "street_side": "down",
+    "margin": 0.425,
+    "sc_pos": 0.75,
+    "sc_neg": 0.325,
+    "pitch": 45.840087890625,
+    "street_vec": [
+      0.01649596186191296,
+      0.9998639323639243
+    ],
+    "back_sign": 1,
+    "street_side_compass": "E"
+  },
+  {
+    "start": 21,
+    "end": 28,
+    "size": 8,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "right",
+    "margin": 0.5,
+    "sc_pos": 0.90625,
+    "sc_neg": 0.40625,
+    "pitch": 48.52191835473195,
+    "street_vec": [
+      0.9999949313674691,
+      -0.0031839031660076543
+    ],
+    "back_sign": 1,
+    "street_side_compass": "N"
+  },
+  {
+    "start": 29,
+    "end": 36,
+    "size": 8,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "right",
+    "margin": 0.75,
+    "sc_pos": 1.0,
+    "sc_neg": 0.25,
+    "pitch": 48.04247124598176,
+    "street_vec": [
+      0.9999920688515086,
+      0.003982742030281126
+    ],
+    "back_sign": 1,
+    "street_side_compass": "E"
+  },
+  {
+    "start": 37,
+    "end": 42,
+    "size": 6,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "up",
+    "margin": 0.41666666666666663,
+    "sc_pos": 0.9166666666666666,
+    "sc_neg": 0.5,
+    "pitch": 45.88821874187162,
+    "street_vec": [
+      0.020553810250171032,
+      -0.9997887481284234
+    ],
+    "back_sign": 1,
+    "street_side_compass": "N"
+  },
+  {
+    "start": 43,
+    "end": 50,
+    "size": 8,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "left",
+    "margin": 0.3125,
+    "sc_pos": 0.78125,
+    "sc_neg": 0.46875,
+    "pitch": 48.03025722007942,
+    "street_vec": [
+      -1.0,
+      -0.0
+    ],
+    "back_sign": 1,
+    "street_side_compass": "S"
+  },
+  {
+    "start": 51,
+    "end": 58,
+    "size": 8,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "left",
+    "margin": 0.53125,
+    "sc_pos": 1.0,
+    "sc_neg": 0.46875,
+    "pitch": 48.03025722007965,
+    "street_vec": [
+      -1.0,
+      -0.0
+    ],
+    "back_sign": 1,
+    "street_side_compass": "S"
+  },
+  {
+    "start": 59,
+    "end": 66,
+    "size": 8,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "right",
+    "margin": 0.4375,
+    "sc_pos": 0.8125,
+    "sc_neg": 0.375,
+    "pitch": 48.030257220079875,
+    "street_vec": [
+      1.0,
+      -0.0
+    ],
+    "back_sign": 1,
+    "street_side_compass": "N"
+  },
+  {
+    "start": 67,
+    "end": 74,
+    "size": 8,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "right",
+    "margin": 0.65625,
+    "sc_pos": 1.0,
+    "sc_neg": 0.34375,
+    "pitch": 48.030257220079875,
+    "street_vec": [
+      0.9999805276600359,
+      -0.0062405368964679
+    ],
+    "back_sign": 1,
+    "street_side_compass": "N"
+  },
+  {
+    "start": 75,
+    "end": 80,
+    "size": 6,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "up",
+    "margin": 0.375,
+    "sc_pos": 0.9166666666666666,
+    "sc_neg": 0.5416666666666666,
+    "pitch": 46.9423828125,
+    "street_vec": [
+      0.01735155825172237,
+      -0.9998494503805245
+    ],
+    "back_sign": 1,
+    "street_side_compass": "N"
+  },
+  {
+    "start": 81,
+    "end": 90,
+    "size": 10,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "up",
+    "margin": 0.7749999999999999,
+    "sc_pos": 0.975,
+    "sc_neg": 0.2,
+    "pitch": 46.01345591904593,
+    "street_vec": [
+      0.03575362324308482,
+      -0.9993606348185782
+    ],
+    "back_sign": 1,
+    "street_side_compass": "N"
+  },
+  {
+    "start": 91,
+    "end": 100,
+    "size": 10,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "down",
+    "margin": 0.425,
+    "sc_pos": 0.75,
+    "sc_neg": 0.325,
+    "pitch": 46.10614399442227,
+    "street_vec": [
+      -0.04919068327281104,
+      0.9987894055701402
+    ],
+    "back_sign": 1,
+    "street_side_compass": "S"
+  },
+  {
+    "start": 101,
+    "end": 110,
+    "size": 10,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "up",
+    "margin": 0.5,
+    "sc_pos": 0.775,
+    "sc_neg": 0.275,
+    "pitch": 46.04345773288535,
+    "street_vec": [
+      0.03998972827184368,
+      -0.9992000908890792
+    ],
+    "back_sign": 1,
+    "street_side_compass": "N"
+  },
+  {
+    "start": 111,
+    "end": 120,
+    "size": 10,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "down",
+    "margin": 0.4,
+    "sc_pos": 0.75,
+    "sc_neg": 0.35,
+    "pitch": 46.09772228646444,
+    "street_vec": [
+      -0.03868342617235723,
+      0.9992515161557514
+    ],
+    "back_sign": 1,
+    "street_side_compass": "S"
+  },
+  {
+    "start": 121,
+    "end": 130,
+    "size": 10,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "up",
+    "margin": 0.8,
+    "sc_pos": 1.0,
+    "sc_neg": 0.2,
+    "pitch": 46.17358552246079,
+    "street_vec": [
+      0.04145057160875521,
+      -0.999140555734431
+    ],
+    "back_sign": 1,
+    "street_side_compass": "N"
+  },
+  {
+    "start": 131,
+    "end": 140,
+    "size": 10,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "down",
+    "margin": 0.45,
+    "sc_pos": 0.75,
+    "sc_neg": 0.3,
+    "pitch": 46.09772228646444,
+    "street_vec": [
+      -0.04320789802253719,
+      0.9990661026921462
+    ],
+    "back_sign": 1,
+    "street_side_compass": "S"
+  },
+  {
+    "start": 141,
+    "end": 150,
+    "size": 10,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "down",
+    "margin": 0.375,
+    "sc_pos": 0.75,
+    "sc_neg": 0.375,
+    "pitch": 47.0,
+    "street_vec": [
+      0.01302441103409818,
+      0.9999151787612861
+    ],
+    "back_sign": 1,
+    "street_side_compass": "E"
+  },
+  {
+    "start": 151,
+    "end": 160,
+    "size": 10,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "up",
+    "margin": 0.7,
+    "sc_pos": 0.975,
+    "sc_neg": 0.275,
+    "pitch": 45.929897610349244,
+    "street_vec": [
+      -0.03046216853931553,
+      -0.999535920459031
+    ],
+    "back_sign": 1,
+    "street_side_compass": "W"
+  },
+  {
+    "start": 161,
+    "end": 170,
+    "size": 10,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "down",
+    "margin": 0.35,
+    "sc_pos": 0.75,
+    "sc_neg": 0.4,
+    "pitch": 46.01086828130937,
+    "street_vec": [
+      0.013733955976811749,
+      0.999905684778933
+    ],
+    "back_sign": 1,
+    "street_side_compass": "E"
+  },
+  {
+    "start": 171,
+    "end": 180,
+    "size": 10,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "up",
+    "margin": 0.775,
+    "sc_pos": 1.0,
+    "sc_neg": 0.225,
+    "pitch": 45.33455880696575,
+    "street_vec": [
+      -0.03221114478714863,
+      -0.9994810864401094
+    ],
+    "back_sign": 1,
+    "street_side_compass": "W"
+  },
+  {
+    "start": 181,
+    "end": 190,
+    "size": 10,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "down",
+    "margin": 0.3,
+    "sc_pos": 0.75,
+    "sc_neg": 0.45,
+    "pitch": 46.01086828130937,
+    "street_vec": [
+      0.0183057527312875,
+      0.9998324356695679
+    ],
+    "back_sign": 1,
+    "street_side_compass": "E"
+  },
+  {
+    "start": 191,
+    "end": 196,
+    "size": 6,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "up",
+    "margin": 0.375,
+    "sc_pos": 0.9583333333333334,
+    "sc_neg": 0.5833333333333334,
+    "pitch": 46.04345773288535,
+    "street_vec": [
+      -0.02628167887304058,
+      -0.9996545770192894
+    ],
+    "back_sign": 1,
+    "street_side_compass": "W"
+  },
+  {
+    "start": 197,
+    "end": 202,
+    "size": 6,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "up",
+    "margin": 0.29166666666666674,
+    "sc_pos": 0.8333333333333334,
+    "sc_neg": 0.5416666666666666,
+    "pitch": 45.04442251822083,
+    "street_vec": [
+      -0.03688432180095469,
+      -0.9993195418910228
+    ],
+    "back_sign": 1,
+    "street_side_compass": "W"
+  },
+  {
+    "start": 203,
+    "end": 210,
+    "size": 8,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "up",
+    "margin": 0.65625,
+    "sc_pos": 0.84375,
+    "sc_neg": 0.1875,
+    "pitch": 46.04345773288535,
+    "street_vec": [
+      -0.031518115480798845,
+      -0.9995031807836026
+    ],
+    "back_sign": 1,
+    "street_side_compass": "W"
+  },
+  {
+    "start": 211,
+    "end": 216,
+    "size": 6,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "left",
+    "margin": 0.3333333333333333,
+    "sc_pos": 0.75,
+    "sc_neg": 0.4166666666666667,
+    "pitch": 47.696801316211655,
+    "street_vec": [
+      -0.9973844296925488,
+      0.07227931520752856
+    ],
+    "back_sign": 1,
+    "street_side_compass": "S"
+  },
+  {
+    "start": 217,
+    "end": 222,
+    "size": 6,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "left",
+    "margin": 0.33333333333333337,
+    "sc_pos": 0.8333333333333334,
+    "sc_neg": 0.5,
+    "pitch": 47.76285405074797,
+    "street_vec": [
+      -0.9961539878859944,
+      0.08761981750055266
+    ],
+    "back_sign": 1,
+    "street_side_compass": "S"
+  },
+  {
+    "start": 223,
+    "end": 228,
+    "size": 6,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "down",
+    "margin": 0.20833333333333337,
+    "sc_pos": 0.75,
+    "sc_neg": 0.5416666666666666,
+    "pitch": 45.74697324092189,
+    "street_vec": [
+      0.0814001800882362,
+      0.9966814991167453
+    ],
+    "back_sign": 1,
+    "street_side_compass": "E"
+  },
+  {
+    "start": 229,
+    "end": 236,
+    "size": 8,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "right",
+    "margin": 0.40625,
+    "sc_pos": 0.78125,
+    "sc_neg": 0.375,
+    "pitch": 47.574083458739885,
+    "street_vec": [
+      0.9960463170961499,
+      -0.08883543324144913
+    ],
+    "back_sign": 1,
+    "street_side_compass": "N"
+  },
+  {
+    "start": 237,
+    "end": 244,
+    "size": 8,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "left",
+    "margin": 0.4375,
+    "sc_pos": 0.78125,
+    "sc_neg": 0.34375,
+    "pitch": 47.69119940757964,
+    "street_vec": [
+      -0.9962961910863738,
+      0.08598778766071313
+    ],
+    "back_sign": 1,
+    "street_side_compass": "S"
+  },
+  {
+    "start": 245,
+    "end": 254,
+    "size": 10,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "left",
+    "margin": 0.37500000000000006,
+    "sc_pos": 0.8,
+    "sc_neg": 0.425,
+    "pitch": 48.01158351356454,
+    "street_vec": [
+      -0.9964827920305227,
+      0.0837976442810537
+    ],
+    "back_sign": 1,
+    "street_side_compass": "S"
+  },
+  {
+    "start": 255,
+    "end": 262,
+    "size": 8,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "right",
+    "margin": 0.40625,
+    "sc_pos": 0.78125,
+    "sc_neg": 0.375,
+    "pitch": 47.750572134500175,
+    "street_vec": [
+      0.9974641043435266,
+      -0.07117134638438619
+    ],
+    "back_sign": 1,
+    "street_side_compass": "N"
+  },
+  {
+    "start": 263,
+    "end": 272,
+    "size": 10,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "right",
+    "margin": 0.375,
+    "sc_pos": 0.775,
+    "sc_neg": 0.4,
+    "pitch": 48.0074601302316,
+    "street_vec": [
+      0.9965834750476871,
+      -0.08259162949037836
+    ],
+    "back_sign": 1,
+    "street_side_compass": "N"
+  },
+  {
+    "start": 273,
+    "end": 282,
+    "size": 10,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "left",
+    "margin": 0.525,
+    "sc_pos": 0.875,
+    "sc_neg": 0.35,
+    "pitch": 47.574083458739885,
+    "street_vec": [
+      -0.9965526935048845,
+      0.0829622147013904
+    ],
+    "back_sign": 1,
+    "street_side_compass": "S"
+  },
+  {
+    "start": 283,
+    "end": 290,
+    "size": 8,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "left",
+    "margin": 0.40625,
+    "sc_pos": 0.78125,
+    "sc_neg": 0.375,
+    "pitch": 47.12175930783403,
+    "street_vec": [
+      -0.9973445808539234,
+      0.07282710375479619
+    ],
+    "back_sign": 1,
+    "street_side_compass": "S"
+  },
+  {
+    "start": 291,
+    "end": 300,
+    "size": 10,
+    "style": "sleek",
+    "vote_frac": 1.0,
+    "street_side": "down",
+    "margin": 0.4,
+    "sc_pos": 0.75,
+    "sc_neg": 0.35,
+    "pitch": 46.475776705490716,
+    "street_vec": [
+      0.022880946600673333,
+      0.9997381968708894
+    ],
+    "back_sign": 1,
+    "street_side_compass": "E"
+  },
+  {
+    "start": 301,
+    "end": 308,
+    "size": 8,
+    "style": "bold",
+    "vote_frac": 1.0,
+    "street_side": "down",
+    "margin": 0.375,
+    "sc_pos": 0.75,
+    "sc_neg": 0.375,
+    "pitch": 45.87363399510171,
+    "street_vec": [
+      0.021073195563561145,
+      0.9997779355580618
+    ],
+    "back_sign": 1,
+    "street_side_compass": "E"
+  }
+]

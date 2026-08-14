@@ -1072,3 +1072,53 @@ Low. Flaky only if lockfile/CI Node mismatch — pin versions.
 **Notes:** Approved as proposed — tsc --noEmit + eslint on push/PR.
 
 ---
+
+## #20 — Adopt Doc 11 (Living / corridor / Compare depth) and Google Places enrichment for valley-wide places
+
+**Status:** PENDING
+**Raised:** 2026-08-14
+**Category:** B — Better execution
+**Affects step:** Post-V1 product work after Doc 2 Gate 8 / Doc 8 A+B complete; uses existing `places.google_place_id` (Doc 4 #06) and Living/Compare/place routes already in V1
+**Blocking:** Yes — for any Google Maps Platform integration, admin Autocomplete, place-detail map/photos work, Living list enrichment, or Compare cross-link work described in Doc 11
+
+### What Doc 2 currently specifies
+
+Doc 2 V1 shipped Living (`/living`, `/living/[category]`), place detail (`/places/[slug]`), Compare (`/compare`, `/compare/[slug]`), and home WhatsOpenNow. Doc 2 Appendix C defers the offline-capable map and other platform features. Doc 4 #06 added `google_place_id` but no Places API client. Doc 8 Appendix C defers interactive map / units UI. Doc 4 #10 keeps cluster amenity categories off the Living route map.
+
+### What I propose instead
+
+1. **Adopt `docs/11-living-corridor-depth-guide.md` as the execution vehicle** — same shape as Doc 2 / Doc 8 (status block, blocks L-A…L-D, actor tags, dual checkboxes, Appendix A/B gates, Appendix C scope boundary).
+2. **Execute Doc 11 only after this proposal is APPROVED**, in order:
+   - **L-A:** Maps Platform keys **[R]**; admin Autocomplete on `/admin/places/[id]` for valley-wide places only; hours/address/website/`google_place_id` backfill workflow.
+   - **L-B:** Public place detail — Maps Embed when coords exist; place photos via existing `media_links`; open-now chip.
+   - **L-C:** Living index/category list enrichment (open-now, optional thumbs); WhatsOpenNow quality follows hours data.
+   - **L-D:** Compare depth — cross-links to Living/places; optional in-community strip; content audit. **No Google API on Compare.**
+3. **Hard locks in Doc 11:** Google only for `cluster_id` null places; no live Google on public list/detail request paths for hours (cache into DB); no new Living categories; no star ratings unless Ray flips that in decision notes; no units/interactive Valley map in this guide (separate Doc 4 later).
+4. **Open questions for Ray’s decision notes:** (1) Google as a `sources` row + default confidence for backfills; (2) public ratings yes/no (guide default **no**); (3) billing/keys.
+
+### Why
+
+Live audit 2026-08-14: 134 published places, **0** `google_place_id`, **28** with hours, **0** websites; 79 cluster-scoped brochure pins correctly have no Google fields. Living and place detail are the public places product but thin; WhatsOpenNow is gated by hours holes (all 8 schools, salon/gym/spa, most malls). Schema and admin already expose `google_place_id` with no API. Compare is a separate editorial surface that benefits from Living cross-links, not Place Details. Without a Doc-2-shaped guide, enrichment freestyles past confidence/source rules or paints Google onto brochure amenities.
+
+### Vision test
+
+Doc 3 §1: accuracy with source + confidence; honest local knowledge; roadmap includes navigating nearby services. Enriching corridor Living/places with verified contact/hours (Google as assist, not silent overwrite) is better execution of the V1 Living spine — not listings, not Emaar brand, not Status handover truth.
+
+### Cost if approved
+
+Four context blocks: admin Autocomplete + data ops, place detail map/photos, Living/open-now UI, Compare links/content. New dependency: Google Maps Platform (billing **[R]**). No migration required for the default path. Doc 11 becomes the checklist.
+
+### Cost if rejected
+
+Living/place detail stay thin; open-now stays limited to the 28 places with hours; `google_place_id` remains dead schema; each agent re-litigates Google vs brochure amenities.
+
+### Risk
+
+Medium — API cost/quota; stale Google hours vs on-the-ground truth; temptation to Autocomplete cluster pools. Mitigated by Doc 11 hard rules (valley-wide only, DB-cached hours, Gate L2 null check on cluster `google_place_id`), ConfidenceGate/source spine, and Ray spot-check on enrichment batches.
+
+---
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-14
+**Notes:** Ray said begin the work. Defaults until amended: no public star ratings; Google backfills go through admin Save with existing confidence/source spine (dedicated Google `sources` row optional later). Maps Platform keys still required from Ray before Autocomplete/Embed go live.
+
+---

@@ -178,3 +178,53 @@ Ran 2026-08-13: 19 Farm Gardens `places.state = published`. SQL: `scripts/publis
 **Promoted:** [x]
 **Date:** 2026-08-13
 **By:** agent (Ray authorized: publish leftover draft places)
+
+---
+
+## Batch 004 — Maid’s room on both villa types (2026-08-13)
+
+**Source:** Farm Gardens floor-plan PDFs (Batch 001 pack) — both 4BR and 5BR plans label a Maid’s Room.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
+**Confidence:** corroborated
+**Status:** promoted
+
+### Proposed reference.md diff
+
+- **`unit_types.maids_room`:** both 4BR and 5BR → `true` (were null).
+
+### Notes
+
+- `ground_floor_bedroom` left null pending Ray — floor plans show a ground-floor guest bedroom on both types; column exists on all clusters.
+
+### Promotion
+
+Ran 2026-08-13: both Farm Gardens `unit_types` rows `maids_room = true`.
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: set maids room)
+
+---
+
+## Batch 005 — Ground-floor bedroom on both villa types (2026-08-13)
+
+**Source:** Farm Gardens floor-plan images (`farm-gardens-4bed-floorplan.png`, `farm-gardens-5bed-floorplan.png`) — 4BR labels Guest Bedroom on GF; 5BR labels Guest Room on GF.
+**Source ID:** `a1000000-0000-4000-8000-000000000001` (Emaar Properties, developer)
+**Confidence:** corroborated
+**Status:** promoted
+
+### Proposed reference.md diff
+
+- **`unit_types.ground_floor_bedroom`:** both 4BR and 5BR → `true` (were null).
+
+### Notes
+
+- Maid’s room is separate and already `true` from Batch 004; does not count as `ground_floor_bedroom`.
+
+### Promotion
+
+Ran 2026-08-13: both Farm Gardens `unit_types` rows `ground_floor_bedroom = true`.
+
+**Promoted:** [x]
+**Date:** 2026-08-13
+**By:** agent (Ray authorized: yes — set from floorplan check)

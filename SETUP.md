@@ -45,6 +45,7 @@ Copy `.env.example` → `.env.local` (already present) and set:
 | `ADMIN_EMAIL` | Your editor email for magic-link allowlist |
 | `REVALIDATE_SECRET` | Long random string (`openssl rand -hex 32`) |
 | `NEXT_PUBLIC_SITE_URL` | Final domain, e.g. `https://thevalleyrecord.com` |
+| `GOOGLE_MAPS_API_KEY` | Server-only. Google Cloud → enable **Places API**, create key. Used by admin Autocomplete / Place Details (Doc 11). Restrict by IP or none for local; never ship as `NEXT_PUBLIC_*`. |
 
 Mirror the same keys in Vercel → Project → Settings → Environment Variables for **Preview** and **Production**.
 

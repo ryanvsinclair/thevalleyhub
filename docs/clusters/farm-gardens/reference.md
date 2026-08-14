@@ -1,8 +1,8 @@
 # Farm Gardens — Reference
 
 **Slug:** `farm-gardens`
-**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Batch 001 promoted 2026-08-09; bathrooms from Batch 002 (2026-08-13); amenities published Batch 003 (2026-08-13).
-**Source:** Relocated from Doc 1 Annex C.1/C.4 and Annex D, then Batches 001–003 (6 official Emaar PDFs + Ray bathroom totals, source `a1000000-0000-4000-8000-000000000001`) promoted into live DB + this file.
+**Status:** Migrated from Doc 1 Annex C/D, 2026-08-09. Guarded by `scripts/pre-commit` per Doc 4 #09. Batch 001 promoted 2026-08-09; bathrooms from Batch 002 (2026-08-13); amenities published Batch 003 (2026-08-13); maids_room Batch 004 (2026-08-13); ground_floor_bedroom Batch 005 (2026-08-13).
+**Source:** Relocated from Doc 1 Annex C.1/C.4 and Annex D, then Batches 001–005 (6 official Emaar PDFs + Ray bathroom totals, source `a1000000-0000-4000-8000-000000000001`) promoted into live DB + this file.
 
 ---
 
@@ -43,12 +43,12 @@ Target handover: 30 September 2026.
 
 ## Unit types
 
-| bedrooms | bua_min | bua_max | plot_min | plot_max | suite | garage | balcony | roof | bathrooms | unit_count | confidence |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| 4 | 4950 | — | 8914 | — | 3843 | 608 | 500 | 423 | 5.5 | 79 | corroborated |
-| 5 | — | 5657 | — | 10004 | 4520 | 622 | 515 | 441 | 6.5 | 67 | corroborated |
+| bedrooms | bua_min | bua_max | plot_min | plot_max | suite | garage | balcony | roof | bathrooms | maids_room | ground_floor_bedroom | unit_count | confidence |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 4 | 4950 | — | 8914 | — | 3843 | 608 | 500 | 423 | 5.5 | true | true | 79 | corroborated |
+| 5 | — | 5657 | — | 10004 | 4520 | 622 | 515 | 441 | 6.5 | true | true | 67 | corroborated |
 
-Batch 001 corrected the 5-bed `bua_max` (was 10004 — that figure is average plot area, now in `plot_max`). Suite + garage + balcony equals published BUA totals. Bathrooms from Batch 002 (Ray, 2026-08-13).
+Batch 001 corrected the 5-bed `bua_max` (was 10004 — that figure is average plot area, now in `plot_max`). Suite + garage + balcony equals published BUA totals. Bathrooms from Batch 002 (Ray, 2026-08-13). `maids_room = true` both types from Batch 004; `ground_floor_bedroom = true` both from Batch 005 (floor plans).
 
 ## Facade styles
 

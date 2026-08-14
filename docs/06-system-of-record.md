@@ -461,6 +461,14 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-14 — Doc 11 L-A start: admin Google Places Autocomplete
+
+**Why:** Doc 4 #20 APPROVED (Ray: begin the work). Block L-A ops pipeline.
+
+**Affects:** `/admin/places/[id]` Google Places lookup (valley-wide only); `src/lib/google/places.ts` + `google-places-actions.ts`; `updatePlace` rejects `google_place_id` when `cluster_id` set; `.env.example` / `SETUP.md` document `GOOGLE_MAPS_API_KEY`. Public pages unchanged.
+
+**Still open:** Ray must add Maps Platform key (Places API) to `.env.local` + Vercel before lookup works; hours backfill batches (Doc 11 §2); place-detail map/photos (L-B).
+
 ### 2026-08-13 — Elora amenities published
 **Why:** Ray authorized publishing the 13 Batch 002 Elora on-site amenities.
 **Affects:** 13 Elora `places.state` `draft` → `published`; `docs/clusters/elora/{staging,reference}.md`; Doc 6 row counts.
