@@ -55,7 +55,7 @@ export function LivingPlaceRow({ place, thumb }: Props) {
         >
           <Image
             src={mediaPublicUrl(thumb.storage_path)}
-            alt={thumb.alt ?? place.name}
+            alt={thumb.alt_text ?? thumb.caption ?? place.name}
             fill
             className="object-cover"
             sizes="64px"
