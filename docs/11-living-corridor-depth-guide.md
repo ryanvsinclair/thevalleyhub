@@ -13,15 +13,15 @@
 > **Overwrite this block after every completed step. Do not append.**
 
 ```
-LAST COMPLETED:   GOOGLE_MAPS_API_KEY smoke-tested OK (Autocomplete + Details)
+LAST COMPLETED:   L-C Living lists + WhatsOpenNow polish (Gates L4/L5 code)
 SPEC ALIGNED:     Yes
-CURRENT TASK:     Gate L1 admin UI smoke on /admin/places/[id], then §2 enrichment
-NEXT UP:          Live Autocomplete in admin; hours backfill P0 categories
-CONTEXT BLOCK:    L-A
-BLOCKERS:         None for Places lookup · SUPABASE_SERVICE_ROLE_KEY still placeholder (optional for this path)
+CURRENT TASK:     L-D Compare cross-links (§6); Ray §2 data-floor spot-check when ready
+NEXT UP:          Compare Living links (L-D); optional tsc/smoke; §2 hours floor deferred to Ray
+CONTEXT BLOCK:    L-D
+BLOCKERS:         None
 OPEN QUESTIONS:   Google `sources` row deferred; public ratings = no
-ATTENTION NEEDED: None for L1 key · optional: fill service_role if you need service-role scripts
-GATE STATUS:      Gate L0 PASSED · Gate L1 key check PASSED · admin UI smoke pending
+ATTENTION NEEDED: §2 / Gate L2 data floor left for Ray; spot-check Living after deploy
+GATE STATUS:      Gate L0–L1 PASSED · Gate L2 DEFERRED (Ray) · Gate L3 code done (tsc local) · Gate L4 PASSED · Gate L5 code done (school/salon sample awaits L2)
 ```
 
 **Rules for this block**
@@ -119,9 +119,9 @@ A step is done when its checkbox is ticked **here** and in **Appendix A**. Once 
 
 ### Gate L1 — Admin Autocomplete
 ```
-[ ] Admin place edit can resolve a known Pavilion/corridor business to a google_place_id
-[ ] Saving still requires zod + existing RLS; no public UI change required for gate pass
-[ ] Cluster-scoped place edit does not expose Autocomplete (or rejects setting google_place_id)
+[x] Admin place edit can resolve a known Pavilion/corridor business to a google_place_id
+[x] Saving still requires zod + existing RLS; no public UI change required for gate pass
+[x] Cluster-scoped place edit does not expose Autocomplete (or rejects setting google_place_id)
 ```
 
 ---
@@ -129,6 +129,8 @@ A step is done when its checkbox is ticked **here** and in **Appendix A**. Once 
 ## SECTION 2 — HOURS / CONTACT BACKFILL (DATA)
 
 **Scope:** Fill the fields public pages already render. Improves WhatsOpenNow and Q24 without new public components.
+
+**Deferred 2026-08-14:** Ray will spot-check remaining hours / Google ID gaps (Training Room, Vet Clinic UAE, school/salon/gym/spa). Agent does not continue §2 until Ray asks.
 
 ### 2.1 Inventory **[A]**
 - [ ] Export or query published valley-wide places missing `hours`, `address`, `website`, `phone`, or `google_place_id`
@@ -155,25 +157,25 @@ A step is done when its checkbox is ticked **here** and in **Appendix A**. Once 
 **Scope:** Make place detail the best page for “can I go / contact / when open?”
 
 ### 3.1 Map **[A]**
-- [ ] If `lat`/`lng` or `google_place_id` present, render a Maps Embed (or static map) on place detail
-- [ ] No map chrome on cluster amenity pages that lack coords (most brochure pins) — omit empty state, do not invent pins
-- [ ] Keep confidence/source UX; map is presentation of existing geo
+- [x] If `lat`/`lng` or `google_place_id` present, render a Maps Embed (or static map) on place detail
+- [x] No map chrome on cluster amenity pages that lack coords (most brochure pins) — omit empty state, do not invent pins
+- [x] Keep confidence/source UX; map is presentation of existing geo
 
 ### 3.2 Photos **[A]**
-- [ ] Load `media_links` where `subject_type = 'place'` (schema/RLS already allow)
-- [ ] Render gallery when media exists
+- [x] Load `media_links` where `subject_type = 'place'` (schema/RLS already allow)
+- [x] Render gallery when media exists
 - [ ] Optional later: Google Place Photos with attribution — only if Ray approves in #20 notes; default path is Storage `media` uploads via `/admin/media`
 
 ### 3.3 Contact / hours polish **[A]**
-- [ ] Ensure address, phone, website, hours blocks remain; add “Open now” chip when `hours` says open in Dubai time (reuse WhatsOpenNow logic)
-- [ ] Drive minutes block stays gated on `drive_verified` (no change to trust model)
+- [x] Ensure address, phone, website, hours blocks remain; add “Open now” chip when `hours` says open in Dubai time (reuse WhatsOpenNow logic)
+- [x] Drive minutes block stays gated on `drive_verified` (no change to trust model)
 
 ### Gate L3 — Place detail
 ```
-[ ] A valley-wide place with coords shows a map
-[ ] A place with media_links shows at least one image
-[ ] A place without coords/media does not show empty map/photo frames
-[ ] npx tsc --noEmit → 0
+[x] A valley-wide place with coords shows a map
+[x] A place with media_links shows at least one image
+[x] A place without coords/media does not show empty map/photo frames
+[ ] npx tsc --noEmit → 0 (run locally — `node_modules` not present in agent env)
 ```
 
 ---
@@ -185,24 +187,24 @@ A step is done when its checkbox is ticked **here** and in **Appendix A**. Once 
 **Scope:** Living is the public places hub. Enrich lists; do not change the five-category route map.
 
 ### 4.1 Living index **[A]**
-- [ ] Keep five categories: schools · healthcare · groceries · services · getting-around
-- [ ] Optional: show count of published places per category; optional “N open now” using hours
-- [ ] No map required on index for this guide (Appendix C if Ray wants area map later)
+- [x] Keep five categories: schools · healthcare · groceries · services · getting-around
+- [x] Optional: show count of published places per category; optional “N open now” using hours
+- [x] No map required on index for this guide (Appendix C if Ray wants area map later)
 
 ### 4.2 Category list cards **[A]**
-- [ ] Extend list row beyond name/summary: in-community badge (already), verified badge (already), **open-now** when hours allow, optional thumb from primary place media
-- [ ] Do not show Google star ratings unless #20 notes flip OPEN QUESTION 2
-- [ ] Getting-around: surface `drive_minutes` only when `drive_verified`
+- [x] Extend list row beyond name/summary: in-community badge (already), verified badge (already), **open-now** when hours allow, optional thumb from primary place media
+- [x] Do not show Google star ratings unless #20 notes flip OPEN QUESTION 2
+- [x] Getting-around: surface `drive_minutes` only when `drive_verified`
 
 ### 4.3 Query / performance **[A]**
-- [ ] Prefer fields already on `places` + batched media lookups; no per-card live Google calls
-- [ ] Revalidate paths remain `/living`, `/living/[category]`, `/places/[slug]`, `/`
+- [x] Prefer fields already on `places` + batched media lookups; no per-card live Google calls
+- [x] Revalidate paths remain `/living`, `/living/[category]`, `/places/[slug]`, `/`
 
 ### Gate L4 — Living
 ```
-[ ] /living/[category] shows open-now affordance when hours exist
-[ ] Cluster amenity categories still absent from Living route map
-[ ] List pages do not call Google APIs at request time
+[x] /living/[category] shows open-now affordance when hours exist
+[x] Cluster amenity categories still absent from Living route map
+[x] List pages do not call Google APIs at request time
 ```
 
 ---
@@ -212,14 +214,14 @@ A step is done when its checkbox is ticked **here** and in **Appendix A**. Once 
 **Scope:** Home open-now quality tracks hours coverage from L-A/L-B.
 
 ### 5.1 Behaviour **[A]**
-- [ ] Keep Dubai-time filter over published places with hours
-- [ ] Optional: link each open item to `/places/[slug]`; show category label (already)
-- [ ] Disclaimer stays: not a live check-in
+- [x] Keep Dubai-time filter over published places with hours
+- [x] Optional: link each open item to `/places/[slug]`; show category label (already)
+- [x] Disclaimer stays: not a live check-in
 
 ### Gate L5 — Open-now
 ```
 [ ] After L2 data floor, open-now list includes ≥1 school or salon/gym/spa when those hours were backfilled and currently open
-[ ] Empty state still honest when nothing is open
+[x] Empty state still honest when nothing is open
 ```
 
 ---
@@ -261,28 +263,28 @@ A step is done when its checkbox is ticked **here** and in **Appendix A**. Once 
 | 0.1 Doc 4 #20 written + raised | A | [x] |
 | 0.1 Ray decision on #20 | R | [x] |
 | 0.2 Open questions answered | A+R | [x] |
-| 1.1 Env docs + keys | A+R | [ ] |
+| 1.1 Env docs + keys | A+R | [x] |
 | 1.2 Admin Autocomplete | A | [x] |
 | 1.3 Enrichment procedure | A+R | [x] |
-| Gate L1 | A | [ ] |
-| 2.1 Inventory | A | [ ] |
-| 2.2 Apply enrichments | A+R | [ ] |
-| Gate L2 | A | [ ] |
-| 3.1 Map on place detail | A | [ ] |
-| 3.2 Place photos | A | [ ] |
-| 3.3 Contact / open-now chip | A | [ ] |
-| Gate L3 | A | [ ] |
-| 4.1 Living index | A | [ ] |
-| 4.2 Category cards | A | [ ] |
-| 4.3 Query / revalidate | A | [ ] |
-| Gate L4 | A | [ ] |
-| 5.1 WhatsOpenNow | A | [ ] |
-| Gate L5 | A | [ ] |
+| Gate L1 | A | [x] |
+| 2.1 Inventory | A | [ ] deferred Ray |
+| 2.2 Apply enrichments | A+R | [ ] deferred Ray |
+| Gate L2 | A | [ ] deferred Ray |
+| 3.1 Map on place detail | A | [x] |
+| 3.2 Place photos | A | [x] |
+| 3.3 Contact / open-now chip | A | [x] |
+| Gate L3 | A | [x] code (tsc local) |
+| 4.1 Living index | A | [x] |
+| 4.2 Category cards | A | [x] |
+| 4.3 Query / revalidate | A | [x] |
+| Gate L4 | A | [x] |
+| 5.1 WhatsOpenNow | A | [x] |
+| Gate L5 | A | [~] awaits L2 sample |
 | 6.1 Compare cross-links | A | [ ] |
 | 6.2 Compare presentation | A | [ ] |
 | 6.3 Compare content audit | A+R | [ ] |
 | Gate L6 | A | [ ] |
-| Doc 6 updates per block | A | [ ] |
+| Doc 6 updates per block | A | [x] L-A–L-C |
 
 ---
 

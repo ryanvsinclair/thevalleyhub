@@ -461,6 +461,26 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 
 ## 10. CHANGELOG
 
+### 2026-08-14 — Living lists + WhatsOpenNow (Doc 11 L-C)
+
+**Why:** Living is the places hub; list rows needed open-now / drive / optional thumbs without live Google calls.
+
+**Affects:** `/living` category counts + open-now tallies; `/living/[category]` open-now chip, verified drive minutes, batched place media thumbs; `WhatsOpenNow` uses `Link` to `/places/[slug]`; place save revalidates `/`, `/places/[slug]`, and each Living category path. §2 / Gate L2 data floor deferred to Ray.
+
+**Breaking:** No.
+
+**Still open:** Compare cross-links (L-D); Ray §2 hours floor; Gate L5 school/salon sample after L2; Google Place Photos deferred.
+
+### 2026-08-14 — Place detail template (Doc 11 L-B) + summary backfill
+
+**Why:** One shared public place layout so design changes apply everywhere; pages were thin after Google contact enrichment because `summary` was empty and the UI lacked map/open-now/media sections.
+
+**Affects:** `PlaceDetail` component on `/places/[slug]`; OSM map when coords exist; place `media_links` gallery; Open-now chip; factual `summary` + `meta_description` backfill for published places missing copy. No schema migration.
+
+**Breaking:** No.
+
+**Still open:** Gate L3 tsc/smoke; Living list polish (L-C); Google Place Photos deferred.
+
 ### 2026-08-14 — Cluster floorplan archives under `docs/clusters/<slug>/floorplans/`
 
 **Why:** Keep each cluster’s image/CSV/SQL archive beside its `staging.md` / `reference.md` instead of repo-root `*-floorplans/` folders.

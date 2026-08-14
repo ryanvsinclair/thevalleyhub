@@ -1,9 +1,15 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { VerifiedBadge } from "@/components/content/VerifiedBadge";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { isOpenNow } from "@/lib/places/open-now";
+import {
+  listMediaForSubjects,
+  mediaPublicUrl,
+} from "@/lib/queries/clusters";
 import {
   isLivingCategory,
   LIVING_CATEGORIES,
@@ -53,6 +59,18 @@ export default async function LivingCategoryPage({ params }: Props) {
   if (!isLivingCategory(category)) notFound();
 
   const places = await listPlacesByLivingCategory(category);
+  const mediaRows = await listMediaForSubjects(
+    "place",
+    places.map((place) => place.id),
+  );
+  const thumbByPlaceId = new Map<string, (typeof mediaRows)[number]>();
+  for (const row of mediaRows) {
+    const existing = thumbByPlaceId.get(row.subject_id);
+    if (!existing || (row.is_primary && !existing.is_primary)) {
+      thumbByPlaceId.set(row.subject_id, row);
+    }
+  }
+
   const label = CATEGORY_LABELS[category];
 
   return (
@@ -81,26 +99,54 @@ export default async function LivingCategoryPage({ params }: Props) {
         </p>
       ) : (
         <ul className="mt-10 divide-y divide-neutral-200 border-t border-neutral-200">
-          {places.map((place) => (
-            <li key={place.id} className="py-4">
-              <Link
-                href={`/places/${place.slug}`}
-                className="text-lg font-medium text-neutral-900 underline-offset-4 hover:underline"
-              >
-                {place.name}
-              </Link>
-              <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
-                <span className="capitalize">{place.category}</span>
-                {place.in_community ? <span>In community</span> : null}
-                <VerifiedBadge verifiedAt={place.verified_at} />
-              </div>
-              {place.summary ? (
-                <p className="mt-2 max-w-2xl text-sm text-neutral-600">
-                  {place.summary}
-                </p>
-              ) : null}
-            </li>
-          ))}
+          {places.map((place) => {
+            const openNow = isOpenNow(place.hours);
+            const thumb = thumbByPlaceId.get(place.id);
+            return (
+              <li key={place.id} className="flex gap-4 py-4">
+                {thumb ? (
+                  <Link
+                    href={`/places/${place.slug}`}
+                    className="relative h-16 w-16 shrink-0 overflow-hidden bg-neutral-100"
+                  >
+                    <Image
+                      src={mediaPublicUrl(thumb.storage_path)}
+                      alt={thumb.alt ?? place.name}
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
+                  </Link>
+                ) : null}
+                <div className="min-w-0 flex-1">
+                  <Link
+                    href={`/places/${place.slug}`}
+                    className="text-lg font-medium text-neutral-900 underline-offset-4 hover:underline"
+                  >
+                    {place.name}
+                  </Link>
+                  <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-neutral-600">
+                    <span className="capitalize">{place.category}</span>
+                    {place.in_community ? <span>In community</span> : null}
+                    {openNow ? (
+                      <span className="text-xs font-medium tracking-wide text-emerald-800 uppercase">
+                        Open now
+                      </span>
+                    ) : null}
+                    {place.drive_verified && place.drive_minutes != null ? (
+                      <span>~{place.drive_minutes} min drive</span>
+                    ) : null}
+                    <VerifiedBadge verifiedAt={place.verified_at} />
+                  </div>
+                  {place.summary ? (
+                    <p className="mt-2 max-w-2xl text-sm text-neutral-600">
+                      {place.summary}
+                    </p>
+                  ) : null}
+                </div>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

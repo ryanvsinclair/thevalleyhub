@@ -17,6 +17,7 @@ export type LinkedMedia = Media & {
 
 export type MediaSubjectType =
   | "cluster"
+  | "place"
   | "unit_type"
   | "facade_style_description";
 

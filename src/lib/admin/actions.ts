@@ -141,10 +141,21 @@ export async function updatePlace(
 
   if (error) return { error: error.message };
 
+  revalidatePath("/");
   revalidatePath("/admin/places");
   revalidatePath(`/admin/places/${id}`);
   revalidatePath("/places");
+  revalidatePath(`/places/${parsed.data.slug}`);
   revalidatePath("/living");
+  for (const category of [
+    "schools",
+    "healthcare",
+    "groceries",
+    "services",
+    "getting-around",
+  ] as const) {
+    revalidatePath(`/living/${category}`);
+  }
   if (parsed.data.cluster_id) {
     const { data: cluster } = await supabase
       .from("clusters")
