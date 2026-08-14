@@ -60,3 +60,8 @@ docs/clusters/*/floorplans/_extract/
 docs/clusters/*/floorplans/_visual_check/
 docs/clusters/*/floorplans/_map_candidates/
 docs/clusters/*/floorplans/_promote_*.sql
+
+# one-shot agent/ops scratch under scripts/
+scripts/_*.py
+scripts/_*.sql
+scripts/_*.json
