@@ -150,7 +150,7 @@ Column lists verified against `information_schema` / generated `src/types/databa
 #### `units`
 - **Purpose:** Individual physical units (distinct from `unit_types` floor-plan templates). Foundation for a future interactive map / per-unit drive times (Doc 4 #06).
 - **Key columns:** `cluster_id`, `unit_type_id`, `unit_number`, `plot_number`, `facade_style`, `bua`, `plex_id`, `th_position` (Doc 4 #12), `lat`/`lng`, `confidence`, `source_id`, …
-- **Live rows:** 1640 (Farm Gardens 146 + Eden 362 + Nara 372 + Talia 330 + Elora 430). Public read when parent cluster is published (`pub_units`). App UI for units still deferred (Doc 8 Appendix C).
+- **Live rows:** 1640 (Farm Gardens 146 + Eden 362 + Nara 372 + Talia 330 + Elora 430) plus later promotions (see changelog). Public read when parent cluster is published (`pub_units`). **Admin:** read-only browse at `/admin/units` (Doc 4 #21). Public per-plot UI / map still deferred (Doc 8 Appendix C / Doc 12 C1).
 
 #### `plexes`
 - **Purpose:** One physical plex/building row (6/8/9/10-plex townhouse configuration). Doc 4 #12.
@@ -300,7 +300,7 @@ Route groups `(public)` / `(admin)` do not appear in URLs.
 | `/admin` … | `(admin)/admin/**` | Dynamic; cookie gate |
 | Middleware | `src/middleware.ts` | Cached `redirects` map (120s in-process TTL, Doc 4 #13) |
 
-**Admin URLs:** `/admin`, `/admin/clusters`, `/admin/clusters/[id]`, `/admin/places`, `/admin/places/[id]`, `/admin/questions`, `/admin/questions/new`, `/admin/questions/[id]`, `/admin/comparisons`, `/admin/comparisons/[id]`, `/admin/sources`, `/admin/sources/[id]`, `/admin/media`, `/admin/status/new`, `/admin/audit`.
+**Admin URLs:** `/admin`, `/admin/clusters`, `/admin/clusters/[id]`, `/admin/units`, `/admin/places`, `/admin/places/[id]`, `/admin/questions`, `/admin/questions/new`, `/admin/questions/[id]`, `/admin/comparisons`, `/admin/comparisons/[id]`, `/admin/sources`, `/admin/sources/[id]`, `/admin/media`, `/admin/status/new`, `/admin/audit`.
 
 **Naming map (URL ≠ table):** `/blog`→`posts`; `/compare`→`communities`+`comparisons`; `/living/*`→`places`; `/status`→`status_log`/`current_status` (SETUP.md + Doc 5 Block C).
 
@@ -309,8 +309,9 @@ Route groups `(public)` / `(admin)` do not appear in URLs.
 - `src/lib/queries/{clusters,places,questions,communities,status,posts}.ts` — **only** public read path for pages.
 - All use `createAnonClient()` — SSG-safe; Proposal #01 APPROVED (Doc 5 Block B).
 - Pages must not invent ad-hoc Supabase selects (Doc 5 Block A convention).
-- **Cluster depth (Doc 8 / Doc 4 #11):** `listFacadeStylesForCluster`, `listPublishedClusterPlaces` (`state=published` only), `listMediaForSubject(s)` + `mediaPublicUrl` in `clusters.ts`. No `units` queries. UI gated on non-empty results — never `slug === 'farm-gardens'`. Cluster media renders via `next/image` (Doc 4 #15).
+- **Cluster depth (Doc 8 / Doc 4 #11):** `listFacadeStylesForCluster`, `listPublishedClusterPlaces` (`state=published` only), `listMediaForSubject(s)` + `mediaPublicUrl` in `clusters.ts`. Public queries still do not read `units`. UI gated on non-empty results — never `slug === 'farm-gardens'`. Cluster media renders via `next/image` (Doc 4 #15).
 - **Admin (Doc 8 Block D-B):** unit_type breakdown fields; `facade_style_descriptions` CRUD on `/admin/clusters/[id]`; `places.cluster_id` on place editor; `media_links` upsert/delete on `/admin/media` (cluster / unit_type / facade pickers). Session client only.
+- **Admin units (Doc 4 #21):** `src/lib/admin/units.ts` — session `createClient()`, GET `searchParams` on `/admin/units` (q / cluster / bedrooms / facade / confidence / sort / page). Not in `lib/queries/`. No per-unit editor.
 
 ### 4.3 Components
 
@@ -430,7 +431,7 @@ Amenity operational status; service charges; Nima specs; Orania handover; severa
 - Custom domain + Search Console / Bing / analytics parked in **SETUP.md §7**.
 
 ### Deferred from V1
-Map, forums, marketplace, events, listings, multi-editor, etc. (Appendix C). Units UI / interactive map also deferred under Doc 8 Appendix C until multiple clusters have Batch-001-scale injections (new Doc 4, not #11).
+Map, forums, marketplace, events, listings, multi-editor, etc. (Appendix C). Public units UI / interactive map still deferred (Doc 8 Appendix C / Doc 12 C1). Admin `/admin/units` browse shipped (Doc 4 #21).
 
 ### Needs Ray
 SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional token rotation.
@@ -460,6 +461,14 @@ SETUP.md §7 launch checklist when product-ready; Doc 15↔16 pin; optional toke
 ---
 
 ## 10. CHANGELOG
+
+### 2026-08-14 — Admin units browser (`/admin/units`)
+
+**Why:** Per-plot rows exist for multiple clusters; admin had no way to search them without SQL. Doc 8 Appendix C deferred this until a new Doc 4 — #21 APPROVED.
+
+**Affects:** `/admin/units` read-only list with GET filters (search, cluster, bedrooms, facade, confidence, sort, pagination). Helper `src/lib/admin/units.ts` (session client). Nav + cluster edit “View units” link. Doc 4 #21. Public `lib/queries` still does not read `units`. No map, no per-unit editor, no schema.
+
+**Breaking:** No.
 
 ### 2026-08-14 — Migration 0004 live + Google Place Photo admin import + Doc 12
 

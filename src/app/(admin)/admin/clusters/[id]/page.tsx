@@ -322,6 +322,14 @@ export default async function AdminClusterEditPage({ params }: Props) {
     <div>
       <h1 className="text-2xl font-semibold tracking-tight">Edit cluster</h1>
       <p className="mt-2 font-mono text-xs text-neutral-500">{cluster.id}</p>
+      <p className="mt-2">
+        <Link
+          href={`/admin/units?cluster=${cluster.slug}`}
+          className="text-sm underline underline-offset-2"
+        >
+          View units
+        </Link>
+      </p>
 
       <AdminForm action={updateCluster}>
         <input type="hidden" name="id" value={cluster.id} />

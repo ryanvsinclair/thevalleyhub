@@ -27,7 +27,7 @@
 
 **Needs:** New Doc 4 (do not reopen #11). Likely map library choice, privacy of plot pins, mobile performance, and whether Prospect vs Resident audiences differ.
 
-**Status:** Not proposed yet.
+**Status:** Admin browse shipped 2026-08-14 (Doc 4 #21, `/admin/units`). Public map / cluster inventory not proposed yet.
 
 ---
 

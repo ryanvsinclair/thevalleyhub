@@ -290,6 +290,8 @@ Anything on the second list is a **new Doc 4 proposal** at most (Doc 3 §4), nev
 
 **Trigger to reopen units/map:** several clusters have Batch-001-scale unit + site-plan injections → new Doc 4 proposal (do not amend #11).
 
+**Reopened (admin only):** Doc 4 #21 (2026-08-14) ships read-only `/admin/units`. Public per-plot UI and interactive map remain out of this guide (Doc 12 C1).
+
 ---
 
 # APPENDIX D — ALREADY TRUE (do not re-build)

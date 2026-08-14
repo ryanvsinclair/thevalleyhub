@@ -1122,3 +1122,51 @@ Medium — API cost/quota; stale Google hours vs on-the-ground truth; temptation
 **Notes:** Ray said begin the work. Defaults until amended: no public star ratings; Google backfills go through admin Save with existing confidence/source spine (dedicated Google `sources` row optional later). Maps Platform keys still required from Ray before Autocomplete/Embed go live. **Status header corrected to APPROVED 2026-08-14** after agent shipped Doc 11 blocks while this line still said PENDING — process failure; do not ship `src/` again until Status + RAY'S DECISION are both recorded.
 
 ---
+
+## #21 — Admin units browser (`/admin/units`)
+
+**Status:** APPROVED
+**Raised:** 2026-08-14
+**Category:** B — Better execution
+**Affects step:** Post-V1; reopens Doc 8 Appendix C “per-plot units listing” for **admin only**
+**Blocking:** Yes — for any `src/` read of `units`
+
+### What Doc 2 currently specifies
+
+Admin lists clusters / places / questions as full tables. Cluster edit has inline `unit_types` and facades. Doc 8 Appendix C and Doc 4 #11 deferred per-plot `units` listing, filters, and public map. Doc 6: “App UI for units still deferred.” No `units` queries in `src/` until a new Doc 4 (not an amendment of #11).
+
+### What I propose instead
+
+Ship a **read-only admin inventory page** at `/admin/units`:
+
+1. Session `createClient()` (staff RLS). Query helper in `src/lib/admin/units.ts` — not `lib/queries/` (anon / public).
+2. GET `searchParams` form: `q` (unit_number ilike and numeric plot_number), cluster slug, bedrooms (via `unit_types!inner`), facade_style, confidence, sort, page.
+3. Server-side pagination (50). Default sort: cluster `sort_order`, then `plot_number`.
+4. Table joins cluster / unit type / plex for display. Row links to `/admin/clusters/[id]`. No per-unit editor, no public inventory, no map, no schema.
+
+### Why
+
+Seven+ clusters now have Batch-001-scale `units` rows. Plot numbers collide across clusters; dumping ~2,000 rows like Places will hit the PostgREST 1,000-row cap. Admin cannot answer “plot 142 in Eden” without SQL. This is the missing admin surface for data already in the spine — not Doc 12 C1 (public map).
+
+### Vision test
+
+Doc 3 §1 spine: clusters, sourced facts, confidence. Staff need to inspect per-plot rows the same way they inspect places. Public listings / interactive map stay out (Doc 2 Appendix C / Doc 12 C1).
+
+### Cost if approved
+
+One admin route + helper + nav link. No new dependencies, migrations, or public queries.
+
+### Cost if rejected
+
+Unit QA stays in SQL; wrong-cluster plot lookups stay error-prone; Doc 12 C1 would have to invent this browser anyway.
+
+### Risk
+
+Low. Scope creep into public units UI or per-unit CRUD. Mitigated by read-only page and explicit exclusion of map / `lib/queries` / schema.
+
+---
+**RAY'S DECISION:** APPROVED
+**Date:** 2026-08-14
+**Notes:** Ray said do it, after the admin-browser design (search + cluster + bedrooms + facade + confidence + sort + pagination; no edit, no map).
+
+---

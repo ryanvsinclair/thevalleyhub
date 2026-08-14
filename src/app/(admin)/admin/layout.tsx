@@ -11,6 +11,7 @@ const nav = [
   { href: "/admin/questions", label: "Questions" },
   { href: "/admin/places", label: "Places" },
   { href: "/admin/clusters", label: "Clusters" },
+  { href: "/admin/units", label: "Units" },
   { href: "/admin/media", label: "Media" },
   { href: "/admin/comparisons", label: "Comparisons" },
   { href: "/admin/sources", label: "Sources" },
